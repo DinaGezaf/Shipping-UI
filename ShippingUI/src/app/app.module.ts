@@ -27,6 +27,8 @@ import { EditBranchComponent } from './components/Branch/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { EditSalesComponent } from './components/Sales Representator/edit-sales/edit-sales.component';
 import { AddSalesComponent } from './components/Sales Representator/add/add.component';
+import { AddCityComponent } from './components/City/add/add.component';
+import { EditCityComponent } from './components/City/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,9 @@ import { AddSalesComponent } from './components/Sales Representator/add/add.comp
     AddSalesComponent,
     DisplaySalesComponent,
     EditSalesComponent,
+    EditGovernmentComponent,
+    AddCityComponent,
+    EditCityComponent
   ],
   imports: [
     BrowserModule,
@@ -63,4 +68,4 @@ import { AddSalesComponent } from './components/Sales Representator/add/add.comp
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

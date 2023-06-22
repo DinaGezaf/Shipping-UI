@@ -1,8 +1,8 @@
-import { Goverment } from './../../../models/Goverment';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { GovermentService } from 'src/app/services/goverment.service';
 import { CommonModule } from '@angular/common';
+import { Goverment } from 'src/app/models/Goverment';
+import { GovermentService } from 'src/app/services/goverment.service';
 
 @Component({
   selector: 'app-display',
@@ -17,7 +17,7 @@ export class DisplayGovernmentComponent implements OnInit {
     private government_service: GovermentService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.government_service.GetAllGovernment().subscribe((data: any) => {
@@ -26,7 +26,7 @@ export class DisplayGovernmentComponent implements OnInit {
     });
   }
 
-  changeIsActive(GovermentId: number) {}
+  changeIsActive(GovermentId: number) { }
 
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
