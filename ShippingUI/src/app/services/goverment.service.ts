@@ -1,7 +1,6 @@
-import { Goverment } from './../models/Goverment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Goverment } from '../models/Goverment';
 
 
 @Injectable({
@@ -13,14 +12,14 @@ export class GovermentService {
 
   GetAllGovernment() {
 
-    return this.http.get('http://localhost:5250/api/Goverment/Getall');
+    return this.http.get('https://localhost:44355/api/Goverment/Getall');
 
 
   }
 
 
-  EditGovernment(GovermentId:number,Goverment:Goverment){
-    return this.http.put(`https://localhost:44355/api/Goverment/update/${GovermentId}`,Goverment);
+  EditGovernment(GovermentId: number, Goverment: Goverment) {
+    return this.http.put(`https://localhost:44355/api/Goverment/update/${GovermentId}`, Goverment);
   }
 
   // AddGovernment(Government: Goverment) {

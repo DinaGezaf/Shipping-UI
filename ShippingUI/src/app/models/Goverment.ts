@@ -1,10 +1,7 @@
-export class Goverment {
-  constructor(
-    public goverment_Id?: number,
-    public govermentName?: string,
-    public state?: boolean
 
-  ) {
+export interface Goverment {
+  goverment_Id?: number,
+  govermentName?: string,
+  state?: boolean
 
-  }
 }

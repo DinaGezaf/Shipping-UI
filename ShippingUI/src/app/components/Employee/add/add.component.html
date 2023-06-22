@@ -1,181 +1,177 @@
-<div class= " bg-gray vh-150 p-4">
+<div class="bg-gray vh-150 p-4">
+  <form [formGroup]="addEmployeeForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        formControlName="name"
+        placeholder="please enter the name"
+      />
+      <span
+        *ngIf="
+          addEmployeeForm.get('name')?.invalid &&
+          addEmployeeForm.get('name')?.touched
+        "
+      >
+        <span *ngIf="addEmployeeForm.get('name')?.hasError('required')">
+          this field is required
+        </span>
+        <span *ngIf="addEmployeeForm.get('name')?.hasError('minlength')">
+          name must be between 3 and 50 letters
+        </span>
+        <span *ngIf="addEmployeeForm.get('name')?.hasError('maxlength')">
+          name must be between 3 and 50 letters
+        </span>
+      </span>
+    </div>
 
+    <div class="form-group">
+      <label for="username">UserName</label>
+      <input
+        type="text"
+        id="username"
+        class="form-control"
+        formControlName="userName"
+        placeholder="please enter the userName"
+      />
+      <span
+        *ngIf="
+          addEmployeeForm.get('userName')?.invalid &&
+          addEmployeeForm.get('userName')?.touched
+        "
+      >
+        <span *ngIf="addEmployeeForm.get('userName')?.hasError('required')">
+          this field is required
+        </span>
+        <span *ngIf="addEmployeeForm.get('userName')?.hasError('minlength')">
+          name must be between 3 and 15 letters
+        </span>
+        <span *ngIf="addEmployeeForm.get('userName')?.hasError('maxlength')">
+          name must be between 3 and 15 letters
+        </span>
+      </span>
+    </div>
 
-          <form [formGroup]="addEmployeeForm" (ngSubmit)="onsubmit(  )" >
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        id="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="please enter the email"
+      />
 
-                  <div class="form-group ">
+      <span
+        *ngIf="
+          addEmployeeForm.get('email')?.invalid &&
+          addEmployeeForm.get('email')?.touched
+        "
+      >
+        please enter the valid email
+      </span>
+    </div>
 
-                      <label for="name">Name</label>
-                      <input
-                       type="text"
-                       id="name"
-                       class="form-control"
-                       formControlName="name"
-                       placeholder="please enter the name"
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="please enter the password"
+      />
+      <span
+        *ngIf="
+          addEmployeeForm.get('password')?.invalid &&
+          addEmployeeForm.get('password')?.touched
+        "
+      >
+        <span *ngIf="addEmployeeForm.get('password')?.hasError('minlength')">
+          min length is 6
+        </span>
+        <span *ngIf="addEmployeeForm.get('password')?.hasError('maxlength')">
+          max length is 10
+        </span>
+        <span *ngIf="addEmployeeForm.get('password')?.hasError('required')">
+          password is required
+        </span>
+      </span>
+    </div>
 
-                         >
-                      <span *ngIf="addEmployeeForm.get('name')?.invalid && addEmployeeForm.get('name')?.touched">
-                          <span *ngIf="addEmployeeForm.get('name')?.hasError('required')">
-                            this field is required
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input
+        type="text"
+        id="phone"
+        class="form-control"
+        formControlName="phoneNumber"
+        placeholder="please enter phone"
+      />
 
-                          </span>
-                          <span *ngIf="addEmployeeForm.get('name')?.hasError('minlength')">
-                              name must be between 3 and 50 letters
+      <span
+        *ngIf="
+          addEmployeeForm.get('phoneNumber')?.invalid &&
+          addEmployeeForm.get('phoneNumber')?.touched
+        "
+      >
+        <span *ngIf="addEmployeeForm.get('phoneNumber')?.hasError('required')">
+          Phone number is required
+        </span>
+        <span *ngIf="addEmployeeForm.get('phoneNumber')?.hasError('pattern')">
+          Phone must be 11 number and start with 010 or 012 or 015 or 011
+        </span>
+      </span>
+    </div>
+    <label>Privilege</label>
 
-                          </span>
-                          <span *ngIf="addEmployeeForm.get('name')?.hasError('maxlength')">
-                              name must be between 3 and 50 letters
+    <select formControlName="privellge_Id">
+      <option
+        *ngFor="let item of privilegesarray"
+        value="{{ item.privellge_Id }}"
+      >
+        {{ item.privellgeName }}
+      </option>
+    </select>
 
-                          </span>
+    <span
+      *ngIf="
+        addEmployeeForm.get('privellge_Id')?.invalid &&
+        addEmployeeForm.get('privellge_Id')?.touched
+      "
+    >
+      Privilege is required
+    </span>
 
-                          </span>
+    <div></div>
+    <label>Branch</label>
 
+    <select formControlName="branchid">
+      <option *ngFor="let item of branchesArray" value="{{ item.id }}">
+        {{ item.branchName }}
+      </option>
+    </select>
 
-                  </div>
+    <span
+      *ngIf="
+        addEmployeeForm.get('branchid')?.invalid &&
+        addEmployeeForm.get('branchid')?.touched
+      "
+    >
+      Branch is required
+    </span>
 
-                  <div class="form-group">
+    <div></div>
 
-                    <label for="username">UserName</label>
-                    <input
-                     type="text"
-                     id="username"
-                     class="form-control"
-                     formControlName="userName"
-                     placeholder="please enter the userName"
-                     >
-                    <span *ngIf="addEmployeeForm.get('userName')?.invalid && addEmployeeForm.get('userName')?.touched">
-
-                      <span *ngIf="addEmployeeForm.get('userName')?.hasError('required')">
-                        this field is required
-
-                      </span>
-                      <span *ngIf="addEmployeeForm.get('userName')?.hasError('minlength')">
-                          name must be between 3 and 15 letters
-
-                      </span>
-                      <span *ngIf="addEmployeeForm.get('userName')?.hasError('maxlength')">
-                          name must be between 3 and 15 letters
-
-                      </span>
-
-                    </span>
-
-                </div>
-
-
-                  <div class="form-group">
-                      <label for="email">Email</label>
-                      <input
-                       type="text"
-                       id="email"
-                       class="form-control"
-                       formControlName="email"
-                       placeholder="please enter the email"
-
-                       >
-
-                      <span *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched">
-                          please enter the valid email
-                      </span>
-
-                  </div>
-
-                  <div class="form-group">
-                      <label for="password">Password</label>
-                      <input
-                       type="password"
-                       id="password"
-                       class="form-control"
-                       formControlName="password"
-                       placeholder="please enter the password"
-                       >
-                      <span *ngIf="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched">
-                          <span *ngIf="addEmployeeForm.get('password')?.hasError('minlength')">
-                              min length is 6
-                          </span>
-                          <span *ngIf="addEmployeeForm.get('password')?.hasError('maxlength')">
-                              max length is 10
-                          </span>
-                          <span *ngIf="addEmployeeForm.get('password')?.hasError('required')">
-                              password is required
-                          </span>
-                      </span>
-
-                  </div>
-
-                  <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input
-                     type="text"
-                     id="phone"
-                     class="form-control"
-                     formControlName="phoneNumber"
-                     placeholder="please enter phone"
-
-                     >
-
-                    <span *ngIf="addEmployeeForm.get('phoneNumber')?.invalid && addEmployeeForm.get('phoneNumber')?.touched">
-                      <span *ngIf="addEmployeeForm.get('phoneNumber')?.hasError('required')">
-                            Phone number is required
-                      </span>
-                      <span *ngIf="addEmployeeForm.get('phoneNumber')?.hasError('pattern')">
-                            Phone must be 11 number and start with 010 or 012 or 015 or 011
-                      </span>
-                    </span>
-
-                </div>
-                    <label >Privilege</label>
-
-                      <select formControlName="privellge_Id" >
-                        <option *ngFor="let item of privilegesarray " value={{item.privellge_Id}} >
-                                {{item.privellgeName}}
-                        </option>
-                      </select>
-
-                      <span *ngIf="addEmployeeForm.get('privellge_Id')?.invalid && addEmployeeForm.get('privellge_Id')?.touched">
-                        Privilege is required
-                      </span>
-
-                <div >
-
-                </div>
-                    <label >Branch</label>
-
-                      <select formControlName="branchid"  >
-                        <option *ngFor="let item of branchesArray " value={{item.id}} >
-                                {{item.branchName}}
-                        </option>
-                      </select>
-
-                      <span *ngIf="addEmployeeForm.get('branchid')?.invalid && addEmployeeForm.get('branchid')?.touched">
-                        Branch is required
-                      </span>
-
-                <div >
-
-                </div>
-
-
-
-
-
-
-                   <div class="form-group">
-                       <button class="btn btn-primary" type="submit" > Submit </button>
-
-                    </div>
-                   <div class="form-group">
-                     <a routerLink="/employee">
-
-                      <button class="btn btn-dark" type="submit" > Back </button>
-                     </a>
-
-
-                    </div>
-
-
-          </form>
-
-      </div>
-
-
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+    <div class="form-group">
+      <a routerLink="/employee">
+        <button class="btn btn-dark" type="submit">Back</button>
+      </a>
+    </div>
+  </form>
+</div>
