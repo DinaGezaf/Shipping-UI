@@ -16,6 +16,7 @@ import { EditBranchComponent } from './components/Branch/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { AddSalesComponent } from './components/Sales Representator/add/add.component';
 import { EditSalesComponent } from './components/Sales Representator/edit-sales/edit-sales.component';
+import { EditTraderComponent } from './components/Trader/edit/edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/employee', pathMatch: 'full' },
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'employee/edit/:id', component: EditEmployeeComponent },
   { path: 'trader', component: DisplayTraderComponent },
   { path: 'trader/add', component: AddTraderComponent },
-  { path: 'trader/edit/:id', component: EditEmployeeComponent },
+  { path: 'trader/edit/:id', component: EditTraderComponent },
   { path: 'privilege', component: DisplayPrivellageComponent },
   { path: 'privilege/add', component: AddPrivellageComponent },
   { path: 'privilege/edit/:id', component: EditPrevillageComponent },

@@ -1,63 +1,69 @@
+import { privilege } from './../../../models/Privellage';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Branch } from 'src/app/models/Branch';
 import { Trader } from 'src/app/models/Trader';
+import { BranchService } from 'src/app/services/branch.service';
+import { PrivellageService } from 'src/app/services/privellage.service';
 import { TraderService } from 'src/app/services/trader.service';
 
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  styleUrls: ['./add.component.css'],
 })
 export class AddTraderComponent implements OnInit {
+  Id!: number;
+  branchesArray!: Branch[];
 
-Name! : string
-Email! : string
-Password! : string
-IsDeleted : boolean = false
-Id! : number
-Address! : string
-ContactNumber! : number
-CompanyBranch! :  string
-GovermentName! : string
-CityName! : string
-CostPerRefusedOrder! : number
-
-
-  addTraderForm! : FormGroup
-  constructor(private traderser : TraderService) { }
+  addTraderForm!: FormGroup;
+  constructor(
+    private traderser: TraderService,
+    private branchser: BranchService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.branchser.getAllBranches().subscribe((data: any) => {
+      this.branchesArray = data;
+    });
+
     this.addTraderForm = new FormGroup({
-      'name' : new FormControl(null , Validators.required) ,
-      'userName' : new FormControl(null , [Validators.required , Validators.minLength(3),Validators.maxLength(10)]) ,
-        'email' : new FormControl(null , [Validators.required , Validators.email])  ,
-        'password': new FormControl(null , [Validators.required ,Validators.maxLength(10) , Validators.minLength(3)]) ,
-        'id' : new FormControl(null , [Validators.required]),
-        'address':new FormControl(null , Validators.required),
-        'contactNumber':new FormControl(null , [Validators.required , Validators.minLength(11) ,Validators.maxLength(11)] ) ,
-        'costPerRefusedOrder' : new FormControl(null , Validators.required),
-        'companyBranch':new FormControl(null , Validators.required),
-        'govermentName':new FormControl(null ,Validators.required) ,
-        'cityName' : new FormControl(null ,Validators.required)
+      userName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+        ),
+      ]),
+      address: new FormControl(null, Validators.required),
 
-    })
-
+      phoneNumber: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/01[0125][0-9]{8}$/),
+      ]),
+      costPerRefusedOrder: new FormControl(null, Validators.required),
+      companyBranch: new FormControl(null, Validators.required),
+    });
   }
 
-  onsubmit(){
-  //   let newTrader = new Trader(this.Id
-  //     , this.Name
-  //     , this.Email
-  //     ,this.Address
-  //     ,this.Password
-  //     ,this.CostPerRefusedOrder
-  //     ,this.CompanyBranch
-  //     ,this.ContactNumber
-  //     , this.IsDeleted
-  //     ,this.GovermentName
-  //     ,this.CityName)
-
-  //     this.traderser.AddTrader(newTrader)
+  onsubmit() {
+    console.log(this.addTraderForm.value);
+    this.traderser.AddTrader(this.addTraderForm.value).subscribe(
+      (data) => {
+        console.log(data);
+        alert('success add');
+        this.router.navigate(['trader']);
+      },
+      (error) => {
+        alert('error !!!!!!');
+      }
+    );
   }
-
 }

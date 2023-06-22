@@ -5,17 +5,24 @@
 
           <div class="form-group ">
 
-              <label for="name">Name</label>
+              <label for="name">userName</label>
               <input
                type="text"
                id="name"
                class="form-control"
-               formControlName="name"
-               placeholder="please enter the name"
-               [(ngModel)]="Name"
+               formControlName="userName"
+               placeholder="please enter userName"
                 >
-              <span *ngIf="addTraderForm.get('name')?.invalid && addTraderForm.get('name')?.touched">
-                      this field is required
+              <span *ngIf="addTraderForm.get('userName')?.invalid && addTraderForm.get('userName')?.touched">
+                <span *ngIf="addTraderForm.get('userName')?.hasError('required')">
+                  password is required
+              </span>
+              <span *ngIf="addTraderForm.get('userName')?.hasError('minlength')">
+                userName must be bigger than or equal 5
+            </span>
+            <span *ngIf="addTraderForm.get('userName')?.hasError('maxlength')">
+              userName must be less than or equal
+          </span>
               </span>
 
           </div>
@@ -31,7 +38,6 @@
                class="form-control"
                formControlName="email"
                placeholder="please enter the email"
-               [(ngModel)]="Email"
 
                >
 
@@ -49,56 +55,28 @@
                class="form-control"
                formControlName="password"
                placeholder="please enter the password"
-               [(ngModel)]="Password"
                >
               <span *ngIf="addTraderForm.get('password')?.invalid && addTraderForm.get('password')?.touched">
-                  <span *ngIf="addTraderForm.get('password')?.hasError('minlength')">
-                      min length is 3
+                  <span *ngIf="addTraderForm.get('password')?.hasError('pattern')">
+                    password is invalid
                   </span>
-                  <span *ngIf="addTraderForm.get('password')?.hasError('maxlength')">
-                      max length is 10
-                  </span>
+
                   <span *ngIf="addTraderForm.get('password')?.hasError('required')">
                       password is required
                   </span>
               </span>
 
           </div>
-          <div class="form-group">
-            <label for="id">Id</label>
-            <input
-             type="number"
-             id="id"
-             class="form-control"
-             formControlName="id"
-
-             [(ngModel)]="Id"
-
-             >
-
-            <span *ngIf="addTraderForm.get('id')?.invalid && addTraderForm.get('id')?.touched">
-              <span *ngIf="addTraderForm.get('id')?.hasError('unique')">
-                id must be unique
-            </span>
-
-            <span *ngIf="addTraderForm.get('id')?.hasError('required')">
-                id is required
-            </span>
-
-            </span>
-
-        </div>
 
         <div class="form-group ">
 
-          <label for="name">Address</label>
+          <label for="address">Address</label>
           <input
            type="text"
            id="address"
            class="form-control"
            formControlName="address"
            placeholder="please enter the adress"
-           [(ngModel)]="Address"
             >
           <span *ngIf="addTraderForm.get('address')?.invalid && addTraderForm.get('address')?.touched">
                   Adress is required
@@ -106,53 +84,60 @@
 
         </div>
 
-      <div class="form-group ">
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input
+           type="text"
+           id="phone"
+           class="form-control"
+           formControlName="phoneNumber"
+           placeholder="please enter phone"
 
-        <label for="phone no">Phone Number</label>
-        <input
-         type="number"
-         id="phone no"
-         class="form-control"
-         formControlName="contactNumber"
-         placeholder="please enter the phone number"
-         [(ngModel)]="ContactNumber"
-          >
-        <span *ngIf="addTraderForm.get('contactNumber')?.invalid && addTraderForm.get('contactNumber')?.touched">
-          <span *ngIf="addTraderForm.get('contactNumber')?.hasError('minlength') || addTraderForm.get('contactNumber')?.hasError('maxlength') " >
-              Phone number must be 11 number
+           >
+
+          <span *ngIf="addTraderForm.get('phoneNumber')?.invalid && addTraderForm.get('phoneNumber')?.touched">
+            <span *ngIf="addTraderForm.get('phoneNumber')?.hasError('required')">
+                  Phone number is required
+            </span>
+            <span *ngIf="addTraderForm.get('phoneNumber')?.hasError('pattern')">
+                  Phone must be 11 number and start with 010 or 012 or 015 or 011
+            </span>
           </span>
-          <span *ngIf="addTraderForm.get('contactNumber')?.hasError('required') " >
-              Phone number is required
-          </span>
-        </span>
 
-    </div>
-
-
+      </div>
     <div class="form-group ">
 
-      <label for="name">Address</label>
+      <label for="costPerRefusedOrder">costPerRefusedOrder</label>
       <input
-       type="text"
-       id="address"
+       type="number"
+       id="costPerRefusedOrder"
        class="form-control"
-       formControlName="address"
-       placeholder="please enter the adress"
-       [(ngModel)]="Address"
+       formControlName="costPerRefusedOrder"
+       placeholder="please enter the costPerRefusedOrder"
         >
-      <span *ngIf="addTraderForm.get('address')?.invalid && addTraderForm.get('address')?.touched">
-              Adress is required
+      <span *ngIf="addTraderForm.get('costPerRefusedOrder')?.invalid && addTraderForm.get('costPerRefusedOrder')?.touched">
+        costPerRefusedOrder is required
       </span>
 
     </div>
 
-    <div class="form-group">
-        <label for="govermentName">Goverment</label>
-        <select *ngfor="let goverment in goverments">
-          <option value="option1">Option 1</option>
 
-        </select>
-    </div>
+
+
+
+
+<div class="form-group">
+  <mat-form-field>
+    <mat-label>Branch</mat-label>
+    <mat-select formControlName="companyBranch">
+      <mat-option *ngFor="let item of branchesArray" [value]="item.branchName">
+        {{item.branchName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
 
 
 
@@ -162,7 +147,7 @@
 
             </div>
            <div class="form-group">
-             <a routerLink="/employee">
+             <a routerLink="/trader">
 
               <button class="btn btn-dark" type="submit" > Back </button>
              </a>

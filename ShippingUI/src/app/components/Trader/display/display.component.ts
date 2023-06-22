@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Trader } from 'src/app/models/Trader';
+import { BranchService } from 'src/app/services/branch.service';
 import { TraderService } from 'src/app/services/trader.service';
 
 @Component({
@@ -10,18 +11,18 @@ import { TraderService } from 'src/app/services/trader.service';
 })
 export class DisplayTraderComponent implements OnInit {
   traders: Trader[] = [];
-  filteredData: Trader[] = []
-
+  filteredData: Trader[] = [];
 
   constructor(
     private traderservice: TraderService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private branchservice: BranchService
   ) {}
 
   ngOnInit(): void {
-    this.traderservice.GetAllTraders().subscribe((data) => {
-      this.traders = this.filteredData;
+    this.traderservice.GetAllTraders().subscribe((data: any) => {
+      this.traders = this.filteredData = data;
       console.log(data);
     });
   }
@@ -30,7 +31,23 @@ export class DisplayTraderComponent implements OnInit {
     this.router.navigate(['add'], { relativeTo: this.route });
   }
 
-  changeIsActive(traderId: number) {}
+  DeleteTrader(id: number) {
+    if (confirm('do you want to delete ?')) {
+      this.traderservice.DeleteTrader(id).subscribe((data: any) => {
+        alert('success deleted');
+
+        this.traderservice.GetAllTraders().subscribe((data: any) => {
+          this.traders = this.filteredData = data;
+          console.log(data);
+        });
+      });
+    } else {
+      this.traderservice.GetAllTraders().subscribe((data: any) => {
+        this.traders = this.filteredData = data;
+        console.log(data);
+      });
+    }
+  }
 
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
@@ -39,7 +56,7 @@ export class DisplayTraderComponent implements OnInit {
       this.router.navigate(['edit/' + traderId], { relativeTo: this.route });
     } else {
       const traderId = selectedValue;
-      this.changeIsActive(traderId);
+      this.DeleteTrader(traderId);
     }
   }
 
@@ -47,7 +64,7 @@ export class DisplayTraderComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.traders.filter((item) => {
-      const itemName = item.traderName?.toLowerCase();
+      const itemName = item.userName?.toLowerCase();
 
       return itemName?.startsWith(searchTerm);
     });

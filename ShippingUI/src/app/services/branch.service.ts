@@ -9,28 +9,31 @@ export class BranchService {
   constructor(private http: HttpClient) {}
 
   getAllBranches() {
-    return this.http.get('http://localhost:5250/api/Branch');
+    return this.http.get('http://localhost:5250/api/Branches');
   }
 
   getBranchById(branchid: number) {
-    return this.http.get(`http://localhost:5250/api/Branch/${branchid}`);
+    return this.http.get(`http://localhost:5250/api/Branches/${branchid}`);
   }
 
   addBranch(newBranch: any) {
-    return this.http.post('http://localhost:5250/api/Branch', newBranch, {
+    return this.http.post('http://localhost:5250/api/Branches', newBranch, {
       responseType: 'text',
     });
   }
 
   updateBranch(id: number, updatedBranch: any) {
-    return this.http.put('http://localhost:5250/api/Branch', updatedBranch, {
-      responseType: 'text',
-      params: new HttpParams().set('id', id),
-    });
+    return this.http.put(
+      `http://localhost:5250/api/Branches/${id}`,
+      updatedBranch,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   deleteBranch(id: number) {
-    return this.http.delete('http://localhost:5250/api/Branch', {
+    return this.http.delete('http://localhost:5250/api/Branches', {
       params: new HttpParams().set('id', id),
       responseType: 'text',
     });

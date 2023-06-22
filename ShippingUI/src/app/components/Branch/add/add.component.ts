@@ -25,6 +25,7 @@ export class AddBranchComponent implements OnInit {
   }
 
   onsubmit() {
+    console.log(this.addBranchForm.value);
     this.branchservice
       .addBranch({
         ...this.addBranchForm.value,

@@ -1,13 +1,11 @@
-export class Trader {
-constructor(
-    public traderId? : number ,
-    public traderName? : string,
-    public  email?  : string ,
-    public  address? : string ,
-    public  password? : string,
-    public  costPerRefusedOrder? : number ,
-    public  companyBranch?  : string ,
-    public  contactNumber?  : number ,
-) {}
-
+export interface Trader {
+  traderId?: number;
+  userName?: string;
+  email?: string;
+  address?: string;
+  password?: string;
+  phoneNumber?: number;
+  costPerRefusedOrder?: number;
+  companyBranch?: string;
+  //branchId?: number;
 }

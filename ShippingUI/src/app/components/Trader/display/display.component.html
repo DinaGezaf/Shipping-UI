@@ -1,4 +1,4 @@
-<!-- <div class="vh-100 p-4">
+<div class="vh-100 p-4">
   <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">Traders Listing</h5>
   <div class="container bg-white p-3 my-5 rounded">
     <div class="row py-3">
@@ -51,7 +51,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Status</th>
+          <!-- <th>Status</th> -->
           <th>Address</th>
           <th>CompanyBranch</th>
           <th>CostPerRefusedOrder</th>
@@ -61,17 +61,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let trader of traders">
-          <td class="emp-name">{{ trader.traderName }}</td>
+          <td class="emp-name">{{ trader.userName }}</td>
           <td>{{ trader.email }}</td>
-          <td>
-            <span *ngIf="!trader.IsDeleted" class="active">Active</span>
 
-            <span *ngIf="trader.IsDeleted" class="locked">Locked</span>
-          </td>
-          <td>{{ trader.Address }}</td>
-          <td>{{ trader.CompanyBranch }}</td>
-          <td class="ps-5">{{ trader.CostPerRefusedOrder }}</td>
-          <td>{{ trader.ContactNumber }}</td>
+          <td>{{ trader.address }}</td>
+          <td>{{ trader.companyBranch }}</td>
+          <td class="ps-5">{{ trader.costPerRefusedOrder }}</td>
+          <td>{{ trader.phoneNumber }}</td>
           <td>
 
             <select
@@ -79,8 +75,8 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ trader.Trader_Id }}">Edit</option>
-              <option value="{{ trader.Trader_Id! }}">Delete</option>
+              <option value="edit/{{ trader.traderId }}">Edit</option>
+              <option value="{{ trader.traderId! }} " (click)="DeleteTrader(trader.traderId!)">Delete</option>
             </select>
 
           </td>
@@ -88,4 +84,4 @@
       </tbody>
     </table>
   </div>
-</div> -->
+</div>
