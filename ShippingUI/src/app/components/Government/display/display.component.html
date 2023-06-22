@@ -1,0 +1,97 @@
+<div class="vh-100 p-4">
+  <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">
+    Government Listing
+  </h5>
+  <div class="container bg-white py-3 px-5 my-5 rounded">
+    <div class="row py-3">
+      <div class="col-md-8">
+        <span class="form-control w-250px py-2 form-control-solid">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <rect
+              opacity="0.5"
+              x="17.0365"
+              y="15.1223"
+              width="8.15546"
+              height="2"
+              rx="1"
+              transform="rotate(45 17.0365 15.1223)"
+              fill="currentColor"
+            ></rect>
+            <path
+              d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search Governments"
+            class="d-inline form-control-solid border-0 px-2"
+            style="outline: 0"
+            (input)="onInputChange($event)"
+          />
+        </span>
+      </div>
+      <div class="col-md-4">
+        <!-- <select
+          class="form-control form-select form-control-solid w-150px d-inline mx-3"
+        >
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        -->
+
+        <!-- <button
+            class="btn d-inline bg-blue text-white p-2 px-3"
+            (click)="addEmployee()"
+          >
+            Add Employee
+          </button> -->
+      </div>
+    </div>
+    <table class="pt-1 table m-auto">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>NAME</th>
+          <th>STATE</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let government of filteredData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="emp-name">{{ government.govermentName }}</td>
+
+          <td>
+            <span *ngIf="government.state" class="active">Active</span>
+
+            <span *ngIf="!government.state" class="locked">Locked</span>
+          </td>
+
+          <td>
+            <button
+              routerLink="edit/{{ government.goverment_Id }}"
+              class="btn bg-blue text-white"
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <mat-paginator
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator> -->
+  </div>
+</div>

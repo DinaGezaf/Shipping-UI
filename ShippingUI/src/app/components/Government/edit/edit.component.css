@@ -1,0 +1,31 @@
+form {
+    width: 800px;
+    margin: auto;
+    background-color: white;
+    padding:20px;
+    border-radius: 10px;
+  }
+  
+  .form-group {
+    margin: 10px ;
+    margin-bottom: 40px;
+  
+  
+  }
+  label {
+    margin-top:5px;
+  }
+  
+  input {
+    margin-top: 7px;
+    margin-bottom: 10px;
+  }
+  
+  span{
+    color:#f1416c ;
+  font-size: 13px;
+  font-style: normal;
+  padding:3px
+  
+  }
+  

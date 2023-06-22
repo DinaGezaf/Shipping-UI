@@ -1,0 +1,61 @@
+<div class= " bg-gray vh-150 p-4">
+
+
+  <form [formGroup]="addPrivilegeForm" (ngSubmit)="onsubmit( )" >
+
+          <div class="form-group ">
+
+              <label for="name">Name</label>
+              <input
+               type="text"
+               id="name"
+               class="form-control"
+               formControlName="privellgeName"
+               placeholder="please enter the name"
+
+                 >
+              <span *ngIf="addPrivilegeForm.get('name')?.invalid && addPrivilegeForm.get('name')?.touched">
+                this field is required
+              </span>
+
+          </div>
+          <div class="form-group ">
+
+              <label for="date">Name</label>
+              <input
+               type="date"
+               id="date"
+               class="form-control"
+               formControlName="date"
+               placeholder="please enter the date"
+
+                 >
+              <span *ngIf="addPrivilegeForm.get('date')?.invalid && addPrivilegeForm.get('date')?.touched">
+                the Date is required
+              </span>
+
+          </div>
+
+
+
+
+
+           <div class="form-group">
+               <button class="btn btn-primary" type="submit" > Submit </button>
+
+            </div>
+           <div class="form-group">
+             <a routerLink="/privilege">
+
+              <button class="btn btn-dark" type="submit" > Back </button>
+             </a>
+
+
+            </div>
+
+
+  </form>
+
+</div>
+
+
