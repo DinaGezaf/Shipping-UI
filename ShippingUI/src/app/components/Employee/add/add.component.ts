@@ -29,64 +29,7 @@ export class AddEmployeeComponent implements OnInit {
 
   addEmployeeForm!: FormGroup;
 
-  constructor(
-    private employeeser: EmployeeService,
-    private privilegeser: PrivellageService,
-    private branchser: BranchService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-      this.privilegesarray = data;
-    });
-
-    this.branchser.getAllBranches().subscribe((data: any) => {
-      this.branchesArray = data;
-    });
-
-    this.addEmployeeForm = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      userName: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(15),
-      ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(10),
-        Validators.minLength(6),
-      ]),
-      phoneNumber: new FormControl(null, [
-        Validators.required,
-        Validators.pattern(/01[0125][0-9]{8}$/),
-      ]),
-      privellge_Id: new FormControl(null, Validators.required),
-      branchid: new FormControl(null, Validators.required),
-    });
-  }
-
-  onsubmit() {
-    this.employeeser
-      .AddEmployee({
-        ...this.addEmployeeForm.value,
-        isActive: true,
-      })
-      .subscribe(
-        (data) => {
-          console.log(data);
-          alert('success add');
-          this.router.navigate(['employee']);
-        },
-        (error) => {
-          alert('error !!!!!!');
-        }
-      );
-  }
+  ngOnInit(): void {}
 }
