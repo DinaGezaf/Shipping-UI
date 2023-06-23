@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { EditEmployeeComponent } from './components/Employee/edit/edit.component';
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
 import { DeletePrevillageComponent } from './components/Privellge/delete/delete.component';
-import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
@@ -24,13 +23,21 @@ import { EditBranchComponent } from './components/Branch/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { EditSalesComponent } from './components/Sales Representator/edit-sales/edit-sales.component';
 import { EditCityComponent } from './components/City/edit/edit.component';
+import { SharedModule } from './Shared/SharedModule/shared.module';
+import { SalesRepresentativeModule } from './components/SalesRepresentative/sales-representative.module';
+import { DisplayOrdersComponent } from './components/Order/display-orders/display-orders.component';
+import { OrderDispalyTraderComponent } from './components/Trader-View/order-display-Trader/order-display-Trader.component';
+import { AddOrderComponent } from './components/Trader-View/add-order/add-order.component';
+import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
+import { OrdersStatesTraderComponent } from './components/Trader-View/orders-states-trader/orders-states-trader.component';
+import { WeightCostPerOrderComponent } from './components/Order/weight-cost-per-order/weight-cost-per-order.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditEmployeeComponent,
     DisplayEmployeeComponent,
-    SidemenuComponent,
     DisplayTraderComponent,
     EditTraderComponent,
     DisplayPrivellageComponent,
@@ -44,6 +51,13 @@ import { EditCityComponent } from './components/City/edit/edit.component';
     EditSalesComponent,
     EditGovernmentComponent,
     EditCityComponent,
+    DisplayOrdersComponent,
+    OrderDispalyTraderComponent,
+    AddOrderComponent,
+    EditOrderComponent,
+    OrdersStatesTraderComponent,
+    WeightCostPerOrderComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +68,8 @@ import { EditCityComponent } from './components/City/edit/edit.component';
     BrowserAnimationsModule,
     MatPaginatorModule,
     MatSelectModule,
+    SharedModule,
+    SalesRepresentativeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

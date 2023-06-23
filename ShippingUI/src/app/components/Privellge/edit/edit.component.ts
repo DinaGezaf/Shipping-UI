@@ -1,10 +1,8 @@
-import { formatPercent } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Employee } from 'src/app/models/Employee';
-import { privilege } from 'src/app/models/Privellage';
-import { PrivellageService } from 'src/app/services/privellage.service';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
+import { privilege } from 'src/app/Core/Models/Privellage';
 
 @Component({
   selector: 'app-edit',

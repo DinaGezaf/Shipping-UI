@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { Goverment } from 'src/app/models/Goverment';
-import { BranchService } from 'src/app/services/branch.service';
-import { SalesService } from 'src/app/services/sales.service';
-import { GovermentService } from 'src/app/services/goverment.service';
-import { SalesRepresentator } from 'src/app/models/Sales';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { Goverment } from 'src/app/Core/Models/Goverment';
+import { SalesRepresentator } from 'src/app/Core/Models/Sales';
+import { BranchService } from 'src/app/Core/Services/branch.service';
+import { GovermentService } from 'src/app/Core/Services/goverment.service';
+import { SalesService } from 'src/app/Core/Services/sales.service';
 
 @Component({
   selector: 'app-edit-sales',

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { Trader } from 'src/app/models/Trader';
-import { BranchService } from 'src/app/services/branch.service';
-import { TraderService } from 'src/app/services/trader.service';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { Trader } from 'src/app/Core/Models/Trader';
+import { BranchService } from 'src/app/Core/Services/branch.service';
+import { TraderService } from 'src/app/Core/Services/trader.service';
 
 declare var window: any;
 

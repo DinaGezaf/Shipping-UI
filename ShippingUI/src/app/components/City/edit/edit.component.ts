@@ -1,9 +1,9 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Route, Router } from '@angular/router';
-// import { City, ci } from 'src/app/models/City';
-import { CityService } from 'src/app/services/city.service';
-import { City } from 'src/app/models/City';
+import { CityService } from 'src/app/Core/Services/city.service';
+import { City } from 'src/app/Core/Models/City';
+
 
 
 

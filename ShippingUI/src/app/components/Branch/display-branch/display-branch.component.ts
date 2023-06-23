@@ -1,9 +1,9 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BranchService } from './../../../services/branch.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { BranchService } from 'src/app/Core/Services/branch.service';
 
 declare var window: any;
 

@@ -1,8 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PrivellageService } from './../../../services/privellage.service';
 import { Component, OnInit } from '@angular/core';
-import { privilege } from 'src/app/models/Privellage';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
 
 @Component({
   selector: 'app-add',

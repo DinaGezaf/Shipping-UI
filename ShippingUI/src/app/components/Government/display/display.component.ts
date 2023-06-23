@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { Goverment } from 'src/app/models/Goverment';
-import { GovermentService } from 'src/app/services/goverment.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CityService } from 'src/app/services/city.service';
+import { Goverment } from 'src/app/Core/Models/Goverment';
+import { CityService } from 'src/app/Core/Services/city.service';
+import { GovermentService } from 'src/app/Core/Services/goverment.service';
 declare var window: any;
 @Component({
   selector: 'app-display',

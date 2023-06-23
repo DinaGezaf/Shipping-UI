@@ -1,9 +1,8 @@
-import { privilege } from 'src/app/models/Privellage';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { BranchService } from 'src/app/services/branch.service';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { BranchService } from 'src/app/Core/Services/branch.service';
 
 @Component({
   selector: 'app-edit',

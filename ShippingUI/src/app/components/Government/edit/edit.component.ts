@@ -1,61 +1,52 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Route, Router } from '@angular/router';
-import { Goverment } from 'src/app/models/Goverment';
-import { GovermentService } from 'src/app/services/goverment.service';
-import { EditCityComponent } from '../../City/edit/edit.component';
-
+import { Goverment } from 'src/app/Core/Models/Goverment';
+import { GovermentService } from 'src/app/Core/Services/goverment.service';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.css'],
 })
 export class EditGovernmentComponent implements OnInit {
-  public editGovernmentForm!: FormGroup
+  public editGovernmentForm!: FormGroup;
 
-  GovernmentId!: number
-  government: Goverment = {}
+  GovernmentId!: number;
+  government: Goverment = {};
 
   // govermentName!: string
   // state!: boolean
 
-  param!: number
-
-
-
-
-
-
+  param!: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private governmentService: GovermentService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.editGovernmentForm = new FormGroup({
-      'govermentName': new FormControl(null, Validators.required),
+      govermentName: new FormControl(null, Validators.required),
 
-      'state': new FormControl(null, [Validators.required]),
-
+      state: new FormControl(null, [Validators.required]),
     });
 
     this.route.params.subscribe((params: Params) => {
-      this.GovernmentId = params['id']
-      this.governmentService.getGovernmentById(this.GovernmentId).subscribe((data: Goverment) => {
-        // this.government = data
-        this.editGovernmentForm.setValue({
-          govermentName: data.govermentName,
-          state: data.state
-        })
+      this.GovernmentId = params['id'];
+      this.governmentService
+        .getGovernmentById(this.GovernmentId)
+        .subscribe((data: Goverment) => {
+          // this.government = data
+          this.editGovernmentForm.setValue({
+            govermentName: data.govermentName,
+            state: data.state,
+          });
 
-        console.log(data);
-      })
-
-    })
-
+          console.log(data);
+        });
+    });
 
     // this.editGovernmentForm= new FormGroup({
     //   'govermentName' : new FormControl(this.government?.govermentName , Validators.required) ,
@@ -64,22 +55,19 @@ export class EditGovernmentComponent implements OnInit {
 
     // });
     console.log(this.editGovernmentForm);
-
-
   }
 
   onsubmit(updatedGovernment: any) {
-    let EditedGovernment: Goverment = {}
+    let EditedGovernment: Goverment = {};
 
     EditedGovernment.govermentName = updatedGovernment.value.govermentName;
     EditedGovernment.state = JSON.parse(updatedGovernment.value.state);
     console.log(EditedGovernment);
-    this.governmentService.EditGovernment(this.GovernmentId, EditedGovernment).subscribe(data => {
-      console.log(data);
-      this.router.navigate(['government']);
-    })
+    this.governmentService
+      .EditGovernment(this.GovernmentId, EditedGovernment)
+      .subscribe((data) => {
+        console.log(data);
+        this.router.navigate(['government']);
+      });
   }
-
 }
-
-

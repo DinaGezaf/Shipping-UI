@@ -1,12 +1,12 @@
-import { Employee } from './../../../models/Employee';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { privilege } from 'src/app/models/Privellage';
-import { BranchService } from 'src/app/services/branch.service';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { PrivellageService } from 'src/app/services/privellage.service';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { Employee } from 'src/app/Core/Models/Employee';
+import { privilege } from 'src/app/Core/Models/Privellage';
+import { BranchService } from 'src/app/Core/Services/branch.service';
+import { EmployeeService } from 'src/app/Core/Services/employee.service';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
 
 declare var window: any;
 
