@@ -20,10 +20,11 @@ export class DisplayEmployeeComponent implements OnInit {
   filteredData: Employee[] = [];
   formModel: any;
   id!: number;
-
+  allowEdit = false;
   privilegesarray: privilege[] = [];
   branchesArray: Branch[] = [];
   addEmployeeForm!: FormGroup;
+  empId!: number;
 
   constructor(
     private router: Router,
@@ -43,6 +44,9 @@ export class DisplayEmployeeComponent implements OnInit {
     );
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
+    });
+    this.privilegeser.getAllPrivellages().subscribe((data: any) => {
+      this.privilegesarray = data;
     });
 
     this.addEmployeeForm = new FormGroup({
@@ -71,7 +75,13 @@ export class DisplayEmployeeComponent implements OnInit {
     });
   }
 
-  openModal() {
+  openModal(id: any) {
+    if (!id) {
+      this.getData(id);
+      this.empId = id;
+    } else {
+      this.allowEdit = true;
+    }
     this.formModel.show();
   }
 
@@ -123,20 +133,61 @@ export class DisplayEmployeeComponent implements OnInit {
   // Add Employee
 
   onsubmit() {
+    if (!this.allowEdit) {
+      this.employeeser
+        .AddEmployee({
+          ...this.addEmployeeForm.value,
+          isActive: true,
+        })
+        .subscribe(
+          (data) => {
+            console.log(data);
+            alert('success add');
+            this.router.navigate(['employee']);
+          },
+          (error) => {
+            alert('error !!!!!!');
+          }
+        );
+    } else {
+      this.onEdit();
+    }
+  }
+
+  onEdit() {
     this.employeeser
-      .AddEmployee({
+      .updateEmployee(this.empId, {
         ...this.addEmployeeForm.value,
         isActive: true,
       })
       .subscribe(
         (data) => {
           console.log(data);
-          alert('success add');
+          alert('Your data has been updated successfully');
           this.router.navigate(['employee']);
         },
         (error) => {
-          alert('error !!!!!!');
+          alert('error!!!! data is not updated ');
+          console.log(error);
         }
       );
+  }
+
+  // Edit Employee
+
+  getData(id: any) {
+    this.employeeser.getEmployeeById(id).subscribe((data: Employee) => {
+      console.log(data);
+
+      this.addEmployeeForm.setValue({
+        name: data.name,
+        userName: data.userName,
+        email: data.email,
+        password: data.password,
+        phoneNumber: data.phoneNumber,
+        privellge_Id: data.privellage?.privellge_Id,
+        branchid: data.branch?.id,
+      });
+    });
   }
 }

@@ -32,57 +32,53 @@ export class EditEmployeeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.editEmployeeForm = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      userName: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(15),
-      ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(10),
-        Validators.minLength(6),
-      ]),
-      phoneNumber: new FormControl(null, [
-        Validators.required,
-        Validators.pattern(/01[0125][0-9]{8}$/),
-      ]),
-      privellge_Id: new FormControl(null, Validators.required),
-      branchid: new FormControl(null, Validators.required),
-    });
-
-    this.route.params.subscribe((params: Params) => {
-      this.employeeId = params['id'];
-      this.employeeser
-        .getEmployeeById(this.employeeId)
-        .subscribe((data: Employee) => {
-          console.log(data);
-
-          this.editEmployeeForm.setValue({
-            name: data.name,
-            userName: data.userName,
-            email: data.email,
-            password: data.password,
-            phoneNumber: data.phoneNumber,
-            privellge_Id: data.privellage?.privellge_Id,
-            branchid: data.branch?.id,
-          });
-        });
-    });
-
-    this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-      this.privilegesarray = data;
-    });
-
-    this.branchser.getAllBranches().subscribe((data: any) => {
-      this.branchesArray = data;
-    });
+    // this.editEmployeeForm = new FormGroup({
+    //   name: new FormControl(null, [
+    //     Validators.required,
+    //     Validators.minLength(3),
+    //     Validators.maxLength(50),
+    //   ]),
+    //   userName: new FormControl(null, [
+    //     Validators.required,
+    //     Validators.minLength(3),
+    //     Validators.maxLength(15),
+    //   ]),
+    //   email: new FormControl(null, [Validators.required, Validators.email]),
+    //   password: new FormControl(null, [
+    //     Validators.required,
+    //     Validators.maxLength(10),
+    //     Validators.minLength(6),
+    //   ]),
+    //   phoneNumber: new FormControl(null, [
+    //     Validators.required,
+    //     Validators.pattern(/01[0125][0-9]{8}$/),
+    //   ]),
+    //   privellge_Id: new FormControl(null, Validators.required),
+    //   branchid: new FormControl(null, Validators.required),
+    // });
+    // this.route.params.subscribe((params: Params) => {
+    //   this.employeeId = params['id'];
+    //   this.employeeser
+    //     .getEmployeeById(this.employeeId)
+    //     .subscribe((data: Employee) => {
+    //       console.log(data);
+    //       this.editEmployeeForm.setValue({
+    //         name: data.name,
+    //         userName: data.userName,
+    //         email: data.email,
+    //         password: data.password,
+    //         phoneNumber: data.phoneNumber,
+    //         privellge_Id: data.privellage?.privellge_Id,
+    //         branchid: data.branch?.id,
+    //       });
+    //     });
+    // });
+    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
+    //   this.privilegesarray = data;
+    // });
+    // this.branchser.getAllBranches().subscribe((data: any) => {
+    //   this.branchesArray = data;
+    // });
   }
 
   onsubmit() {

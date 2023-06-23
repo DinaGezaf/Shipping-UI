@@ -49,7 +49,7 @@
 
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
-          (click)="openModal()"
+          (click)="openModal(0)"
         >
           Add Employee
         </button>
@@ -88,7 +88,7 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ employee.employeeId }}">Edit</option>
+              <option (click)="openModal(employee.employeeId)">Edit</option>
               <option
                 value="{{ employee.employeeId }}"
                 (click)="changeIsActive(employee.employeeId!)"
@@ -441,6 +441,14 @@
                     class="btn btn-primary bg-blue border-0"
                   >
                     <span class="indicator-label"> Submit </span>
+                  </button>
+                  <button
+                    type="submit"
+                    id="kt_modal_add_customer_submit"
+                    class="btn btn-primary bg-blue border-0"
+                    [ngClass]="!allowEdit ? 'd-none' : 'd-block'"
+                  >
+                    <span class="indicator-label"> Edit </span>
                   </button>
                 </div>
               </div>
