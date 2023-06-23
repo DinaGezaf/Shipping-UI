@@ -5,7 +5,6 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AddEmployeeComponent } from './components/Employee/add/add.component';
 import { EditEmployeeComponent } from './components/Employee/edit/edit.component';
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
 import { DeletePrevillageComponent } from './components/Privellge/delete/delete.component';
@@ -33,7 +32,6 @@ import { EditCityComponent } from './components/City/edit/edit.component';
 @NgModule({
   declarations: [
     AppComponent,
-    AddEmployeeComponent,
     EditEmployeeComponent,
     DisplayEmployeeComponent,
     SidemenuComponent,
@@ -53,7 +51,7 @@ import { EditCityComponent } from './components/City/edit/edit.component';
     EditSalesComponent,
     EditGovernmentComponent,
     AddCityComponent,
-    EditCityComponent
+    EditCityComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,4 +66,4 @@ import { EditCityComponent } from './components/City/edit/edit.component';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

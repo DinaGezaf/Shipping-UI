@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
-import { AddEmployeeComponent } from './components/Employee/add/add.component';
 import { EditEmployeeComponent } from './components/Employee/edit/edit.component';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
 import { AddTraderComponent } from './components/Trader/add/add.component';
@@ -24,7 +23,6 @@ import { EditCityComponent } from './components/City/edit/edit.component';
 const routes: Routes = [
   { path: '', redirectTo: '/employee', pathMatch: 'full' },
   { path: 'employee', component: DisplayEmployeeComponent },
-  { path: 'employee/add', component: AddEmployeeComponent },
   { path: 'employee/edit/:id', component: EditEmployeeComponent },
   { path: 'trader', component: DisplayTraderComponent },
   { path: 'trader/add', component: AddTraderComponent },
