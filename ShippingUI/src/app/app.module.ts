@@ -11,7 +11,6 @@ import { DeletePrevillageComponent } from './components/Privellge/delete/delete.
 import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AddTraderComponent } from './components/Trader/add/add.component';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
 import { EditTraderComponent } from './components/Trader/edit/edit.component';
 import { DisplayPrivellageComponent } from './components/Privellge/display/display.component';
@@ -32,7 +31,6 @@ import { EditCityComponent } from './components/City/edit/edit.component';
     EditEmployeeComponent,
     DisplayEmployeeComponent,
     SidemenuComponent,
-    AddTraderComponent,
     DisplayTraderComponent,
     EditTraderComponent,
     DisplayPrivellageComponent,

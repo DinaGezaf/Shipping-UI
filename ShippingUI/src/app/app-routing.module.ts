@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
 import { EditEmployeeComponent } from './components/Employee/edit/edit.component';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
-import { AddTraderComponent } from './components/Trader/add/add.component';
 import { DisplayPrivellageComponent } from './components/Privellge/display/display.component';
 import { AddPrivellageComponent } from './components/Privellge/add/add.component';
 import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
@@ -21,8 +20,7 @@ const routes: Routes = [
   { path: 'employee', component: DisplayEmployeeComponent },
   { path: 'employee/edit/:id', component: EditEmployeeComponent },
   { path: 'trader', component: DisplayTraderComponent },
-  { path: 'trader/add', component: AddTraderComponent },
-  { path: 'trader/edit/:id', component: EditTraderComponent },
+  // { path: 'trader/edit/:id', component: EditTraderComponent },
   { path: 'privilege', component: DisplayPrivellageComponent },
   { path: 'privilege/add', component: AddPrivellageComponent },
   { path: 'privilege/edit/:id', component: EditPrevillageComponent },
