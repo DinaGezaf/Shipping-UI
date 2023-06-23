@@ -23,8 +23,9 @@ export class DisplayEmployeeComponent implements OnInit {
   allowEdit = false;
   privilegesarray: privilege[] = [];
   branchesArray: Branch[] = [];
-  addEmployeeForm!: FormGroup;
+  employeeForm!: FormGroup;
   empId!: number;
+  selectedOption = 'action';
 
   constructor(
     private router: Router,
@@ -38,6 +39,7 @@ export class DisplayEmployeeComponent implements OnInit {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
       this.employees = this.filteredData = data;
     });
+    console.log(this.employees);
 
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
@@ -45,11 +47,11 @@ export class DisplayEmployeeComponent implements OnInit {
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
-    this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-      this.privilegesarray = data;
-    });
+    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
+    //   this.privilegesarray = data;
+    // });
 
-    this.addEmployeeForm = new FormGroup({
+    this.employeeForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
@@ -70,23 +72,24 @@ export class DisplayEmployeeComponent implements OnInit {
         Validators.required,
         Validators.pattern(/01[0125][0-9]{8}$/),
       ]),
-      privellge_Id: new FormControl(null, Validators.required),
+      // privellge_Id: new FormControl(null, Validators.required),
       branchid: new FormControl(null, Validators.required),
     });
   }
 
   openModal(id: any) {
     if (!id) {
-      this.getData(id);
-      this.empId = id;
+      this.allowEdit = false;
     } else {
-      this.allowEdit = true;
+      this.empId = id;
+      this.getData(id);
     }
     this.formModel.show();
   }
 
   doSomething() {
     this.formModel.hide();
+    this.employeeForm.reset();
   }
 
   changeIsActive(employeeId: number) {
@@ -109,11 +112,13 @@ export class DisplayEmployeeComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const employeeId = selectedValue.substr(5);
-      this.router.navigate(['edit/' + employeeId], { relativeTo: this.route });
+      this.allowEdit = true;
+      this.openModal(employeeId);
     } else {
       const employeeId = selectedValue;
       this.changeIsActive(employeeId);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -136,7 +141,7 @@ export class DisplayEmployeeComponent implements OnInit {
     if (!this.allowEdit) {
       this.employeeser
         .AddEmployee({
-          ...this.addEmployeeForm.value,
+          ...this.employeeForm.value,
           isActive: true,
         })
         .subscribe(
@@ -152,12 +157,15 @@ export class DisplayEmployeeComponent implements OnInit {
     } else {
       this.onEdit();
     }
+    this.employeeser.GetAllEmployees().subscribe((data: any) => {
+      this.employees = this.filteredData = data;
+    });
   }
 
   onEdit() {
     this.employeeser
       .updateEmployee(this.empId, {
-        ...this.addEmployeeForm.value,
+        ...this.employeeForm.value,
         isActive: true,
       })
       .subscribe(
@@ -179,13 +187,13 @@ export class DisplayEmployeeComponent implements OnInit {
     this.employeeser.getEmployeeById(id).subscribe((data: Employee) => {
       console.log(data);
 
-      this.addEmployeeForm.setValue({
+      this.employeeForm.setValue({
         name: data.name,
         userName: data.userName,
         email: data.email,
         password: data.password,
         phoneNumber: data.phoneNumber,
-        privellge_Id: data.privellage?.privellge_Id,
+        // privellge_Id: data.privellage?.privellge_Id,
         branchid: data.branch?.id,
       });
     });

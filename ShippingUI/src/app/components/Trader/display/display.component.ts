@@ -19,7 +19,9 @@ export class DisplayTraderComponent implements OnInit {
   Id!: number;
   branchesArray!: Branch[];
   formModel: any;
-  addTraderForm!: FormGroup;
+  traderForm!: FormGroup;
+  allowEdit = false;
+  traderId!: number;
 
   constructor(
     private traderservice: TraderService,
@@ -40,7 +42,7 @@ export class DisplayTraderComponent implements OnInit {
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
     );
-    this.addTraderForm = new FormGroup({
+    this.traderForm = new FormGroup({
       userName: new FormControl(null, [
         Validators.required,
         Validators.minLength(5),
@@ -62,10 +64,6 @@ export class DisplayTraderComponent implements OnInit {
       costPerRefusedOrder: new FormControl(null, Validators.required),
       companyBranch: new FormControl(null, Validators.required),
     });
-  }
-
-  addTrader() {
-    this.router.navigate(['add'], { relativeTo: this.route });
   }
 
   DeleteTrader(id: number) {
@@ -90,11 +88,12 @@ export class DisplayTraderComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const traderId = selectedValue.substr(5);
-      this.router.navigate(['edit/' + traderId], { relativeTo: this.route });
+      this.openModal(traderId);
+      this.allowEdit = true;
     } else {
-      const traderId = selectedValue;
-      this.DeleteTrader(traderId);
+      this.DeleteTrader(selectedValue);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -114,24 +113,69 @@ export class DisplayTraderComponent implements OnInit {
   // Add
 
   onsubmit() {
-    console.log(this.addTraderForm.value);
-    this.traderservice.AddTrader(this.addTraderForm.value).subscribe(
-      (data) => {
-        console.log(data);
-        alert('success add');
-        this.router.navigate(['trader']);
-      },
-      (error) => {
-        alert('error !!!!!!');
-      }
-    );
+    this.traderservice.GetAllTraders().subscribe((data: any) => {
+      this.traders = this.filteredData = data;
+      console.log(data);
+    });
+    if (!this.allowEdit) {
+      this.traderservice.AddTrader(this.traderForm.value).subscribe(
+        (data) => {
+          console.log(data);
+          alert('success add');
+          this.router.navigate(['trader']);
+        },
+        (error) => {
+          alert('error !!!!!!');
+        }
+      );
+    } else {
+      this.onEdit();
+    }
   }
 
-  openModal() {
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.traderId = id;
+    }
     this.formModel.show();
   }
 
   doSomething() {
     this.formModel.hide();
+    this.traderForm.reset();
+  }
+
+  onEdit() {
+    this.traderservice
+      .updateTrader(this.traderId, this.traderForm.value)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          alert('your data has been updated successfully');
+          this.router.navigate(['trader']);
+        },
+        (error) => {
+          alert('error !!! data is not updated');
+          console.log(error);
+        }
+      );
+  }
+
+  getData(id: any) {
+    this.traderservice.getTraderById(id).subscribe((data: Trader) => {
+      console.log(data);
+      this.traderForm.setValue({
+        userName: data.userName,
+        email: data.email,
+        password: data.password,
+        address: data.address,
+        phoneNumber: data.phoneNumber,
+        costPerRefusedOrder: data.costPerRefusedOrder,
+        companyBranch: data.companyBranch,
+      });
+    });
   }
 }

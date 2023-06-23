@@ -24,8 +24,10 @@ export default class DisplaySalesComponent implements OnInit {
   durationInSeconds = 5;
 
   id!: number;
+  allowEdit = false;
+  salesId!: number;
 
-  addSalesForm!: FormGroup;
+  salesForm!: FormGroup;
   formModel: any;
 
   constructor(
@@ -50,7 +52,7 @@ export default class DisplaySalesComponent implements OnInit {
       this.governments = data;
     });
 
-    this.addSalesForm = new FormGroup({
+    this.salesForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
         Validators.minLength(5),
@@ -100,12 +102,13 @@ export default class DisplaySalesComponent implements OnInit {
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
-      const privellgeid = selectedValue.substr(5);
-      this.router.navigate(['edit/' + privellgeid], { relativeTo: this.route });
+      const salesId = selectedValue.substr(5);
+      this.allowEdit = true;
+      this.openModal(salesId);
     } else {
-      const privellgeid = selectedValue;
-      this.deleteSales(privellgeid);
+      this.deleteSales(selectedValue);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -125,16 +128,56 @@ export default class DisplaySalesComponent implements OnInit {
   // Modal
 
   onsubmit() {
-    console.log(this.addSalesForm.value);
+    if (!this.allowEdit) {
+      this.salesservice
+        .addSalesRepresentator({
+          ...this.salesForm.value,
+          isActive: true,
+          discountType: Number(this.salesForm.get('discountType')?.value),
+        })
+        .subscribe(
+          (data: any) => {
+            alert('success add');
+            this.router.navigate(['salesRepresentator']);
+          },
+          (error) => {
+            alert('error !!!');
+            console.log(error);
+          }
+        );
+    } else {
+      this.onEdit();
+    }
+    this.salesservice.getAllSales().subscribe((data: any) => {
+      this.sales = this.filteredData = data;
+    });
+  }
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.salesId = id;
+    }
+    this.formModel.show();
+  }
+
+  doSomething() {
+    this.formModel.hide();
+    this.salesForm.reset();
+  }
+
+  // Edit
+  onEdit() {
     this.salesservice
-      .addSalesRepresentator({
-        ...this.addSalesForm.value,
-        isActive: true,
-        discountType: Number(this.addSalesForm.get('discountType')?.value),
+      .updateSalesRepresentator(this.salesId, {
+        ...this.salesForm.value,
+        salesRepresentativeId: this.salesId,
+        discountType: Number(this.salesForm.get('discountType')?.value),
       })
       .subscribe(
         (data: any) => {
-          alert('success add');
+          alert('success edit');
           this.router.navigate(['salesRepresentator']);
         },
         (error) => {
@@ -143,11 +186,27 @@ export default class DisplaySalesComponent implements OnInit {
         }
       );
   }
-  openModal() {
-    this.formModel.show();
-  }
 
-  doSomething() {
-    this.formModel.hide();
+  getData(id: any) {
+    this.salesservice.getSalesByID(id).subscribe((data: SalesRepresentator) => {
+      console.log(data);
+
+      this.salesForm.setValue({
+        name: data.name,
+        userName: data.userName,
+        email: data.email,
+        password: data.password,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+        companyPercentage: data.companyPercentage,
+        discountType: data.discountType?.toString(),
+        governmentsIds: data.goverments?.map((item) => {
+          return item.goverment_Id;
+        }),
+        branchesIds: data.branches?.map((item) => {
+          return item.id;
+        }),
+      });
+    });
   }
 }

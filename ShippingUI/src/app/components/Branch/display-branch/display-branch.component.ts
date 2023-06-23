@@ -15,8 +15,10 @@ declare var window: any;
 export class DisplayBranchComponent implements OnInit {
   branches: Branch[] = [];
   filteredData: Branch[] = [];
-  addBranchForm!: FormGroup;
+  BranchForm!: FormGroup;
   formModel: any;
+  allowEdit = false;
+  branchId!: number;
 
   constructor(
     private branchService: BranchService,
@@ -28,17 +30,13 @@ export class DisplayBranchComponent implements OnInit {
     this.branchService.getAllBranches().subscribe((data: any) => {
       this.branches = this.filteredData = data;
     });
-    this.addBranchForm = new FormGroup({
+    this.BranchForm = new FormGroup({
       branchName: new FormControl(null, Validators.required),
       createdAt: new FormControl(null, Validators.required),
     });
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
     );
-  }
-
-  addBranch() {
-    this.router.navigate(['add'], { relativeTo: this.route });
   }
 
   deleteBranch(id: number) {
@@ -60,19 +58,19 @@ export class DisplayBranchComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const branchid = selectedValue.substr(5);
-      this.router.navigate(['edit/' + branchid], { relativeTo: this.route });
+      this.openModal(branchid);
+      this.allowEdit = true;
     } else {
       const branchid = selectedValue;
       this.deleteBranch(branchid);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
     const searchTerm = inputValue.toLowerCase().trim();
-
     return this.branches.filter((item) => {
       const itemName = item.branchName?.toLowerCase();
-
       return itemName?.startsWith(searchTerm);
     });
   }
@@ -82,6 +80,7 @@ export class DisplayBranchComponent implements OnInit {
   }
 
   changeState(id: number) {
+    alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
       (data: any) => {
         alert('success deleted');
@@ -96,28 +95,69 @@ export class DisplayBranchComponent implements OnInit {
   // Add  Modal
 
   onsubmit() {
-    this.branchService
-      .addBranch({
-        ...this.addBranchForm.value,
-        state: true,
-      })
-      .subscribe(
-        (data: any) => {
-          alert('success add');
-          this.router.navigate(['branch']);
-        },
-        (error) => {
-          alert('error !!!!!');
-          console.log(error);
-        }
-      );
+    if (!this.allowEdit) {
+      this.branchService
+        .addBranch({
+          ...this.BranchForm.value,
+          state: true,
+        })
+        .subscribe(
+          (data: any) => {
+            alert('success add');
+            this.router.navigate(['branch']);
+          },
+          (error) => {
+            alert('error !!!!!');
+            console.log(error);
+          }
+        );
+    } else this.onEdit();
+    this.branchService.getAllBranches().subscribe((data: any) => {
+      this.branches = this.filteredData = data;
+    });
   }
 
-  openModal() {
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.branchId = id;
+    }
     this.formModel.show();
   }
 
   doSomething() {
     this.formModel.hide();
+    this.BranchForm.reset();
+  }
+
+  // Edit
+  onEdit() {
+    this.branchService
+      .updateBranch(this.branchId, {
+        ...this.BranchForm.value,
+        id: this.branchId,
+      })
+      .subscribe(
+        (data: any) => {
+          alert('update success');
+          console.log(data);
+          this.router.navigate(['branch']);
+        },
+        (error: any) => {
+          alert('error !!!!!!!!');
+        }
+      );
+  }
+
+  getData(id: any) {
+    this.branchService.getBranchById(id).subscribe((data: Branch) => {
+      console.log(data);
+      this.BranchForm.setValue({
+        branchName: data.branchName,
+        createdAt: data.createdAt,
+      });
+    });
   }
 }

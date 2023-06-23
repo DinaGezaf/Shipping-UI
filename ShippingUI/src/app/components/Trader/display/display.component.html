@@ -38,7 +38,7 @@
       <div class="col-md-4" style="text-align: end">
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
-          (click)="openModal()"
+          (click)="openModal(0)"
         >
           Add trader
         </button>
@@ -103,7 +103,7 @@
     <div class="modal-content custom-modal-content">
       <div class="modal-header">
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
-          Add Trader
+          <span>{{ allowEdit ? "Edit Trader" : "Add Trader" }}</span>
         </h2>
         <span (click)="doSomething()" class="svg-icon svg-icon-1"
           ><svg
@@ -148,7 +148,7 @@
             data-kt-scroll-offset="300px"
             style="max-height: 92px"
           >
-            <form [formGroup]="addTraderForm" (ngSubmit)="onsubmit()">
+            <form [formGroup]="traderForm" (ngSubmit)="onsubmit()">
               <div class="form-inputs px-5">
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-4">UserName</label>
@@ -163,27 +163,27 @@
                   />
                   <span
                     *ngIf="
-                      addTraderForm.get('userName')?.invalid &&
-                      addTraderForm.get('userName')?.touched
+                      traderForm.get('userName')?.invalid &&
+                      traderForm.get('userName')?.touched
                     "
                   >
                     <span
                       *ngIf="
-                        addTraderForm.get('userName')?.hasError('required')
+                        traderForm.get('userName')?.hasError('required')
                       "
                     >
                       Username is required
                     </span>
                     <span
                       *ngIf="
-                        addTraderForm.get('userName')?.hasError('minlength')
+                        traderForm.get('userName')?.hasError('minlength')
                       "
                     >
                       Username must be bigger than or equal 5
                     </span>
                     <span
                       *ngIf="
-                        addTraderForm.get('userName')?.hasError('maxlength')
+                        traderForm.get('userName')?.hasError('maxlength')
                       "
                     >
                       Username must be less than or equal
@@ -205,8 +205,8 @@
 
                   <span
                     *ngIf="
-                      addTraderForm.get('email')?.invalid &&
-                      addTraderForm.get('email')?.touched
+                      traderForm.get('email')?.invalid &&
+                      traderForm.get('email')?.touched
                     "
                   >
                     please enter the valid email
@@ -227,20 +227,20 @@
                   />
                   <span
                     *ngIf="
-                      addTraderForm.get('password')?.invalid &&
-                      addTraderForm.get('password')?.touched
+                      traderForm.get('password')?.invalid &&
+                      traderForm.get('password')?.touched
                     "
                   >
                     <span
                       *ngIf="
-                        addTraderForm.get('password')?.hasError('required')
+                        traderForm.get('password')?.hasError('required')
                       "
                     >
                       password is required
                     </span>
 
                     <span
-                      *ngIf="addTraderForm.get('password')?.hasError('pattern')"
+                      *ngIf="traderForm.get('password')?.hasError('pattern')"
                     >
                       password is invalid
                     </span>
@@ -260,20 +260,20 @@
                   />
                   <span
                     *ngIf="
-                      addTraderForm.get('phoneNumber')?.invalid &&
-                      addTraderForm.get('phoneNumber')?.touched
+                      traderForm.get('phoneNumber')?.invalid &&
+                      traderForm.get('phoneNumber')?.touched
                     "
                   >
                     <span
                       *ngIf="
-                        addTraderForm.get('phoneNumber')?.hasError('required')
+                        traderForm.get('phoneNumber')?.hasError('required')
                       "
                     >
                       Phone number is required
                     </span>
                     <span
                       *ngIf="
-                        addTraderForm.get('phoneNumber')?.hasError('pattern')
+                        traderForm.get('phoneNumber')?.hasError('pattern')
                       "
                     >
                       Phone must be 11 number and start with 010 or 012 or 015
@@ -295,12 +295,12 @@
                   />
                   <span
                     *ngIf="
-                      addTraderForm.get('address')?.invalid &&
-                      addTraderForm.get('address')?.touched
+                      traderForm.get('address')?.invalid &&
+                      traderForm.get('address')?.touched
                     "
                   >
                     <span
-                      *ngIf="addTraderForm.get('address')?.hasError('required')"
+                      *ngIf="traderForm.get('address')?.hasError('required')"
                     >
                       Address is required
                     </span>
@@ -322,8 +322,8 @@
                   />
                   <span
                     *ngIf="
-                      addTraderForm.get('costPerRefusedOrder')?.invalid &&
-                      addTraderForm.get('costPerRefusedOrder')?.touched
+                      traderForm.get('costPerRefusedOrder')?.invalid &&
+                      traderForm.get('costPerRefusedOrder')?.touched
                     "
                   >
                     Cost Per Refused Order is required
@@ -349,8 +349,8 @@
 
                   <span
                     *ngIf="
-                      addTraderForm.get('companyBranch')?.invalid &&
-                      addTraderForm.get('companyBranch')?.touched
+                      traderForm.get('companyBranch')?.invalid &&
+                      traderForm.get('companyBranch')?.touched
                     "
                   >
                     Branch is required
@@ -374,8 +374,17 @@
                     type="submit"
                     id="kt_modal_add_customer_submit"
                     class="btn btn-primary bg-blue border-0"
+                    [ngClass]="allowEdit ? 'd-none' : ''"
                   >
                     <span class="indicator-label"> Submit </span>
+                  </button>
+                  <button
+                    type="submit"
+                    id="kt_modal_add_customer_submit"
+                    class="btn btn-primary bg-blue border-0"
+                    [ngClass]="!allowEdit ? 'd-none' : ''"
+                  >
+                    <span class="indicator-label"> Edit </span>
                   </button>
                 </div>
               </div>

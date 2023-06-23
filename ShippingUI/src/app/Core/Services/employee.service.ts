@@ -8,24 +8,22 @@ export class EmployeeService {
   constructor(private http: HttpClient) {}
 
   GetAllEmployees() {
-    return this.http.get('http://localhost:5250/api/Employee/Getall');
+    return this.http.get('https://localhost:44355/api/Employees');
   }
 
   getEmployeeById(employeeId: number) {
-    return this.http.get(
-      `http://localhost:5250/api/Employee/GetById/${employeeId}`
-    );
+    return this.http.get(`https://localhost:44355/api/Employees/${employeeId}`);
   }
 
   AddEmployee(employee: {}) {
-    return this.http.post('http://localhost:5250/api/Employee/Add', employee, {
+    return this.http.post('https://localhost:44355/api/Employees', employee, {
       responseType: 'text',
     });
   }
 
   updateEmployee(employeeid: number, employee: any) {
     return this.http.put(
-      `http://localhost:5250/api/Employee/update/${employeeid}`,
+      `https://localhost:44355/api/Employees/${employeeid}`,
       employee,
       {
         responseType: 'text',
@@ -34,7 +32,8 @@ export class EmployeeService {
   }
 
   changeIsActive(employeeId: number) {
-    return this.http.delete('http://localhost:5250/api/Employee/Delete', {
+    alert(employeeId);
+    return this.http.delete('https://localhost:44355/api/Employees', {
       params: new HttpParams().set('id', employeeId),
       responseType: 'text',
     });

@@ -14,16 +14,13 @@ export class DisplayGovernmentComponent implements OnInit {
   government: Goverment[] = [];
   filteredData: Goverment[] = [];
   formModel: any;
-  cityId!: number;
-  cityName!: string;
-  normalShippingCost!: number;
-  pickupShippingCost!: number;
+  id!: number;
 
   selectedGovernment!: number;
 
   governmentsArray: any;
-
-  addCityForm!: FormGroup;
+  allowEdit = false;
+  governmentForm!: FormGroup;
 
   constructor(
     private government_service: GovermentService,
@@ -45,7 +42,7 @@ export class DisplayGovernmentComponent implements OnInit {
       console.log(this.governmentsArray);
     });
 
-    this.addCityForm = new FormGroup({
+    this.governmentForm = new FormGroup({
       government: new FormControl(null, Validators.required),
       cityName: new FormControl(null, [
         Validators.required,
@@ -86,30 +83,48 @@ export class DisplayGovernmentComponent implements OnInit {
     this.filteredData = this.filterData(inputValue);
   }
 
-  openModal() {
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.allowEdit = true;
+      this.getData(id);
+      this.id = id;
+    }
     this.formModel.show();
   }
 
   doSomething() {
     this.formModel.hide();
   }
-  onsubmit() {
-    this.cityService
-      .AddCity({
-        governmentId: this.selectedGovernment,
-        cityName: this.cityName,
-        normalShippingCost: this.normalShippingCost,
-        pickupShippingCost: this.pickupShippingCost,
+  onsubmit() {}
+
+  onEdit() {
+    this.government_service
+      .EditGovernment(this.id, {
+        ...this.governmentForm.value,
+        goverment_Id: this.id,
       })
       .subscribe(
-        (data) => {
+        (data: any) => {
+          alert('update success');
           console.log(data);
-          alert('Your data has been added successfully');
-          this.router.navigate(['government']);
         },
-        (error) => {
-          alert('error !!!!!!');
+        (error: any) => {
+          alert('error !!!!!!!!');
         }
       );
+  }
+
+  getData(id: any) {
+    this.government_service
+      .getGovernmentById(id)
+      .subscribe((data: Goverment) => {
+        this.governmentForm.setValue({
+          govermentName: data.govermentName,
+          state: data.state,
+        });
+        console.log(data);
+      });
   }
 }
