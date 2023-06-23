@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Branch } from 'src/app/models/Branch';
+import { Goverment } from 'src/app/models/Goverment';
 import { SalesRepresentator } from 'src/app/models/Sales';
+import { BranchService } from 'src/app/services/branch.service';
 import { SalesService } from 'src/app/services/sales.service';
+import { GovermentService } from './../../../services/goverment.service';
+
+declare var window: any;
 
 @Component({
   selector: 'app-display-sales',
@@ -11,9 +18,20 @@ import { SalesService } from 'src/app/services/sales.service';
 export default class DisplaySalesComponent implements OnInit {
   sales: SalesRepresentator[] = [];
   filteredData: SalesRepresentator[] = [];
+  branches: Branch[] = [];
+  governments: Goverment[] = [];
+
+  durationInSeconds = 5;
+
+  id!: number;
+
+  addSalesForm!: FormGroup;
+  formModel: any;
 
   constructor(
     private salesservice: SalesService,
+    private branchservice: BranchService,
+    private GovermentService: GovermentService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -21,6 +39,44 @@ export default class DisplaySalesComponent implements OnInit {
   ngOnInit(): void {
     this.salesservice.getAllSales().subscribe((data: any) => {
       this.sales = this.filteredData = data;
+    });
+    this.formModel = new window.bootstrap.Modal(
+      document.getElementById('exampleModalCenter')
+    );
+    this.branchservice.getAllBranches().subscribe((data: any) => {
+      this.branches = data;
+    });
+    this.GovermentService.GetAllGovernment().subscribe((data: any) => {
+      this.governments = data;
+    });
+
+    this.addSalesForm = new FormGroup({
+      name: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      userName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(50),
+      ]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+        ),
+      ]),
+      phoneNumber: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/01[0125][0-9]{8}$/),
+      ]),
+      address: new FormControl(null, Validators.required),
+      companyPercentage: new FormControl(null, Validators.required),
+      discountType: new FormControl<number>(0, Validators.required),
+      governmentsIds: new FormControl(null, Validators.required),
+      branchesIds: new FormControl(null, Validators.required),
     });
   }
   addSalesRepresentator() {
@@ -64,5 +120,34 @@ export default class DisplaySalesComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
+  }
+
+  // Modal
+
+  onsubmit() {
+    console.log(this.addSalesForm.value);
+    this.salesservice
+      .addSalesRepresentator({
+        ...this.addSalesForm.value,
+        isActive: true,
+        discountType: Number(this.addSalesForm.get('discountType')?.value),
+      })
+      .subscribe(
+        (data: any) => {
+          alert('success add');
+          this.router.navigate(['salesRepresentator']);
+        },
+        (error) => {
+          alert('error !!!');
+          console.log(error);
+        }
+      );
+  }
+  openModal() {
+    this.formModel.show();
+  }
+
+  doSomething() {
+    this.formModel.hide();
   }
 }

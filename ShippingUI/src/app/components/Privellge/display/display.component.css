@@ -57,3 +57,19 @@ td {
 .btn:hover {
   background-color: #0098da;
 }
+
+.custom-modal-dialog {
+  max-width: 650px;
+  height: 400px;
+  width: 75%;
+  overflow: hidden;
+}
+
+.custom-modal-content {
+  height: 455px;
+}
+.form-inputs {
+  overflow-y: scroll;
+  height: 215px;
+  padding-bottom: 35px;
+}

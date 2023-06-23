@@ -1,8 +1,11 @@
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BranchService } from './../../../services/branch.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Branch } from 'src/app/models/Branch';
+
+declare var window: any;
 
 @Component({
   selector: 'app-display-branch',
@@ -12,6 +15,9 @@ import { Branch } from 'src/app/models/Branch';
 export class DisplayBranchComponent implements OnInit {
   branches: Branch[] = [];
   filteredData: Branch[] = [];
+  addBranchForm!: FormGroup;
+  formModel: any;
+
   constructor(
     private branchService: BranchService,
     private router: Router,
@@ -22,6 +28,13 @@ export class DisplayBranchComponent implements OnInit {
     this.branchService.getAllBranches().subscribe((data: any) => {
       this.branches = this.filteredData = data;
     });
+    this.addBranchForm = new FormGroup({
+      branchName: new FormControl(null, Validators.required),
+      createdAt: new FormControl(null, Validators.required),
+    });
+    this.formModel = new window.bootstrap.Modal(
+      document.getElementById('exampleModalCenter')
+    );
   }
 
   addBranch() {
@@ -78,5 +91,33 @@ export class DisplayBranchComponent implements OnInit {
         console.log(error.message);
       }
     );
+  }
+
+  // Add  Modal
+
+  onsubmit() {
+    this.branchService
+      .addBranch({
+        ...this.addBranchForm.value,
+        state: true,
+      })
+      .subscribe(
+        (data: any) => {
+          alert('success add');
+          this.router.navigate(['branch']);
+        },
+        (error) => {
+          alert('error !!!!!');
+          console.log(error);
+        }
+      );
+  }
+
+  openModal() {
+    this.formModel.show();
+  }
+
+  doSomething() {
+    this.formModel.hide();
   }
 }

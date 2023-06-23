@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { privilege } from 'src/app/models/Privellage';
 import { PrivellageService } from 'src/app/services/privellage.service';
 
+declare var window: any;
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
@@ -11,6 +13,8 @@ import { PrivellageService } from 'src/app/services/privellage.service';
 export class DisplayPrivellageComponent implements OnInit {
   privileges: privilege[] = [];
   filteredData: privilege[] = [];
+  addPrivilegeForm!: FormGroup;
+  formModel: any;
 
   constructor(
     private privellageser: PrivellageService,
@@ -23,6 +27,9 @@ export class DisplayPrivellageComponent implements OnInit {
       this.privileges = this.filteredData = data;
       console.log(data);
     });
+    this.formModel = new window.bootstrap.Modal(
+      document.getElementById('exampleModalCenter')
+    );
   }
 
   addPrivilege() {
@@ -67,5 +74,31 @@ export class DisplayPrivellageComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
+  }
+
+  // Add
+  onsubmit() {
+    this.privellageser
+      .addPrivilege({
+        ...this.addPrivilegeForm.value,
+      })
+      .subscribe(
+        (data) => {
+          alert('success add');
+          this.router.navigate(['privilege']);
+        },
+        (error) => {
+          alert('error !!!!!');
+          console.log(error);
+        }
+      );
+  }
+
+  openModal() {
+    this.formModel.show();
+  }
+
+  doSomething() {
+    this.formModel.hide();
   }
 }

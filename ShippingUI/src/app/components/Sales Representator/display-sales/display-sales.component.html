@@ -1,6 +1,6 @@
 <div class="vh-100 p-4">
   <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">
-    SalesRepresentator Listing
+    Sales Representator Listing
   </h5>
   <div class="container bg-white p-3 my-5 rounded">
     <div class="row py-3">
@@ -38,12 +38,11 @@
         </span>
       </div>
       <div class="col-md-4 ps-4 pe-5" style="text-align: end">
-
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
-          (click)="addSalesRepresentator()"
+          (click)="openModal()"
         >
-          Add SalesRepresentator
+          Add Sales Representative
         </button>
       </div>
     </div>
@@ -68,9 +67,8 @@
           <td>{{ item.phoneNumber }}</td>
           <td>{{ item.companyPercentage }}</td>
           <td>
-            <p *ngFor="let branch of item.branches" >
-              {{ branch.branchName}}
-
+            <p *ngFor="let branch of item.branches">
+              {{ branch.branchName }}
             </p>
           </td>
           <td>
@@ -80,13 +78,21 @@
           </td>
 
           <td>
-            <select *ngIf="item.isActive"
+            <select
+              *ngIf="item.isActive"
               class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ item.salesRepresentativeId}}">Edit</option>
-              <option  value="{{ item.salesRepresentativeId}}" (click)="deleteSales(item.salesRepresentativeId!)">Delete</option>
+              <option value="edit/{{ item.salesRepresentativeId }}">
+                Edit
+              </option>
+              <option
+                value="{{ item.salesRepresentativeId }}"
+                (click)="deleteSales(item.salesRepresentativeId!)"
+              >
+                Delete
+              </option>
             </select>
           </td>
         </tr>
@@ -98,5 +104,388 @@
       aria-label="Select page of periodic elements"
     >
     </mat-paginator>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog custom-modal-dialog modal-dialog-centered"
+    role="document"
+  >
+    <div class="modal-content custom-modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
+          Add Sales Representative
+        </h2>
+        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <rect
+              opacity="0.5"
+              x="6"
+              y="17.3137"
+              width="16"
+              height="2"
+              rx="1"
+              transform="rotate(-45 6 17.3137)"
+              fill="currentColor"
+            ></rect>
+            <rect
+              x="7.41422"
+              y="6"
+              width="16"
+              height="2"
+              rx="1"
+              transform="rotate(45 7.41422 6)"
+              fill="currentColor"
+            ></rect></svg
+        ></span>
+      </div>
+      <div class="modal-body p-0">
+        <div class="modal-body py-10">
+          <!--begin::Scroll-->
+          <div
+            class="scroll-y me-n7 pe-7"
+            id="kt_modal_add_customer_scroll"
+            data-kt-scroll="true"
+            data-kt-scroll-activate="{default: false, lg: true}"
+            data-kt-scroll-max-height="auto"
+            data-kt-scroll-dependencies="#kt_modal_add_customer_header"
+            data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+            data-kt-scroll-offset="300px"
+            style="max-height: 92px"
+          >
+            <form [formGroup]="addSalesForm" (ngSubmit)="onsubmit()">
+              <div class="form-inputs px-5">
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-3">Name</label>
+
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control form-control-solid"
+                    formControlName="name"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('name')?.invalid &&
+                      addSalesForm.get('name')?.touched
+                    "
+                  >
+                    <span
+                      *ngIf="addSalesForm.get('name')?.hasError('required')"
+                    >
+                      this field is required
+                    </span>
+                    <span
+                      *ngIf="addSalesForm.get('name')?.hasError('minlength')"
+                    >
+                      name must be between 5 and 50 letters
+                    </span>
+                    <span
+                      *ngIf="addSalesForm.get('name')?.hasError('maxlength')"
+                    >
+                      name must be between 5 and 50 letters
+                    </span>
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">UserName</label>
+
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control form-control-solid"
+                    formControlName="userName"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('userName')?.invalid &&
+                      addSalesForm.get('userName')?.touched
+                    "
+                  >
+                    <span
+                      *ngIf="addSalesForm.get('userName')?.hasError('required')"
+                    >
+                      this field is required
+                    </span>
+                    <span
+                      *ngIf="
+                        addSalesForm.get('userName')?.hasError('minlength')
+                      "
+                    >
+                      name must be between 5 and 50 letters
+                    </span>
+                    <span
+                      *ngIf="
+                        addSalesForm.get('userName')?.hasError('maxlength')
+                      "
+                    >
+                      name must be between 5 and 50 letters
+                    </span>
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">Email</label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control form-control-solid"
+                    formControlName="email"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+
+                  <span
+                    *ngIf="
+                      addSalesForm.get('email')?.invalid &&
+                      addSalesForm.get('email')?.touched
+                    "
+                  >
+                    please enter the valid email
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">Password</label>
+
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control form-control-solid"
+                    formControlName="password"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                    style="outline: none"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('password')?.invalid &&
+                      addSalesForm.get('password')?.touched
+                    "
+                  >
+                    <span
+                      *ngIf="addSalesForm.get('password')?.hasError('required')"
+                    >
+                      password is required
+                    </span>
+
+                    <span
+                      *ngIf="addSalesForm.get('password')?.hasError('pattern')"
+                    >
+                      password is invalid
+                    </span>
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">Phone</label>
+
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    class="form-control form-control-solid"
+                    formControlName="phoneNumber"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('phoneNumber')?.invalid &&
+                      addSalesForm.get('phoneNumber')?.touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        addSalesForm.get('phoneNumber')?.hasError('required')
+                      "
+                    >
+                      Phone number is required
+                    </span>
+                    <span
+                      *ngIf="
+                        addSalesForm.get('phoneNumber')?.hasError('pattern')
+                      "
+                    >
+                      Phone must be 11 number and start with 010 or 012 or 015
+                      or 011
+                    </span>
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">Address</label>
+
+                  <input
+                    type="text"
+                    id="address"
+                    class="form-control form-control-solid"
+                    formControlName="address"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('address')?.invalid &&
+                      addSalesForm.get('address')?.touched
+                    "
+                  >
+                    <span
+                      *ngIf="addSalesForm.get('address')?.hasError('required')"
+                    >
+                      Address is required
+                    </span>
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4"
+                    >Company Percentage</label
+                  >
+
+                  <input
+                    type="text"
+                    id="companyPercentage"
+                    class="form-control form-control-solid"
+                    formControlName="companyPercentage"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addSalesForm.get('companyPercentage')?.invalid &&
+                      addSalesForm.get('companyPercentage')?.touched
+                    "
+                  >
+                    Company Percentage is required
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4"
+                    >Discount Type</label
+                  >
+                  <select
+                    formControlName="discountType"
+                    class="form-select form-select-solid fw-bolder select2-hidden-accessible"
+                  >
+                    <option value="" data-select2-id="select2-data-22-5c0i">
+                      Select type...
+                    </option>
+                    <option value="0">Percentage</option>
+                    <option value="1">FixedValue</option>
+                  </select>
+
+                  <span
+                    *ngIf="
+                      addSalesForm.get('discountType')?.invalid &&
+                      addSalesForm.get('discountType')?.touched
+                    "
+                  >
+                    Discount type is required
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4">Branches</label>
+                  <select
+                    formControlName="branchesIds"
+                    multiple
+                    class="form-select form-select-solid fw-bolder select2-hidden-accessible"
+                  >
+                    <option value="" data-select2-id="select2-data-22-5c0i">
+                      Select a branch...
+                    </option>
+                    <option *ngFor="let item of branches" [value]="item.id">
+                      {{ item.branchName }}
+                    </option>
+                  </select>
+
+                  <span
+                    *ngIf="
+                      addSalesForm.get('branchesIds')?.invalid &&
+                      addSalesForm.get('branchesIds')?.touched
+                    "
+                  >
+                    Branch is required
+                  </span>
+                </div>
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4"
+                    >Governments</label
+                  >
+                  <select
+                    formControlName="governmentsIds"
+                    multiple
+                    class="form-select form-select-solid fw-bolder select2-hidden-accessible"
+                  >
+                    <option value="" data-select2-id="select2-data-22-5c0i">
+                      Select a goverment...
+                    </option>
+                    <option
+                      *ngFor="let item of governments"
+                      [value]="item.goverment_Id"
+                    >
+                      {{ item.govermentName }}
+                    </option>
+                  </select>
+
+                  <span
+                    *ngIf="
+                      addSalesForm.get('governmentsIds')?.invalid &&
+                      addSalesForm.get('governmentsIds')?.touched
+                    "
+                  >
+                    Government is required
+                  </span>
+                </div>
+              </div>
+
+              <div class="modal-footer mt-4">
+                <div class="model-footer-container pt-3">
+                  <button
+                    type="reset"
+                    id="kt_modal_add_customer_cancel"
+                    class="btn me-3 ms-3 bg-gray"
+                    style="color: #7e8299"
+                    id="btn-reset"
+                  >
+                    Discard
+                  </button>
+
+                  <button
+                    type="submit"
+                    id="kt_modal_add_customer_submit"
+                    class="btn btn-primary bg-blue border-0"
+                  >
+                    <span class="indicator-label"> Submit </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -38,10 +38,9 @@
         </span>
       </div>
       <div class="col-md-4 ps-4 pe-5" style="text-align: end">
-
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
-          (click)="addPrivilege()"
+          (click)="openModal()"
         >
           Add Privilage
         </button>
@@ -68,12 +67,152 @@
             >
               <option>Action</option>
               <option value="edit/{{ privellge.privellge_Id }}">Edit</option>
-              <option value="{{ privellge.privellge_Id }} " (click)="deletePrivilege(privellge.privellge_Id!)">Delete</option>
+              <option
+                value="{{ privellge.privellge_Id }} "
+                (click)="deletePrivilege(privellge.privellge_Id!)"
+              >
+                Delete
+              </option>
             </select>
             <!-- </select> -->
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog custom-modal-dialog modal-dialog-centered"
+    role="document"
+  >
+    <div class="modal-content custom-modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
+          Add Privilage
+        </h2>
+        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <rect
+              opacity="0.5"
+              x="6"
+              y="17.3137"
+              width="16"
+              height="2"
+              rx="1"
+              transform="rotate(-45 6 17.3137)"
+              fill="currentColor"
+            ></rect>
+            <rect
+              x="7.41422"
+              y="6"
+              width="16"
+              height="2"
+              rx="1"
+              transform="rotate(45 7.41422 6)"
+              fill="currentColor"
+            ></rect></svg
+        ></span>
+      </div>
+      <div class="modal-body p-0">
+        <div class="modal-body py-10">
+          <!--begin::Scroll-->
+          <div
+            class="scroll-y me-n7 pe-7"
+            id="kt_modal_add_customer_scroll"
+            data-kt-scroll="true"
+            data-kt-scroll-activate="{default: false, lg: true}"
+            data-kt-scroll-max-height="auto"
+            data-kt-scroll-dependencies="#kt_modal_add_customer_header"
+            data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+            data-kt-scroll-offset="300px"
+            style="max-height: 92px"
+          >
+            <form [formGroup]="addPrivilegeForm" (ngSubmit)="onsubmit()">
+              <div class="form-inputs px-5">
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-3">Name</label>
+
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control form-control-solid"
+                    formControlName="privellgeName"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addPrivilegeForm.get('name')?.invalid &&
+                      addPrivilegeForm.get('name')?.touched
+                    "
+                  >
+                    Privellge name is required
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-3">Date</label>
+
+                  <input
+                    type="date"
+                    id="date"
+                    class="form-control form-control-solid"
+                    formControlName="date"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      addPrivilegeForm.get('date')?.invalid &&
+                      addPrivilegeForm.get('date')?.touched
+                    "
+                  >
+                    the Date is required
+                  </span>
+                </div>
+              </div>
+
+              <div class="modal-footer mt-4">
+                <div class="model-footer-container pt-3">
+                  <button
+                    type="reset"
+                    id="kt_modal_add_customer_cancel"
+                    class="btn me-3 ms-3 bg-gray"
+                    style="color: #7e8299"
+                    id="btn-reset"
+                  >
+                    Discard
+                  </button>
+
+                  <button
+                    type="submit"
+                    id="kt_modal_add_customer_submit"
+                    class="btn btn-primary bg-blue border-0"
+                  >
+                    <span class="indicator-label"> Submit </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

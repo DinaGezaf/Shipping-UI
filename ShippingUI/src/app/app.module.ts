@@ -21,12 +21,9 @@ import { AddPrivellageComponent } from './components/Privellge/add/add.component
 import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DisplayBranchComponent } from './components/Branch/display-branch/display-branch.component';
-import { AddBranchComponent } from './components/Branch/add/add.component';
 import { EditBranchComponent } from './components/Branch/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { EditSalesComponent } from './components/Sales Representator/edit-sales/edit-sales.component';
-import { AddSalesComponent } from './components/Sales Representator/add/add.component';
-import { AddCityComponent } from './components/City/add/add.component';
 import { EditCityComponent } from './components/City/edit/edit.component';
 
 @NgModule({
@@ -44,13 +41,10 @@ import { EditCityComponent } from './components/City/edit/edit.component';
     DeletePrevillageComponent,
     DisplayGovernmentComponent,
     DisplayBranchComponent,
-    AddBranchComponent,
     EditBranchComponent,
-    AddSalesComponent,
     DisplaySalesComponent,
     EditSalesComponent,
     EditGovernmentComponent,
-    AddCityComponent,
     EditCityComponent,
   ],
   imports: [
