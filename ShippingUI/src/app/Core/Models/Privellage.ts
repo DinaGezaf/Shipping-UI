@@ -1,5 +1,5 @@
 export interface privilege {
-  privellge_Id?: number;
-  date?: Date;
-  privellgeName?: string;
+  id?: number;
+  name?: string;
+  date?: string;
 }

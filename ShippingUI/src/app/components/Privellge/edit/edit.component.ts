@@ -21,10 +21,7 @@ export class EditPrevillageComponent implements OnInit {
 
   ngOnInit(): void {
     this.editPrivilegeForm = new FormGroup({
-      privellgeName: new FormControl(
-        this.privilege?.privellgeName,
-        Validators.required
-      ),
+      privellgeName: new FormControl(this.privilege?.name, Validators.required),
       date: new FormControl(this.privilege?.date, Validators.required),
     });
 
@@ -36,7 +33,7 @@ export class EditPrevillageComponent implements OnInit {
           console.log(data);
 
           this.editPrivilegeForm.setValue({
-            privellgeName: data.privellgeName,
+            privellgeName: data.name,
             date: data.date,
           });
         });

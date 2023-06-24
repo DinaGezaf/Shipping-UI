@@ -9,24 +9,24 @@ export class PrivellageService {
   constructor(private http: HttpClient) {}
 
   getAllPrivellages() {
-    return this.http.get('http://localhost:5250/api/Privellge/Getall');
+    return this.http.get('https://localhost:44355/api/Permissions');
   }
 
   getPrivilegeById(privilege_id: number) {
     return this.http.get(
-      `http://localhost:5250/api/Privellge/GetById/${privilege_id}`
+      `https://localhost:44355/api/Permissions/${privilege_id}`
     );
   }
 
   addPrivilege(newPrivilege: any) {
     return this.http.post(
-      'http://localhost:5250/api/Privellge/Add',
+      'https://localhost:44355/api/Permissions',
       newPrivilege
     );
   }
 
   deletePrivilege(privilege_id: number) {
-    return this.http.delete('http://localhost:5250/api/Privellge/Delete', {
+    return this.http.delete('https://localhost:44355/api/Permissions', {
       params: new HttpParams().set('id', privilege_id),
       responseType: 'text',
     });
@@ -34,7 +34,7 @@ export class PrivellageService {
 
   updatePrivilege(id: number, privilege: any) {
     return this.http.put(
-      `http://localhost:5250/api/Privellge/update/${id}`,
+      `https://localhost:44355/api/Permissions/${id}`,
       privilege,
       {
         responseType: 'text',
