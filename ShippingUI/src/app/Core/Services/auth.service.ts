@@ -1,5 +1,8 @@
+import { Data } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as jwt_decode from 'jwt-decode';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +24,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem('role');
+    localStorage.removeItem('email');
   }
 
   getToken(): string | null {
@@ -42,6 +47,10 @@ export class AuthService {
   getEmail() {
     return localStorage.getItem('email');
   }
-
-  getUserRole() {}
+  setUserRole(role: string) {
+    localStorage.setItem('role', role);
+  }
+  getUserRole() {
+    return localStorage.getItem('role');
+  }
 }

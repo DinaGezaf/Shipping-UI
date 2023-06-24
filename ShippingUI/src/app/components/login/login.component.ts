@@ -1,7 +1,12 @@
+import { generateRoutesForRole } from './../../Core/Services/role.resolver';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Roles } from 'src/app/Core/Models/Roles';
+import { AuthGuard } from 'src/app/Core/Services/auth.guard';
 import { AuthService } from 'src/app/Core/Services/auth.service';
+import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +16,14 @@ import { AuthService } from 'src/app/Core/Services/auth.service';
 export class LoginComponent {
   loginForm!: FormGroup;
   error!: string;
+  routes: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private routingModule: AppRoutingModule
   ) {}
 
   ngOnInit(): void {
@@ -25,7 +33,7 @@ export class LoginComponent {
     });
   }
 
-  login(): void {
+  login() {
     if (this.loginForm.invalid) {
       return;
     }
@@ -36,8 +44,37 @@ export class LoginComponent {
       (response: any) => {
         const token = response.token;
         this.authService.setToken(token);
+        const role = response.role;
+        this.authService.setUserRole(role);
         this.authService.setEmail(email);
-        this.router.navigate(['/']);
+        const handleGeneratedRoutes = async () => {
+          try {
+            const generatedRoutes: Routes = await generateRoutesForRole();
+            console.log(generatedRoutes);
+            const homeRoute = {
+              path: 'home',
+              component: SidebarComponent,
+              canActivate: [AuthGuard],
+              children: generatedRoutes,
+            };
+            this.router.config.unshift(homeRoute);
+            switch (role) {
+              case Roles.Employee:
+                this.router.navigate(['/home/trader']);
+                break;
+              case Roles.Trader:
+                this.router.navigate(['/home/order/list/trader']);
+                break;
+              case Roles.SalesRepresentative:
+                this.router.navigate(['/home/order/list/sales']);
+                break;
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        Promise.resolve().then(handleGeneratedRoutes);
       },
       (error: any) => {
         this.error = 'Invalid Email or Password';

@@ -13,16 +13,7 @@ import { AuthService } from 'src/app/Core/Services/auth.service';
   styleUrls: ['./orders-list.component.css'],
 })
 export class OrdersListComponent implements OnInit {
-  displayedColumns: string[] = [
-    'orderId',
-    'orderDate',
-    'customerId',
-    'government',
-    'city',
-    'cost',
-    'state',
-  ];
-  dataSource!: MatTableDataSource<Order>;
+  orders: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
   salesEmail: any;
@@ -40,6 +31,7 @@ export class OrdersListComponent implements OnInit {
   selectState(state: string): void {
     this.selectedState = state === 'All' ? '' : state;
     this.loadOrders();
+    console.log(this.orders)
   }
 
   loadOrders(): void {
@@ -53,8 +45,8 @@ export class OrdersListComponent implements OnInit {
             ? orders.filter((order: any) => order.state === this.selectedState)
             : orders;
 
-        this.dataSource = new MatTableDataSource<Order>(filteredOrders);
-        this.dataSource.paginator = this.paginator;
+        this.orders = filteredOrders;
+        this.orders.paginator = this.paginator;
       });
   }
 
@@ -64,5 +56,18 @@ export class OrdersListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe();
+  }
+  filterData(inputValue: string) {
+    const searchTerm = inputValue.toLowerCase().trim();
+
+    return this.orders.filter((item:any) => {
+      const itemName = item.name?.toLowerCase();
+
+      return itemName?.startsWith(searchTerm);
+    });
+  }
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.orders = this.filterData(inputValue);
   }
 }

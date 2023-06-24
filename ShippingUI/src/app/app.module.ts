@@ -32,6 +32,10 @@ import { EditOrderComponent } from './components/Trader-View/edit-order/edit-ord
 import { OrdersStatesTraderComponent } from './components/Trader-View/orders-states-trader/orders-states-trader.component';
 import { WeightCostPerOrderComponent } from './components/Order/weight-cost-per-order/weight-cost-per-order.component';
 import { LoginComponent } from './components/login/login.component';
+import { SidebarComponent } from './Shared/sidebar/sidebar.component';
+import { NavbarComponent } from './Shared/navbar/navbar.component';
+import { FooterComponent } from './Shared/footer/footer.component';
+import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { LoginComponent } from './components/login/login.component';
     EditOrderComponent,
     OrdersStatesTraderComponent,
     WeightCostPerOrderComponent,
-    LoginComponent
+    LoginComponent,
+    SidebarComponent,
+    NavbarComponent,
+    FooterComponent,
+    DisplayOrdersStatesComponent,
   ],
   imports: [
     BrowserModule,

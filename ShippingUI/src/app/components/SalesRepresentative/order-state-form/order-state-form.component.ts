@@ -1,7 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { Order, OrderState } from 'src/app/Core/Models/Order';
+import {
+  Order,
+  OrderState,
+  PaymentType,
+  ShippingType,
+} from 'src/app/Core/Models/Order';
 import { OrderService } from 'src/app/Core/Services/order.service';
 
 @Component({
@@ -13,9 +18,12 @@ export class OrderStateFormComponent implements OnInit {
   orderStates: string[] = [];
   selectedState: OrderState | undefined;
   selectedStateKey: string | undefined;
+  state: any;
+  paymentMethod: any;
+  shippingType: any;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Order,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<OrderStateFormComponent>,
     private orderService: OrderService,
     private snackBar: MatSnackBar
@@ -33,16 +41,16 @@ export class OrderStateFormComponent implements OnInit {
   }
 
   ChangeState(): void {
-    const updatedOrder: Order = { ...this.data };
+    this.data.state = this.selectedState;
 
-    updatedOrder.state = this.selectedState as number;
-    console.log(updatedOrder.state);
-
+    console.log(this.selectedState);
     this.orderService
-      .updateOrder(updatedOrder.orderId, updatedOrder)
-      .subscribe(this.Message());
-    this.dialogRef.close();
-    console.log(updatedOrder);
+      .updateOrder(this.data.orderId, this.data)
+      .subscribe(() => {
+        this.Message();
+        this.dialogRef.close();
+        console.log(this.data);
+      });
   }
 
   Message() {

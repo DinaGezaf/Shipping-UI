@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,14 +9,24 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 export class SidebarComponent {
   sidenavWidth = 5;
-  ngStyle: string | undefined;
-  panelOpenState = false;
+  role: any;
+  Enable: boolean = false;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.role = this.authService.getUserRole();
+    if (this.role == "employee") {
+      this.Enable = true;
+    }
+  }
 
-  @ViewChild('invertebrates', { static: true }) menuTrigger!: MatMenuTrigger;
-
-  isSidebarOpen = false;
-
-  toggle() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  ngOnInit() {
+    // this.route.url.subscribe((url) => {
+    //   if (url[0].path === 'home') {
+    //     this.router.navigate(['/home/trader']);
+    //   }
+    // });
   }
 }

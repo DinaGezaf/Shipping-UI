@@ -1,6 +1,6 @@
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { ShippingType, PaymentType } from 'src/app/Core/Models/Order';
 import { AuthService } from 'src/app/Core/Services/auth.service';
 import { BranchService } from 'src/app/Core/Services/branch.service';
@@ -29,6 +29,7 @@ export class EditOrderComponent implements OnInit {
   productsFormArray: any;
   order: any;
   weightOption: any;
+  traderEmail: any;
 
   constructor(
     private cityService: CityService,
@@ -37,7 +38,8 @@ export class EditOrderComponent implements OnInit {
     private orderService: OrderService,
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<EditOrderComponent>
   ) {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
@@ -49,19 +51,19 @@ export class EditOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderForm = new FormGroup({
-      shippingType: new FormControl(''),
-      paymentMethod: new FormControl(''),
-      branch: new FormControl(''),
-      products: new FormArray([]),
-      totalcost: new FormControl(''),
-      totalweight: new FormControl(''),
-      name: new FormControl(''),
-      email: new FormControl(''),
-      government: new FormControl(''),
-      city: new FormControl({ value: '', disabled: true }),
+      shippingType: new FormControl('', Validators.required),
+      paymentType: new FormControl('', Validators.required),
+      branch: new FormControl('', Validators.required),
+      products: new FormArray([], Validators.required),
+      totalcost: new FormControl('', Validators.required),
+      totalweight: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      government: new FormControl('', Validators.required),
+      city: new FormControl({ value: '', disabled: true }, Validators.required),
       village: new FormControl(''),
-      phone1: new FormControl(''),
-      phone2: new FormControl(''),
+      phone1: new FormControl('', Validators.required),
+      phone2: new FormControl('', Validators.required),
     });
 
     this.getGovernments();
@@ -105,13 +107,15 @@ export class EditOrderComponent implements OnInit {
   UpdateOrder(): void {
     const formData = this.orderForm.value;
     const orderData = {
-      paymentMethod: PaymentType[formData.paymentMethod],
+      state: 'New',
       orderDate: new Date().toISOString(),
-      shippingType: ShippingType[formData.shippingType],
-      companyBranch: formData.branch,
-      extraWeightCost: this.weightOption.costPerKG,
       totalCost: formData.totalcost,
       totalWeight: formData.totalweight,
+      paymentMethod: formData.paymentMethod,
+      extraWeightCost: this.weightOption.costPerKG,
+      companyBranch: formData.branch,
+      defaultCost: this.weightOption.costPerKG,
+      shippingType: formData.shippingType,
       customer: {
         email: formData.email,
         name: formData.name,
@@ -121,11 +125,11 @@ export class EditOrderComponent implements OnInit {
         phone1: formData.phone1,
         phone2: formData.phone2,
       },
+      isDeleted: false,
       products: formData.products.map((product: any) => ({
         productName: product.productName,
-        weight: product.weight,
-        // quantity: product.quantity,
-        price: product.price,
+        weight: parseInt(product.weight),
+        price: parseInt(product.price),
       })),
     };
     console.log(orderData);
@@ -133,11 +137,17 @@ export class EditOrderComponent implements OnInit {
     this.orderService
       .updateOrder(this.order.orderId, orderData)
       .subscribe((response: any) => {
-        console.log('API response:', response);
-        this.orderForm.reset();
+        this.Message();
       });
+    this.loadOrders();
+    this.dialogRef.close();
   }
-
+  loadOrders() {
+    this.traderEmail = this.authService.getEmail();
+    this.orderService
+      .getAllOrders(this.traderEmail)
+      .subscribe((data: any) => {});
+  }
   fetchOrderData() {
     this.orderService.getOrderById(this.data).subscribe((order: any) => {
       this.order = order;
@@ -148,10 +158,10 @@ export class EditOrderComponent implements OnInit {
 
   addRow() {
     const productFormGroup = new FormGroup({
-      productName: new FormControl(''),
-      weight: new FormControl(''),
-      quantity: new FormControl(''),
-      price: new FormControl(''),
+      productName: new FormControl('', Validators.required),
+      weight: new FormControl('', Validators.required),
+      quantity: new FormControl('', Validators.required),
+      price: new FormControl('', Validators.required),
     });
     this.productsFormArray.push(productFormGroup);
     this.rows.push(productFormGroup);
@@ -205,11 +215,13 @@ export class EditOrderComponent implements OnInit {
     const governmentControl = this.orderForm.get('government');
     return governmentControl?.value === '';
   }
+  
   onVillageDeliveryToggle(event: any) {
     const isChecked = event.checked;
     this.orderForm.get('villageDeliverd')?.setValue(isChecked);
     console.log(isChecked);
   }
+
   getGovernments(): void {
     this.governmentService.GetAllGovernment().subscribe((data: any) => {
       this.governments = data.map((item: any) => item.govermentName);
@@ -223,11 +235,13 @@ export class EditOrderComponent implements OnInit {
         this.cities = data.map((item: any) => item.cityName);
       });
   }
+
   getBranches(): void {
     this.branchService.getAllBranches().subscribe((data: any) => {
       this.branches = data.map((item: any) => item.branchName);
     });
   }
+
   Message() {
     const config = new MatSnackBarConfig();
     config.duration = 5000;

@@ -1,7 +1,6 @@
 import { ViewChild, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { Order } from 'src/app/Core/Models/Order';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { AuthService } from 'src/app/Core/Services/auth.service';
@@ -15,16 +14,7 @@ import { EditOrderComponent } from '../edit-order/edit-order.component';
 })
 export class OrderDispalyTraderComponent implements OnInit {
   email: any;
-  displayedColumns: string[] = [
-    'orderId',
-    'orderDate',
-    'customerId',
-    'government',
-    'city',
-    'defaultCost',
-    'actions',
-  ];
-  dataSource!: MatTableDataSource<Order>;
+  orders: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
 
@@ -55,14 +45,12 @@ export class OrderDispalyTraderComponent implements OnInit {
           const filteredOrdersByState = filteredOrders.filter(
             (order: any) => order.state === this.selectedState
           );
-          this.dataSource = new MatTableDataSource<Order>(
-            filteredOrdersByState
-          );
+          this.orders = filteredOrdersByState;
         } else {
-          this.dataSource = new MatTableDataSource<Order>(filteredOrders);
+          this.orders = filteredOrders;
         }
 
-        this.dataSource.paginator = this.paginator;
+        this.orders.paginator = this.paginator;
       }
     });
   }
@@ -70,7 +58,7 @@ export class OrderDispalyTraderComponent implements OnInit {
   EditOrder(order: Order): void {
     const dialogRef = this.dialog.open(EditOrderComponent, {
       data: order.orderId,
-      width: '900px',
+      width: '1200px',
       maxHeight: '90vh',
     });
 
@@ -78,7 +66,7 @@ export class OrderDispalyTraderComponent implements OnInit {
   }
   AddOrder(): void {
     const dialogRef = this.dialog.open(AddOrderComponent, {
-      width: '900px',
+      width: '1200px',
       maxHeight: '90vh',
     });
 
@@ -92,4 +80,20 @@ export class OrderDispalyTraderComponent implements OnInit {
         this.loadOrders();
       });
   }
+
+  filterData(inputValue: string) {
+    const searchTerm = inputValue.toLowerCase().trim();
+
+    return this.orders.filter((item: any) => {
+      const itemName = item.name?.toLowerCase();
+
+      return itemName?.startsWith(searchTerm);
+    });
+  }
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.orders = this.filterData(inputValue);
+  }
+
+
 }

@@ -30,18 +30,23 @@ export class OrdersStatesTraderComponent implements OnInit {
       (response: any) => {
         this.orders = response;
         this.orderStatusCounts = {};
+        if (this.orders) {
+          const filteredOrders = this.orders.filter(
+            (order: any) => !order.isDeleted
+          );
+          filteredOrders.forEach((order: any) => {
+            const stateName = this.getStatusName(order.state);
 
-        this.orders.forEach((order: any) => {
-          const stateName = this.getStatusName(order.state);
-
-          if (stateName) {
-            if (this.orderStatusCounts[stateName]) {
-              this.orderStatusCounts[stateName]++;
-            } else {
-              this.orderStatusCounts[stateName] = 1;
+            if (stateName) {
+              if (this.orderStatusCounts[stateName]) {
+                this.orderStatusCounts[stateName]++;
+              } else {
+                this.orderStatusCounts[stateName] = 1;
+              }
             }
-          }
-        });
+          });
+        }
+
       },
       (error: any) => {
         console.error('Error retrieving orders:', error);

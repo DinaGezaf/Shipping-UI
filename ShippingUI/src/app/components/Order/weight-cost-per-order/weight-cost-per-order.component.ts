@@ -12,7 +12,7 @@ import { OrderService } from 'src/app/Core/Services/order.service';
 export class WeightCostPerOrderComponent implements OnInit {
   weightForm!: FormGroup;
   constructor(
-    // private dialogRef: MatDialogRef<WeightCostPerOrderComponent>,
+    private dialogRef: MatDialogRef<WeightCostPerOrderComponent>,
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private orderService: OrderService
@@ -26,7 +26,7 @@ export class WeightCostPerOrderComponent implements OnInit {
   }
 
   cancel(): void {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   AddWeightOptions(): void {

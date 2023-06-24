@@ -13197,3 +13197,34 @@ canvas {
   justify-content: center;
   align-items: center;
 }
+
+
+.item .tooltip {
+	display: inline-block;
+	position: absolute;
+	padding: 8px 15px;
+	border-radius: 3px;
+	margin-top: -26px;
+	left: 90px;
+	opacity: 0;
+	visibility: hidden;
+	font-size: 13px;
+	letter-spacing: .5px;
+}
+
+.item .tooltip:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: -4px;
+	top: 10px;
+	transform: rotate(45deg);
+	width: 10px;
+	height: 10px;
+	background-color: inherit;
+}
+
+.item .tooltip {
+	visibility: visible;
+	opacity: 1;
+}

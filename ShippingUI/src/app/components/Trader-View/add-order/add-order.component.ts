@@ -1,13 +1,14 @@
 import { Router } from '@angular/router';
 import { CityService } from './../../../Core/Services/city.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { PaymentType, ShippingType } from 'src/app/Core/Models/Order';
 import { AuthService } from 'src/app/Core/Services/auth.service';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-order',
@@ -27,6 +28,7 @@ export class AddOrderComponent implements OnInit {
   email: any;
   productsFormArray: any;
   weightOption = {};
+  traderEmail: any;
 
   constructor(
     private cityService: CityService,
@@ -35,7 +37,8 @@ export class AddOrderComponent implements OnInit {
     private orderService: OrderService,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<AddOrderComponent>
   ) {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
@@ -48,22 +51,22 @@ export class AddOrderComponent implements OnInit {
   ngOnInit(): void {
     this.orderForm = new FormGroup({
       villageDeliverd: new FormControl(false),
-      shippingType: new FormControl(''),
-      paymentType: new FormControl(''),
-      branch: new FormControl(''),
-      products: new FormArray([]),
-      totalcost: new FormControl(''),
-      totalweight: new FormControl(''),
-      traderPhone: new FormControl(''),
-      address: new FormControl(''),
-      name: new FormControl(''),
-      email: new FormControl(''),
-      government: new FormControl(''),
-      city: new FormControl({ value: '', disabled: true }),
+      shippingType: new FormControl('', Validators.required),
+      paymentType: new FormControl('', Validators.required),
+      branch: new FormControl('', Validators.required),
+      products: new FormArray([], Validators.required),
+      totalcost: new FormControl('', Validators.required),
+      totalweight: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      government: new FormControl('', Validators.required),
+      city: new FormControl({ value: '', disabled: true }, Validators.required),
       village: new FormControl(''),
-      phone1: new FormControl(''),
-      phone2: new FormControl(''),
+      phone1: new FormControl('', Validators.required),
+      phone2: new FormControl('', Validators.required),
     });
+
     this.weightOption = this.orderService.getWeightOptions();
     console.log(this.weightOption);
     this.getGovernments();
@@ -108,14 +111,18 @@ export class AddOrderComponent implements OnInit {
 
     this.orderService
       .addOrder(orderData, this.email)
-      .subscribe((response: any) => {
-        console.log('API response:', response);
-      });
-
-    this.orderForm.reset();
-    this.router.navigate(['/order/list/trader']);
+      .subscribe((response: any) => {});
+    this.Message();
+    this.loadOrders();
+    this.dialogRef.close();
   }
 
+  loadOrders() {
+    this.traderEmail = this.authService.getEmail();
+    this.orderService
+      .getAllOrders(this.traderEmail)
+      .subscribe((data: any) => {});
+  }
   subscribeToProductChanges() {
     const productsFormArray = this.orderForm.get('products') as FormArray;
 
@@ -145,10 +152,10 @@ export class AddOrderComponent implements OnInit {
   }
   addRow() {
     const productFormGroup = new FormGroup({
-      productName: new FormControl(''),
-      weight: new FormControl(''),
-      quantity: new FormControl(''),
-      price: new FormControl(''),
+      productName: new FormControl('', Validators.required),
+      weight: new FormControl('', Validators.required),
+      quantity: new FormControl('', Validators.required),
+      price: new FormControl('', Validators.required),
     });
     this.rows.push(productFormGroup);
     this.products.push(productFormGroup);
