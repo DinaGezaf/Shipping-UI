@@ -9,8 +9,6 @@ import { EditPrevillageComponent } from './components/Privellge/edit/edit.compon
 import { DisplayGovernmentComponent } from './components/Government/display/display.component';
 import { DisplayBranchComponent } from './components/Branch/display-branch/display-branch.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
-import { EditGovernmentComponent } from './components/Government/edit/edit.component';
-import { EditCityComponent } from './components/City/edit/edit.component';
 import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
 import { DisplayOrdersComponent } from './components/Order/display-orders/display-orders.component';
 import { WeightCostPerOrderComponent } from './components/Order/weight-cost-per-order/weight-cost-per-order.component';
@@ -33,9 +31,7 @@ const routes: Routes = [
   { path: 'government', component: DisplayGovernmentComponent },
   { path: 'branch', component: DisplayBranchComponent },
   { path: 'salesRepresentator', component: DisplaySalesComponent },
-  { path: 'government/update/:id', component: EditGovernmentComponent },
   { path: 'city', component: DisplayCityComponent },
-  { path: 'city/edit/:id', component: EditCityComponent },
   { path: 'login', component: LoginComponent },
   { path: 'order/list/sales', component: OrdersListComponent },
   { path: 'order/states/sales', component: OrdersStatesComponent },

@@ -12,13 +12,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
 import { DisplayPrivellageComponent } from './components/Privellge/display/display.component';
 import { DisplayGovernmentComponent } from './components/Government/display/display.component';
-import { EditGovernmentComponent } from './components/Government/edit/edit.component';
 import { AddPrivellageComponent } from './components/Privellge/add/add.component';
 import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DisplayBranchComponent } from './components/Branch/display-branch/display-branch.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
-import { EditCityComponent } from './components/City/edit/edit.component';
 import { SharedModule } from './Shared/SharedModule/shared.module';
 import { SalesRepresentativeModule } from './components/SalesRepresentative/sales-representative.module';
 import { DisplayOrdersComponent } from './components/Order/display-orders/display-orders.component';
@@ -42,8 +40,6 @@ import { DisplayCityComponent } from './components/City/display-city/display-cit
     DisplayGovernmentComponent,
     DisplayBranchComponent,
     DisplaySalesComponent,
-    EditGovernmentComponent,
-    EditCityComponent,
     DisplayOrdersComponent,
     OrderDispalyTraderComponent,
     AddOrderComponent,
