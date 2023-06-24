@@ -70,16 +70,19 @@ export class DisplayEmployeeComponent implements OnInit {
         Validators.required,
         Validators.pattern(/01[0125][0-9]{8}$/),
       ]),
-      privellge_Id: new FormControl(null, Validators.required),
+
+      //privellge_Id: new FormControl(null, Validators.required),
+
       branchid: new FormControl(null, Validators.required),
     });
   }
 
   openModal(id: any) {
     if (!id) {
-      this.getData(id);
       this.empId = id;
     } else {
+      this.getData(id);
+
       this.allowEdit = true;
     }
     this.formModel.show();
@@ -109,7 +112,7 @@ export class DisplayEmployeeComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const employeeId = selectedValue.substr(5);
-      this.router.navigate(['edit/' + employeeId], { relativeTo: this.route });
+      this.openModal(employeeId);
     } else {
       const employeeId = selectedValue;
       this.changeIsActive(employeeId);
@@ -185,7 +188,7 @@ export class DisplayEmployeeComponent implements OnInit {
         email: data.email,
         password: data.password,
         phoneNumber: data.phoneNumber,
-        privellge_Id: data.privellage?.privellge_Id,
+        // privellge_Id: data.privellage?.privellge_Id,
         branchid: data.branch?.id,
       });
     });

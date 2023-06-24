@@ -63,7 +63,7 @@
           <th>EMAIL</th>
           <th>STATUS</th>
           <th>BRANCH</th>
-          <th>PRIVELLGE</th>
+          <!-- <th>PRIVELLGE</th> -->
           <th>PHONE NO.</th>
           <th class="ps-5">ACTIONS</th>
         </tr>
@@ -79,7 +79,7 @@
             <span *ngIf="!employee.isActive" class="locked">Locked</span>
           </td>
           <td>{{ employee.branch?.branchName }}</td>
-          <td>{{ employee.privellage?.privellgeName }}</td>
+          <!-- <td>{{ employee.privellage?.privellgeName }}</td> -->
           <td>{{ employee.phoneNumber }}</td>
           <td>
             <select
@@ -88,7 +88,7 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option (click)="openModal(employee.employeeId)">Edit</option>
+              <option  value="edit/">Edit</option>
               <option
                 value="{{ employee.employeeId }}"
                 (click)="changeIsActive(employee.employeeId!)"
@@ -353,7 +353,7 @@
                   </span>
                 </div>
 
-                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                <!-- <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-4">Privilege</label>
                   <select
                     formControlName="privellge_Id"
@@ -385,7 +385,7 @@
                   >
                     Privilege is required
                   </span>
-                </div>
+                </div> -->
 
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-4">Branch</label>
