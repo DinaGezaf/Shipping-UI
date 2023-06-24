@@ -104,7 +104,7 @@
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
           <span>{{ allowEdit ? "Edit Branch" : "Add Branch" }}</span>
         </h2>
-        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+        <span (click)="close()" class="svg-icon svg-icon-1"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -200,6 +200,7 @@
                     class="btn me-3 ms-3 bg-gray"
                     style="color: #7e8299"
                     id="btn-reset"
+                    (click)="close()"
                   >
                     Discard
                   </button>

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { City } from 'src/app/Core/Models/City';
 import { CityService } from 'src/app/Core/Services/city.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
+import Swal from 'sweetalert2';
+
 declare var window: any;
 
 @Component({
@@ -78,8 +80,12 @@ export class DisplayCityComponent {
         })
         .subscribe(
           (data: any) => {
-            alert('success add');
-            // this.router.navigate(['branch']);
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.formModel.hide();
           },
           (error) => {
             alert('error !!!!!');
@@ -107,8 +113,35 @@ export class DisplayCityComponent {
     this.formModel.show();
   }
 
-  doSomething() {
-    this.formModel.hide();
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
     this.cityForm.reset();
   }
 
@@ -121,8 +154,12 @@ export class DisplayCityComponent {
       })
       .subscribe(
         (data: any) => {
-          alert('update success');
-          console.log(data);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
         },
         (error: any) => {
           alert('error !!!!!!!!');

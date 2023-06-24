@@ -4,6 +4,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Goverment } from 'src/app/Core/Models/Goverment';
 import { CityService } from 'src/app/Core/Services/city.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
+
+import Swal from 'sweetalert2';
+
 declare var window: any;
 @Component({
   selector: 'app-display',
@@ -11,104 +14,54 @@ declare var window: any;
   styleUrls: ['./display.component.css'],
 })
 export class DisplayGovernmentComponent implements OnInit {
-  government: Goverment[] = [];
+  governments: Goverment[] = [];
   filteredData: Goverment[] = [];
-  formModel: any;
-  id!: number;
-
-  selectedGovernment!: number;
-
-  governmentsArray: any;
   allowEdit = false;
+  formModel: any;
+  governmentId!: number;
   governmentForm!: FormGroup;
 
-  constructor(
-    private government_service: GovermentService,
-    private cityService: CityService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
+  constructor(private governmentService: GovermentService) {}
   ngOnInit(): void {
-    this.government_service.GetAllGovernment().subscribe((data: any) => {
-      console.log('data' + data);
-      this.government = this.filteredData = data;
+    this.governmentService.GetAllGovernment().subscribe((data: any) => {
+      this.governments = this.filteredData = data;
+    });
+    this.governmentForm = new FormGroup({
+      governmentName: new FormControl(null, Validators.required),
+      state: new FormControl(null, Validators.required),
     });
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
     );
-    this.government_service.GetAllGovernment().subscribe((data: any) => {
-      this.governmentsArray = data;
-      console.log(this.governmentsArray);
-    });
-
-    this.governmentForm = new FormGroup({
-      government: new FormControl(null, Validators.required),
-      cityName: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      normalShippingCost: new FormControl(null, [Validators.required]),
-      pickupShippingCost: new FormControl(null, [Validators.required]),
-    });
   }
 
-  changeIsActive(GovermentId: number) {}
+  // Add and Edit
 
-  onOptionSelected(event: any) {
-    const selectedValue = event.target.value;
-    if (selectedValue.startsWith('edit/')) {
-      const GovernmentId = selectedValue.substr(5);
-      this.router.navigate(['edit/' + GovernmentId], {
-        relativeTo: this.route,
+  getData(id: any) {
+    this.governmentService
+      .getGovernmentById(id)
+      .subscribe((data: Goverment) => {
+        console.log(data);
+        this.governmentForm.setValue({
+          governmentName: data.govermentName,
+          state: data.state,
+        });
       });
-    } else {
-      const GovernmentId = selectedValue;
-      this.changeIsActive(GovernmentId);
-    }
   }
-
-  filterData(inputValue: string) {
-    const searchTerm = inputValue.toLowerCase().trim();
-
-    return this.government.filter((item) => {
-      const itemName = item.govermentName?.toLowerCase();
-
-      return itemName?.startsWith(searchTerm);
-    });
-  }
-  onInputChange(event: any) {
-    const inputValue = event.target.value;
-    this.filteredData = this.filterData(inputValue);
-  }
-
-  openModal(id: any) {
-    if (!id) {
-      this.allowEdit = false;
-    } else {
-      this.allowEdit = true;
-      this.getData(id);
-      this.id = id;
-    }
-    this.formModel.show();
-  }
-
-  doSomething() {
-    this.formModel.hide();
-  }
-  onsubmit() {}
-
   onEdit() {
-    this.government_service
-      .EditGovernment(this.id, {
+    this.governmentService
+      .EditGovernment(this.governmentId, {
         ...this.governmentForm.value,
-        goverment_Id: this.id,
+        GovermentId: this.governmentId,
       })
       .subscribe(
         (data: any) => {
-          alert('update success');
-          console.log(data);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
         },
         (error: any) => {
           alert('error !!!!!!!!');
@@ -116,15 +69,85 @@ export class DisplayGovernmentComponent implements OnInit {
       );
   }
 
-  getData(id: any) {
-    this.government_service
-      .getGovernmentById(id)
-      .subscribe((data: Goverment) => {
-        this.governmentForm.setValue({
-          govermentName: data.govermentName,
-          state: data.state,
+  onsubmit() {
+    if (!this.allowEdit) {
+      this.governmentService
+        .addGovernment({
+          ...this.governmentForm.value,
+          state: true,
+        })
+        .subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.formModel.hide();
+          },
+          (error) => {
+            alert('error !!!!!');
+            console.log(error);
+          }
+        );
+    } else this.onEdit();
+  }
+
+  // Modal
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.allowEdit = true;
+      this.governmentId = id;
+    }
+    this.formModel.show();
+  }
+
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
         });
-        console.log(data);
-      });
+      }
+    });
+    this.governmentForm.reset();
+  }
+
+  // Search
+  filterData(inputValue: string) {
+    const searchTerm = inputValue.toLowerCase().trim();
+    return this.governments.filter((item) => {
+      const itemName = item.govermentName?.toLowerCase();
+      return itemName?.startsWith(searchTerm);
+    });
+  }
+
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.filteredData = this.filterData(inputValue);
   }
 }

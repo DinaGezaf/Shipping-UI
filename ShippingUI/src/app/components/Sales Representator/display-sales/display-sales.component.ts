@@ -7,6 +7,7 @@ import { SalesRepresentator } from 'src/app/Core/Models/Sales';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { SalesService } from 'src/app/Core/Services/sales.service';
+import Swal from 'sweetalert2';
 
 declare var window: any;
 
@@ -137,8 +138,13 @@ export default class DisplaySalesComponent implements OnInit {
         })
         .subscribe(
           (data: any) => {
-            alert('success add');
-            this.router.navigate(['salesRepresentator']);
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+            });
+            this.formModel.hide();
           },
           (error) => {
             alert('error !!!');
@@ -162,8 +168,35 @@ export default class DisplaySalesComponent implements OnInit {
     this.formModel.show();
   }
 
-  doSomething() {
-    this.formModel.hide();
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
     this.salesForm.reset();
   }
 
@@ -177,8 +210,13 @@ export default class DisplaySalesComponent implements OnInit {
       })
       .subscribe(
         (data: any) => {
-          alert('success edit');
-          this.router.navigate(['salesRepresentator']);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            width: '416px',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error !!!');

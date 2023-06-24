@@ -105,7 +105,7 @@
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
           <span>{{ allowEdit ? "Edit Trader" : "Add Trader" }}</span>
         </h2>
-        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+        <span (click)="close()" class="svg-icon svg-icon-1"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -168,23 +168,17 @@
                     "
                   >
                     <span
-                      *ngIf="
-                        traderForm.get('userName')?.hasError('required')
-                      "
+                      *ngIf="traderForm.get('userName')?.hasError('required')"
                     >
                       Username is required
                     </span>
                     <span
-                      *ngIf="
-                        traderForm.get('userName')?.hasError('minlength')
-                      "
+                      *ngIf="traderForm.get('userName')?.hasError('minlength')"
                     >
                       Username must be bigger than or equal 5
                     </span>
                     <span
-                      *ngIf="
-                        traderForm.get('userName')?.hasError('maxlength')
-                      "
+                      *ngIf="traderForm.get('userName')?.hasError('maxlength')"
                     >
                       Username must be less than or equal
                     </span>
@@ -232,9 +226,7 @@
                     "
                   >
                     <span
-                      *ngIf="
-                        traderForm.get('password')?.hasError('required')
-                      "
+                      *ngIf="traderForm.get('password')?.hasError('required')"
                     >
                       password is required
                     </span>
@@ -272,9 +264,7 @@
                       Phone number is required
                     </span>
                     <span
-                      *ngIf="
-                        traderForm.get('phoneNumber')?.hasError('pattern')
-                      "
+                      *ngIf="traderForm.get('phoneNumber')?.hasError('pattern')"
                     >
                       Phone must be 11 number and start with 010 or 012 or 015
                       or 011
@@ -366,6 +356,7 @@
                     class="btn me-3 ms-3 bg-gray"
                     style="color: #7e8299"
                     id="btn-reset"
+                    (click)="close()"
                   >
                     Discard
                   </button>

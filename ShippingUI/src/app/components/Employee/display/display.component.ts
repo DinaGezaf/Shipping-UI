@@ -7,7 +7,7 @@ import { privilege } from 'src/app/Core/Models/Privellage';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { EmployeeService } from 'src/app/Core/Services/employee.service';
 import { PrivellageService } from 'src/app/Core/Services/privellage.service';
-
+import Swal from 'sweetalert2';
 declare var window: any;
 
 @Component({
@@ -87,8 +87,35 @@ export class DisplayEmployeeComponent implements OnInit {
     this.formModel.show();
   }
 
-  doSomething() {
-    this.formModel.hide();
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
     this.employeeForm.reset();
   }
 
@@ -145,10 +172,14 @@ export class DisplayEmployeeComponent implements OnInit {
           isActive: true,
         })
         .subscribe(
-          (data) => {
-            console.log(data);
-            alert('success add');
-            this.router.navigate(['employee']);
+          (data: any) => {
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              width: '416px',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.formModel.hide();
           },
           (error) => {
             alert('error !!!!!!');
@@ -169,10 +200,14 @@ export class DisplayEmployeeComponent implements OnInit {
         isActive: true,
       })
       .subscribe(
-        (data) => {
-          console.log(data);
-          alert('Your data has been updated successfully');
-          this.router.navigate(['employee']);
+        (data: any) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error!!!! data is not updated ');

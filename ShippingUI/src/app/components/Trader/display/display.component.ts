@@ -5,6 +5,7 @@ import { Branch } from 'src/app/Core/Models/Branch';
 import { Trader } from 'src/app/Core/Models/Trader';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { TraderService } from 'src/app/Core/Services/trader.service';
+import Swal from 'sweetalert2';
 
 declare var window: any;
 
@@ -119,10 +120,14 @@ export class DisplayTraderComponent implements OnInit {
     });
     if (!this.allowEdit) {
       this.traderservice.AddTrader(this.traderForm.value).subscribe(
-        (data) => {
-          console.log(data);
-          alert('success add');
-          this.router.navigate(['trader']);
+        (data: any) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error !!!!!!');
@@ -143,8 +148,35 @@ export class DisplayTraderComponent implements OnInit {
     this.formModel.show();
   }
 
-  doSomething() {
-    this.formModel.hide();
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
     this.traderForm.reset();
   }
 
@@ -152,10 +184,14 @@ export class DisplayTraderComponent implements OnInit {
     this.traderservice
       .updateTrader(this.traderId, this.traderForm.value)
       .subscribe(
-        (data) => {
-          console.log(data);
-          alert('your data has been updated successfully');
-          this.router.navigate(['trader']);
+        (data: any) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            width: '416px',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error !!! data is not updated');

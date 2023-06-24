@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Branch } from 'src/app/Core/Models/Branch';
 import { BranchService } from 'src/app/Core/Services/branch.service';
-
+import Swal from 'sweetalert2';
 declare var window: any;
 
 @Component({
@@ -67,18 +67,7 @@ export class DisplayBranchComponent implements OnInit {
     event.target.value = 'action';
   }
 
-  filterData(inputValue: string) {
-    const searchTerm = inputValue.toLowerCase().trim();
-    return this.branches.filter((item) => {
-      const itemName = item.branchName?.toLowerCase();
-      return itemName?.startsWith(searchTerm);
-    });
-  }
-  onInputChange(event: any) {
-    const inputValue = event.target.value;
-    this.filteredData = this.filterData(inputValue);
-  }
-
+  
   changeState(id: number) {
     alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
@@ -97,24 +86,30 @@ export class DisplayBranchComponent implements OnInit {
   onsubmit() {
     if (!this.allowEdit) {
       this.branchService
-        .addBranch({
-          ...this.BranchForm.value,
+      .addBranch({
+        ...this.BranchForm.value,
           state: true,
         })
         .subscribe(
           (data: any) => {
-            alert('success add');
-            this.router.navigate(['branch']);
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+            });
+            this.formModel.hide();
           },
           (error) => {
             alert('error !!!!!');
             console.log(error);
           }
-        );
-    } else this.onEdit();
-    this.branchService.getAllBranches().subscribe((data: any) => {
-      this.branches = this.filteredData = data;
-    });
+          );
+          this.BranchForm.reset();
+        } else this.onEdit();
+        this.branchService.getAllBranches().subscribe((data: any) => {
+          this.branches = this.filteredData = data;
+        });
   }
 
   openModal(id: any) {
@@ -126,9 +121,36 @@ export class DisplayBranchComponent implements OnInit {
     }
     this.formModel.show();
   }
-
-  doSomething() {
-    this.formModel.hide();
+  
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
     this.BranchForm.reset();
   }
 
@@ -141,14 +163,19 @@ export class DisplayBranchComponent implements OnInit {
       })
       .subscribe(
         (data: any) => {
-          alert('update success');
-          console.log(data);
-          this.router.navigate(['branch']);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
         },
         (error: any) => {
           alert('error !!!!!!!!');
         }
-      );
+        );
+        this.BranchForm.reset();
   }
 
   getData(id: any) {
@@ -159,5 +186,18 @@ export class DisplayBranchComponent implements OnInit {
         createdAt: data.createdAt,
       });
     });
+  }
+
+  // Search
+  filterData(inputValue: string) {
+    const searchTerm = inputValue.toLowerCase().trim();
+    return this.branches.filter((item) => {
+      const itemName = item.branchName?.toLowerCase();
+      return itemName?.startsWith(searchTerm);
+    });
+  }
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.filteredData = this.filterData(inputValue);
   }
 }
