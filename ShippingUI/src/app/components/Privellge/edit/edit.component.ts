@@ -1,10 +1,8 @@
-import { formatPercent } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Employee } from 'src/app/models/Employee';
-import { privilege } from 'src/app/models/Privellage';
-import { PrivellageService } from 'src/app/services/privellage.service';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
+import { privilege } from 'src/app/Core/Models/Privellage';
 
 @Component({
   selector: 'app-edit',
@@ -23,10 +21,7 @@ export class EditPrevillageComponent implements OnInit {
 
   ngOnInit(): void {
     this.editPrivilegeForm = new FormGroup({
-      privellgeName: new FormControl(
-        this.privilege?.privellgeName,
-        Validators.required
-      ),
+      privellgeName: new FormControl(this.privilege?.name, Validators.required),
       date: new FormControl(this.privilege?.date, Validators.required),
     });
 
@@ -38,7 +33,7 @@ export class EditPrevillageComponent implements OnInit {
           console.log(data);
 
           this.editPrivilegeForm.setValue({
-            privellgeName: data.privellgeName,
+            privellgeName: data.name,
             date: data.date,
           });
         });

@@ -58,7 +58,7 @@
       <tbody>
         <tr *ngFor="let privellge of filteredData; let i = index">
           <td>{{ i + 1 }}</td>
-          <td class="emp-name">{{ privellge.privellgeName }}</td>
+          <td class="emp-name">{{ privellge.name }}</td>
           <td>{{ privellge.date }}</td>
           <td>
             <select
@@ -66,10 +66,10 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ privellge.privellge_Id }}">Edit</option>
+              <option value="edit/{{ privellge.id }}">Edit</option>
               <option
-                value="{{ privellge.privellge_Id }} "
-                (click)="deletePrivilege(privellge.privellge_Id!)"
+                value="{{ privellge.id }} "
+                (click)="deletePrivilege(privellge.id!)"
               >
                 Delete
               </option>

@@ -86,9 +86,10 @@
               *ngIf="employee.isActive"
               class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
               (change)="onOptionSelected($event)"
+              [(ngModel)]="selectedOption"
             >
-              <option>Action</option>
-              <option  value="edit/">Edit</option>
+              <option value="action">Action</option>
+              <option value="edit/{{ employee.employeeId }}">Edit</option>
               <option
                 value="{{ employee.employeeId }}"
                 (click)="changeIsActive(employee.employeeId!)"
@@ -132,9 +133,9 @@
     <div class="modal-content custom-modal-content">
       <div class="modal-header">
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
-          Add Employee
+          <span>{{ allowEdit ? "Edit Employee" : "Add Employee" }}</span>
         </h2>
-        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+        <span (click)="close()" class="svg-icon svg-icon-1"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -177,7 +178,7 @@
             data-kt-scroll-offset="300px"
             style="max-height: 92px"
           >
-            <form [formGroup]="addEmployeeForm" (ngSubmit)="onsubmit()">
+            <form [formGroup]="employeeForm" (ngSubmit)="onsubmit()">
               <div class="form-inputs px-5">
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-3">Name</label>
@@ -192,22 +193,22 @@
                   />
                   <span
                     *ngIf="
-                      addEmployeeForm.get('name')?.invalid &&
-                      addEmployeeForm.get('name')?.touched
+                      employeeForm.get('name')?.invalid &&
+                      employeeForm.get('name')?.touched
                     "
                   >
                     <span
-                      *ngIf="addEmployeeForm.get('name')?.hasError('required')"
+                      *ngIf="employeeForm.get('name')?.hasError('required')"
                     >
                       Employee name is required
                     </span>
                     <span
-                      *ngIf="addEmployeeForm.get('name')?.hasError('minlength')"
+                      *ngIf="employeeForm.get('name')?.hasError('minlength')"
                     >
                       name must be between 3 and 50 letters
                     </span>
                     <span
-                      *ngIf="addEmployeeForm.get('name')?.hasError('maxlength')"
+                      *ngIf="employeeForm.get('name')?.hasError('maxlength')"
                     >
                       name must be between 3 and 50 letters
                     </span>
@@ -227,27 +228,25 @@
                   />
                   <span
                     *ngIf="
-                      addEmployeeForm.get('userName')?.invalid &&
-                      addEmployeeForm.get('userName')?.touched
+                      employeeForm.get('userName')?.invalid &&
+                      employeeForm.get('userName')?.touched
                     "
                   >
                     <span
-                      *ngIf="
-                        addEmployeeForm.get('userName')?.hasError('required')
-                      "
+                      *ngIf="employeeForm.get('userName')?.hasError('required')"
                     >
                       Employee username is required
                     </span>
                     <span
                       *ngIf="
-                        addEmployeeForm.get('userName')?.hasError('minlength')
+                        employeeForm.get('userName')?.hasError('minlength')
                       "
                     >
                       name must be between 3 and 15 letters
                     </span>
                     <span
                       *ngIf="
-                        addEmployeeForm.get('userName')?.hasError('maxlength')
+                        employeeForm.get('userName')?.hasError('maxlength')
                       "
                     >
                       name must be between 3 and 15 letters
@@ -269,8 +268,8 @@
 
                   <span
                     *ngIf="
-                      addEmployeeForm.get('email')?.invalid &&
-                      addEmployeeForm.get('email')?.touched
+                      employeeForm.get('email')?.invalid &&
+                      employeeForm.get('email')?.touched
                     "
                   >
                     please enter the valid email
@@ -291,28 +290,26 @@
                   />
                   <span
                     *ngIf="
-                      addEmployeeForm.get('password')?.invalid &&
-                      addEmployeeForm.get('password')?.touched
+                      employeeForm.get('password')?.invalid &&
+                      employeeForm.get('password')?.touched
                     "
                   >
                     <span
                       *ngIf="
-                        addEmployeeForm.get('password')?.hasError('minlength')
+                        employeeForm.get('password')?.hasError('minlength')
                       "
                     >
                       min length is 6
                     </span>
                     <span
                       *ngIf="
-                        addEmployeeForm.get('password')?.hasError('maxlength')
+                        employeeForm.get('password')?.hasError('maxlength')
                       "
                     >
                       max length is 10
                     </span>
                     <span
-                      *ngIf="
-                        addEmployeeForm.get('password')?.hasError('required')
-                      "
+                      *ngIf="employeeForm.get('password')?.hasError('required')"
                     >
                       password is required
                     </span>
@@ -331,20 +328,20 @@
                   />
                   <span
                     *ngIf="
-                      addEmployeeForm.get('phoneNumber')?.invalid &&
-                      addEmployeeForm.get('phoneNumber')?.touched
+                      employeeForm.get('phoneNumber')?.invalid &&
+                      employeeForm.get('phoneNumber')?.touched
                     "
                   >
                     <span
                       *ngIf="
-                        addEmployeeForm.get('phoneNumber')?.hasError('required')
+                        employeeForm.get('phoneNumber')?.hasError('required')
                       "
                     >
                       Phone number is required
                     </span>
                     <span
                       *ngIf="
-                        addEmployeeForm.get('phoneNumber')?.hasError('pattern')
+                        employeeForm.get('phoneNumber')?.hasError('pattern')
                       "
                     >
                       Phone must be 11 number and start with 010 or 012 or 015
@@ -379,7 +376,7 @@
 
                   <span
                     *ngIf="
-                      addEmployeeForm.get('privellge_Id')?.invalid &&
+                      employeeForm.get('privellge_Id')?.invalid &&
                       addEmployeeForm.get('privellge_Id')?.touched
                     "
                   >
@@ -414,8 +411,8 @@
 
                   <span
                     *ngIf="
-                      addEmployeeForm.get('branchid')?.invalid &&
-                      addEmployeeForm.get('branchid')?.touched
+                      employeeForm.get('branchid')?.invalid &&
+                      employeeForm.get('branchid')?.touched
                     "
                   >
                     Branch is required
@@ -431,6 +428,7 @@
                     class="btn me-3 ms-3 bg-gray"
                     style="color: #7e8299"
                     id="btn-reset"
+                    (click)="close()"
                   >
                     Discard
                   </button>
@@ -439,6 +437,7 @@
                     type="submit"
                     id="kt_modal_add_customer_submit"
                     class="btn btn-primary bg-blue border-0"
+                    [ngClass]="allowEdit ? 'd-none' : ''"
                   >
                     <span class="indicator-label"> Submit </span>
                   </button>
@@ -446,7 +445,7 @@
                     type="submit"
                     id="kt_modal_add_customer_submit"
                     class="btn btn-primary bg-blue border-0"
-                    [ngClass]="!allowEdit ? 'd-none' : 'd-block'"
+                    [ngClass]="!allowEdit ? 'd-none' : ''"
                   >
                     <span class="indicator-label"> Edit </span>
                   </button>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { privilege } from 'src/app/models/Privellage';
-import { PrivellageService } from 'src/app/services/privellage.service';
+import { privilege } from 'src/app/Core/Models/Privellage';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
 
 declare var window: any;
 @Component({
@@ -66,7 +66,7 @@ export class DisplayPrivellageComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.privileges.filter((item) => {
-      const itemName = item.privellgeName?.toLowerCase();
+      const itemName = item.name?.toLowerCase();
 
       return itemName?.startsWith(searchTerm);
     });

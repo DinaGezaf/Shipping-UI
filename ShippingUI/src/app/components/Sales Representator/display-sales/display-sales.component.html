@@ -40,7 +40,7 @@
       <div class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
-          (click)="openModal()"
+          (click)="openModal(0)"
         >
           Add Sales Representative
         </button>
@@ -123,9 +123,11 @@
     <div class="modal-content custom-modal-content">
       <div class="modal-header">
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
-          Add Sales Representative
+          <span>{{
+            allowEdit ? "Edit Sales Representative" : "Add Sales Representative"
+          }}</span>
         </h2>
-        <span (click)="doSomething()" class="svg-icon svg-icon-1"
+        <span (click)="close()" class="svg-icon svg-icon-1"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -168,7 +170,7 @@
             data-kt-scroll-offset="300px"
             style="max-height: 92px"
           >
-            <form [formGroup]="addSalesForm" (ngSubmit)="onsubmit()">
+            <form [formGroup]="salesForm" (ngSubmit)="onsubmit()">
               <div class="form-inputs px-5">
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-3">Name</label>
@@ -183,23 +185,17 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('name')?.invalid &&
-                      addSalesForm.get('name')?.touched
+                      salesForm.get('name')?.invalid &&
+                      salesForm.get('name')?.touched
                     "
                   >
-                    <span
-                      *ngIf="addSalesForm.get('name')?.hasError('required')"
-                    >
+                    <span *ngIf="salesForm.get('name')?.hasError('required')">
                       this field is required
                     </span>
-                    <span
-                      *ngIf="addSalesForm.get('name')?.hasError('minlength')"
-                    >
+                    <span *ngIf="salesForm.get('name')?.hasError('minlength')">
                       name must be between 5 and 50 letters
                     </span>
-                    <span
-                      *ngIf="addSalesForm.get('name')?.hasError('maxlength')"
-                    >
+                    <span *ngIf="salesForm.get('name')?.hasError('maxlength')">
                       name must be between 5 and 50 letters
                     </span>
                   </span>
@@ -218,26 +214,22 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('userName')?.invalid &&
-                      addSalesForm.get('userName')?.touched
+                      salesForm.get('userName')?.invalid &&
+                      salesForm.get('userName')?.touched
                     "
                   >
                     <span
-                      *ngIf="addSalesForm.get('userName')?.hasError('required')"
+                      *ngIf="salesForm.get('userName')?.hasError('required')"
                     >
                       this field is required
                     </span>
                     <span
-                      *ngIf="
-                        addSalesForm.get('userName')?.hasError('minlength')
-                      "
+                      *ngIf="salesForm.get('userName')?.hasError('minlength')"
                     >
                       name must be between 5 and 50 letters
                     </span>
                     <span
-                      *ngIf="
-                        addSalesForm.get('userName')?.hasError('maxlength')
-                      "
+                      *ngIf="salesForm.get('userName')?.hasError('maxlength')"
                     >
                       name must be between 5 and 50 letters
                     </span>
@@ -258,8 +250,8 @@
 
                   <span
                     *ngIf="
-                      addSalesForm.get('email')?.invalid &&
-                      addSalesForm.get('email')?.touched
+                      salesForm.get('email')?.invalid &&
+                      salesForm.get('email')?.touched
                     "
                   >
                     please enter the valid email
@@ -280,18 +272,18 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('password')?.invalid &&
-                      addSalesForm.get('password')?.touched
+                      salesForm.get('password')?.invalid &&
+                      salesForm.get('password')?.touched
                     "
                   >
                     <span
-                      *ngIf="addSalesForm.get('password')?.hasError('required')"
+                      *ngIf="salesForm.get('password')?.hasError('required')"
                     >
                       password is required
                     </span>
 
                     <span
-                      *ngIf="addSalesForm.get('password')?.hasError('pattern')"
+                      *ngIf="salesForm.get('password')?.hasError('pattern')"
                     >
                       password is invalid
                     </span>
@@ -311,21 +303,17 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('phoneNumber')?.invalid &&
-                      addSalesForm.get('phoneNumber')?.touched
+                      salesForm.get('phoneNumber')?.invalid &&
+                      salesForm.get('phoneNumber')?.touched
                     "
                   >
                     <span
-                      *ngIf="
-                        addSalesForm.get('phoneNumber')?.hasError('required')
-                      "
+                      *ngIf="salesForm.get('phoneNumber')?.hasError('required')"
                     >
                       Phone number is required
                     </span>
                     <span
-                      *ngIf="
-                        addSalesForm.get('phoneNumber')?.hasError('pattern')
-                      "
+                      *ngIf="salesForm.get('phoneNumber')?.hasError('pattern')"
                     >
                       Phone must be 11 number and start with 010 or 012 or 015
                       or 011
@@ -346,12 +334,12 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('address')?.invalid &&
-                      addSalesForm.get('address')?.touched
+                      salesForm.get('address')?.invalid &&
+                      salesForm.get('address')?.touched
                     "
                   >
                     <span
-                      *ngIf="addSalesForm.get('address')?.hasError('required')"
+                      *ngIf="salesForm.get('address')?.hasError('required')"
                     >
                       Address is required
                     </span>
@@ -373,8 +361,8 @@
                   />
                   <span
                     *ngIf="
-                      addSalesForm.get('companyPercentage')?.invalid &&
-                      addSalesForm.get('companyPercentage')?.touched
+                      salesForm.get('companyPercentage')?.invalid &&
+                      salesForm.get('companyPercentage')?.touched
                     "
                   >
                     Company Percentage is required
@@ -398,8 +386,8 @@
 
                   <span
                     *ngIf="
-                      addSalesForm.get('discountType')?.invalid &&
-                      addSalesForm.get('discountType')?.touched
+                      salesForm.get('discountType')?.invalid &&
+                      salesForm.get('discountType')?.touched
                     "
                   >
                     Discount type is required
@@ -423,8 +411,8 @@
 
                   <span
                     *ngIf="
-                      addSalesForm.get('branchesIds')?.invalid &&
-                      addSalesForm.get('branchesIds')?.touched
+                      salesForm.get('branchesIds')?.invalid &&
+                      salesForm.get('branchesIds')?.touched
                     "
                   >
                     Branch is required
@@ -452,8 +440,8 @@
 
                   <span
                     *ngIf="
-                      addSalesForm.get('governmentsIds')?.invalid &&
-                      addSalesForm.get('governmentsIds')?.touched
+                      salesForm.get('governmentsIds')?.invalid &&
+                      salesForm.get('governmentsIds')?.touched
                     "
                   >
                     Government is required
@@ -477,8 +465,17 @@
                     type="submit"
                     id="kt_modal_add_customer_submit"
                     class="btn btn-primary bg-blue border-0"
+                    [ngClass]="allowEdit ? 'd-none' : ''"
                   >
                     <span class="indicator-label"> Submit </span>
+                  </button>
+                  <button
+                    type="submit"
+                    id="kt_modal_add_customer_submit"
+                    class="btn btn-primary bg-blue border-0"
+                    [ngClass]="!allowEdit ? 'd-none' : ''"
+                  >
+                    <span class="indicator-label"> Edit </span>
                   </button>
                 </div>
               </div>

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { Goverment } from 'src/app/models/Goverment';
-import { SalesRepresentator } from 'src/app/models/Sales';
-import { BranchService } from 'src/app/services/branch.service';
-import { SalesService } from 'src/app/services/sales.service';
-import { GovermentService } from './../../../services/goverment.service';
+import { Branch } from 'src/app/Core/Models/Branch';
+import { Goverment } from 'src/app/Core/Models/Goverment';
+import { SalesRepresentator } from 'src/app/Core/Models/Sales';
+import { BranchService } from 'src/app/Core/Services/branch.service';
+import { GovermentService } from 'src/app/Core/Services/goverment.service';
+import { SalesService } from 'src/app/Core/Services/sales.service';
+import Swal from 'sweetalert2';
 
 declare var window: any;
 
@@ -24,8 +25,10 @@ export default class DisplaySalesComponent implements OnInit {
   durationInSeconds = 5;
 
   id!: number;
+  allowEdit = false;
+  salesId!: number;
 
-  addSalesForm!: FormGroup;
+  salesForm!: FormGroup;
   formModel: any;
 
   constructor(
@@ -50,7 +53,7 @@ export default class DisplaySalesComponent implements OnInit {
       this.governments = data;
     });
 
-    this.addSalesForm = new FormGroup({
+    this.salesForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
         Validators.minLength(5),
@@ -100,12 +103,13 @@ export default class DisplaySalesComponent implements OnInit {
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
-      const privellgeid = selectedValue.substr(5);
-      this.router.navigate(['edit/' + privellgeid], { relativeTo: this.route });
+      const salesId = selectedValue.substr(5);
+      this.allowEdit = true;
+      this.openModal(salesId);
     } else {
-      const privellgeid = selectedValue;
-      this.deleteSales(privellgeid);
+      this.deleteSales(selectedValue);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -125,17 +129,94 @@ export default class DisplaySalesComponent implements OnInit {
   // Modal
 
   onsubmit() {
-    console.log(this.addSalesForm.value);
+    if (!this.allowEdit) {
+      this.salesservice
+        .addSalesRepresentator({
+          ...this.salesForm.value,
+          isActive: true,
+          discountType: Number(this.salesForm.get('discountType')?.value),
+        })
+        .subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+            });
+            this.formModel.hide();
+          },
+          (error) => {
+            alert('error !!!');
+            console.log(error);
+          }
+        );
+    } else {
+      this.onEdit();
+    }
+    this.salesservice.getAllSales().subscribe((data: any) => {
+      this.sales = this.filteredData = data;
+    });
+  }
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.salesId = id;
+    }
+    this.formModel.show();
+  }
+
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
+    this.salesForm.reset();
+  }
+
+  // Edit
+  onEdit() {
     this.salesservice
-      .addSalesRepresentator({
-        ...this.addSalesForm.value,
-        isActive: true,
-        discountType: Number(this.addSalesForm.get('discountType')?.value),
+      .updateSalesRepresentator(this.salesId, {
+        ...this.salesForm.value,
+        salesRepresentativeId: this.salesId,
+        discountType: Number(this.salesForm.get('discountType')?.value),
       })
       .subscribe(
         (data: any) => {
-          alert('success add');
-          this.router.navigate(['salesRepresentator']);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            width: '416px',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error !!!');
@@ -143,11 +224,27 @@ export default class DisplaySalesComponent implements OnInit {
         }
       );
   }
-  openModal() {
-    this.formModel.show();
-  }
 
-  doSomething() {
-    this.formModel.hide();
+  getData(id: any) {
+    this.salesservice.getSalesByID(id).subscribe((data: SalesRepresentator) => {
+      console.log(data);
+
+      this.salesForm.setValue({
+        name: data.name,
+        userName: data.userName,
+        email: data.email,
+        password: data.password,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+        companyPercentage: data.companyPercentage,
+        discountType: data.discountType?.toString(),
+        governmentsIds: data.goverments?.map((item) => {
+          return item.goverment_Id;
+        }),
+        branchesIds: data.branches?.map((item) => {
+          return item.id;
+        }),
+      });
+    });
   }
 }

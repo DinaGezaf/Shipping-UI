@@ -1,13 +1,13 @@
-import { Employee } from './../../../models/Employee';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Branch } from 'src/app/models/Branch';
-import { privilege } from 'src/app/models/Privellage';
-import { BranchService } from 'src/app/services/branch.service';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { PrivellageService } from 'src/app/services/privellage.service';
-
+import { Branch } from 'src/app/Core/Models/Branch';
+import { Employee } from 'src/app/Core/Models/Employee';
+import { privilege } from 'src/app/Core/Models/Privellage';
+import { BranchService } from 'src/app/Core/Services/branch.service';
+import { EmployeeService } from 'src/app/Core/Services/employee.service';
+import { PrivellageService } from 'src/app/Core/Services/privellage.service';
+import Swal from 'sweetalert2';
 declare var window: any;
 
 @Component({
@@ -23,8 +23,9 @@ export class DisplayEmployeeComponent implements OnInit {
   allowEdit = false;
   privilegesarray: privilege[] = [];
   branchesArray: Branch[] = [];
-  addEmployeeForm!: FormGroup;
+  employeeForm!: FormGroup;
   empId!: number;
+  selectedOption = 'action';
 
   constructor(
     private router: Router,
@@ -38,6 +39,7 @@ export class DisplayEmployeeComponent implements OnInit {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
       this.employees = this.filteredData = data;
     });
+    console.log(this.employees);
 
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
@@ -45,11 +47,11 @@ export class DisplayEmployeeComponent implements OnInit {
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
-    this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-      this.privilegesarray = data;
-    });
+    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
+    //   this.privilegesarray = data;
+    // });
 
-    this.addEmployeeForm = new FormGroup({
+    this.employeeForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
@@ -70,26 +72,51 @@ export class DisplayEmployeeComponent implements OnInit {
         Validators.required,
         Validators.pattern(/01[0125][0-9]{8}$/),
       ]),
-
-      //privellge_Id: new FormControl(null, Validators.required),
-
+      // privellge_Id: new FormControl(null, Validators.required),
       branchid: new FormControl(null, Validators.required),
     });
   }
 
   openModal(id: any) {
     if (!id) {
-      this.empId = id;
+      this.allowEdit = false;
     } else {
+      this.empId = id;
       this.getData(id);
-
-      this.allowEdit = true;
     }
     this.formModel.show();
   }
 
-  doSomething() {
-    this.formModel.hide();
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
+    this.employeeForm.reset();
   }
 
   changeIsActive(employeeId: number) {
@@ -112,11 +139,13 @@ export class DisplayEmployeeComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const employeeId = selectedValue.substr(5);
+      this.allowEdit = true;
       this.openModal(employeeId);
     } else {
       const employeeId = selectedValue;
       this.changeIsActive(employeeId);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -139,14 +168,18 @@ export class DisplayEmployeeComponent implements OnInit {
     if (!this.allowEdit) {
       this.employeeser
         .AddEmployee({
-          ...this.addEmployeeForm.value,
+          ...this.employeeForm.value,
           isActive: true,
         })
         .subscribe(
-          (data) => {
-            console.log(data);
-            alert('success add');
-            this.router.navigate(['employee']);
+          (data: any) => {
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              width: '416px',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.formModel.hide();
           },
           (error) => {
             alert('error !!!!!!');
@@ -155,19 +188,26 @@ export class DisplayEmployeeComponent implements OnInit {
     } else {
       this.onEdit();
     }
+    this.employeeser.GetAllEmployees().subscribe((data: any) => {
+      this.employees = this.filteredData = data;
+    });
   }
 
   onEdit() {
     this.employeeser
       .updateEmployee(this.empId, {
-        ...this.addEmployeeForm.value,
+        ...this.employeeForm.value,
         isActive: true,
       })
       .subscribe(
-        (data) => {
-          console.log(data);
-          alert('Your data has been updated successfully');
-          this.router.navigate(['employee']);
+        (data: any) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
         },
         (error) => {
           alert('error!!!! data is not updated ');
@@ -182,7 +222,7 @@ export class DisplayEmployeeComponent implements OnInit {
     this.employeeser.getEmployeeById(id).subscribe((data: Employee) => {
       console.log(data);
 
-      this.addEmployeeForm.setValue({
+      this.employeeForm.setValue({
         name: data.name,
         userName: data.userName,
         email: data.email,
