@@ -1,9 +1,7 @@
-
 export interface City {
-  cityId?: number,
-  cityName?: string,
-  normalShippingCost?: number,
-  pickupShippingCost?: number,
-  governmentId?: number
-
+  cityId?: number;
+  cityName?: string;
+  normalShippingCost?: number;
+  pickupShippingCost?: number;
+  govermentName?: string;
 }

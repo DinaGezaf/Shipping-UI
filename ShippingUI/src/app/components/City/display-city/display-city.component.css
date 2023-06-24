@@ -81,25 +81,10 @@ td {
 }
 
 .custom-modal-content {
-  height: 455px;
+  height: 650px;
 }
 .form-inputs {
   overflow-y: scroll;
-  height: 215px;
+  height: 380px;
   padding-bottom: 35px;
-}
-
-/*  */
-
-.custom-cancel-icon {
-  width: 65px;
-  height: 65px;
-}
-
-.custom-content-class {
-  font-size: 14.5px;
-}
-
-.swal2-icon {
-  width: 20px;
 }

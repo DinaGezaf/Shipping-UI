@@ -9,19 +9,30 @@ export class GovermentService {
   constructor(private http: HttpClient) {}
 
   GetAllGovernment() {
-    return this.http.get('http://localhost:5250/api/Goverments');
+    return this.http.get('https://localhost:44355/api/Goverments');
+  }
+  addGovernment(newGovernment: any) {
+    return this.http.post(
+      'https://localhost:44355/api/Goverments',
+      newGovernment,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   EditGovernment(GovermentId: number, Goverment: Goverment) {
+    console.log(Goverment, GovermentId);
+
     return this.http.put(
-      `https://localhost:44355/api/Goverments/update/${GovermentId}`,
+      `https://localhost:44355/api/Goverments/${GovermentId}`,
       Goverment
     );
   }
 
   getGovernmentById(GovernmentId: number) {
     return this.http.get(
-      `https://localhost:44355/api/Goverments/GetById/${GovernmentId} `
+      `https://localhost:44355/api/Goverments/${GovernmentId} `
     );
   }
 }

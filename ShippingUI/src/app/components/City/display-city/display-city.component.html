@@ -1,7 +1,5 @@
 <div class="vh-100 p-4">
-  <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">
-    Branches Listing
-  </h5>
+  <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">Cities Listing</h5>
   <div class="container bg-white p-3 my-5 rounded">
     <div class="row py-3">
       <div class="col-md-8">
@@ -30,7 +28,7 @@
           </svg>
           <input
             type="text"
-            placeholder="Search Branches"
+            placeholder="Search Cities"
             class="d-inline form-control-solid border-0 px-2"
             style="outline: 0; padding: 5px 0px"
             (input)="onInputChange($event)"
@@ -39,10 +37,10 @@
       </div>
       <div class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
-          class="btn d-inline bg-blue text-white p-2 px-3 me-5"
+          class="btn d-inline bg-blue text-white p-2 px-3 me-2"
           (click)="openModal(0)"
         >
-          Add Branch
+          Add City
         </button>
       </div>
     </div>
@@ -51,34 +49,26 @@
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>Date</th>
-          <th>STATE</th>
+          <th>Normal Shipping Cost</th>
+          <th>Pickup Shipping Cost</th>
+          <th>Government</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let branch of filteredData; let i = index">
+        <tr *ngFor="let city of filteredData; let i = index">
           <td>{{ i + 1 }}</td>
-          <td class="emp-name">{{ branch.branchName }}</td>
-          <td>{{ branch.createdAt }}</td>
+          <td class="emp-name">{{ city.cityName }}</td>
+          <td>{{ city.normalShippingCost }}</td>
+          <td>{{ city.pickupShippingCost }}</td>
+          <td>{{ city.govermentName }}</td>
           <td>
-            <span *ngIf="branch.state" class="active">Active</span>
-
-            <span *ngIf="!branch.state" class="locked">Locked</span>
-          </td>
-          <td>
-            <select
-              *ngIf="branch.state"
-              class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
-              (change)="onOptionSelected($event)"
+            <button
+              class="btn bg-blue text-white"
+              (click)="openModal(city.cityId)"
             >
-              <option>Action</option>
-              <option value="edit/{{ branch.id }}">Edit</option>
-              <option value="{{ branch.id }}" (click)="changeState(branch.id!)">
-                Delete
-              </option>
-            </select>
-            <!-- </select> -->
+              Edit
+            </button>
           </td>
         </tr>
       </tbody>
@@ -102,7 +92,7 @@
     <div class="modal-content custom-modal-content">
       <div class="modal-header">
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
-          <span>{{ allowEdit ? "Edit Branch" : "Add Branch" }}</span>
+          <span>{{ allowEdit ? "Edit City" : "Add City" }}</span>
         </h2>
         <span (click)="close()" class="svg-icon svg-icon-1"
           ><svg
@@ -147,7 +137,7 @@
             data-kt-scroll-offset="300px"
             style="max-height: 92px"
           >
-            <form [formGroup]="BranchForm" (ngSubmit)="onsubmit()">
+            <form [formGroup]="cityForm" (ngSubmit)="onsubmit()">
               <div class="form-inputs px-5">
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-3">Name</label>
@@ -156,38 +146,92 @@
                     type="text"
                     id="name"
                     class="form-control form-control-solid"
-                    formControlName="branchName"
+                    formControlName="cityName"
                     placeholder=""
                     fdprocessedid="8gp9el"
                   />
                   <span
                     *ngIf="
-                      BranchForm.get('branchName')?.invalid &&
-                      BranchForm.get('branchName')?.touched
+                      cityForm.get('cityName')?.invalid &&
+                      cityForm.get('cityName')?.touched
                     "
                   >
-                    this name is required
+                    City name is required
                   </span>
                 </div>
 
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
-                  <label class="required fw-medium mb-2 mt-3">Date</label>
+                  <label class="required fw-medium mb-2 mt-3"
+                    >Normal Shipping Cost</label
+                  >
 
                   <input
-                    type="date"
-                    id="date"
+                    type="text"
+                    id="normalCost"
                     class="form-control form-control-solid"
-                    formControlName="createdAt"
+                    formControlName="normalShippingCost"
                     placeholder=""
                     fdprocessedid="8gp9el"
                   />
                   <span
                     *ngIf="
-                      BranchForm.get('createdAt')?.invalid &&
-                      BranchForm.get('createdAt')?.touched
+                      cityForm.get('normalShippingCost')?.invalid &&
+                      cityForm.get('normalShippingCost')?.touched
                     "
                   >
-                    the Date is required
+                    Normal Shipping Cost is required
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-3"
+                    >Pickup Shipping Cost</label
+                  >
+
+                  <input
+                    type="text"
+                    id="normalCost"
+                    class="form-control form-control-solid"
+                    formControlName="pickupShippingCost"
+                    placeholder=""
+                    fdprocessedid="8gp9el"
+                  />
+                  <span
+                    *ngIf="
+                      cityForm.get('pickupShippingCost')?.invalid &&
+                      cityForm.get('pickupShippingCost')?.touched
+                    "
+                  >
+                    Pickup Shipping Cost is required
+                  </span>
+                </div>
+
+                <div class="fv-row mb-7 fv-plugins-icon-container form-group">
+                  <label class="required fw-medium mb-2 mt-4"
+                    >Governments</label
+                  >
+                  <select
+                    formControlName="governmentId"
+                    class="form-select form-select-solid fw-bolder select2-hidden-accessible"
+                  >
+                    <option value="" data-select2-id="select2-data-22-5c0i">
+                      Select a goverment...
+                    </option>
+                    <option
+                      *ngFor="let item of governments"
+                      [value]="item.goverment_Id"
+                    >
+                      {{ item.govermentName }}
+                    </option>
+                  </select>
+
+                  <span
+                    *ngIf="
+                      cityForm.get('governmentId')?.invalid &&
+                      cityForm.get('governmentId')?.touched
+                    "
+                  >
+                    Government is required
                   </span>
                 </div>
               </div>

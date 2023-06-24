@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Branch } from 'src/app/Core/Models/Branch';
 import { BranchService } from 'src/app/Core/Services/branch.service';
-
+import Swal from 'sweetalert2';
 declare var window: any;
 
 @Component({
@@ -15,8 +15,10 @@ declare var window: any;
 export class DisplayBranchComponent implements OnInit {
   branches: Branch[] = [];
   filteredData: Branch[] = [];
-  addBranchForm!: FormGroup;
+  BranchForm!: FormGroup;
   formModel: any;
+  allowEdit = false;
+  branchId!: number;
 
   constructor(
     private branchService: BranchService,
@@ -28,17 +30,13 @@ export class DisplayBranchComponent implements OnInit {
     this.branchService.getAllBranches().subscribe((data: any) => {
       this.branches = this.filteredData = data;
     });
-    this.addBranchForm = new FormGroup({
+    this.BranchForm = new FormGroup({
       branchName: new FormControl(null, Validators.required),
       createdAt: new FormControl(null, Validators.required),
     });
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
     );
-  }
-
-  addBranch() {
-    this.router.navigate(['add'], { relativeTo: this.route });
   }
 
   deleteBranch(id: number) {
@@ -60,28 +58,18 @@ export class DisplayBranchComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const branchid = selectedValue.substr(5);
-      this.router.navigate(['edit/' + branchid], { relativeTo: this.route });
+      this.openModal(branchid);
+      this.allowEdit = true;
     } else {
       const branchid = selectedValue;
       this.deleteBranch(branchid);
     }
+    event.target.value = 'action';
   }
 
-  filterData(inputValue: string) {
-    const searchTerm = inputValue.toLowerCase().trim();
-
-    return this.branches.filter((item) => {
-      const itemName = item.branchName?.toLowerCase();
-
-      return itemName?.startsWith(searchTerm);
-    });
-  }
-  onInputChange(event: any) {
-    const inputValue = event.target.value;
-    this.filteredData = this.filterData(inputValue);
-  }
-
+  
   changeState(id: number) {
+    alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
       (data: any) => {
         alert('success deleted');
@@ -96,28 +84,120 @@ export class DisplayBranchComponent implements OnInit {
   // Add  Modal
 
   onsubmit() {
-    this.branchService
+    if (!this.allowEdit) {
+      this.branchService
       .addBranch({
-        ...this.addBranchForm.value,
-        state: true,
+        ...this.BranchForm.value,
+          state: true,
+        })
+        .subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Form has been successfully submitted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+            });
+            this.formModel.hide();
+          },
+          (error) => {
+            alert('error !!!!!');
+            console.log(error);
+          }
+          );
+          this.BranchForm.reset();
+        } else this.onEdit();
+        this.branchService.getAllBranches().subscribe((data: any) => {
+          this.branches = this.filteredData = data;
+        });
+  }
+
+  openModal(id: any) {
+    if (!id) {
+      this.allowEdit = false;
+    } else {
+      this.getData(id);
+      this.branchId = id;
+    }
+    this.formModel.show();
+  }
+  
+  close() {
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.formModel.hide();
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
+    this.BranchForm.reset();
+  }
+
+  // Edit
+  onEdit() {
+    this.branchService
+      .updateBranch(this.branchId, {
+        ...this.BranchForm.value,
+        id: this.branchId,
       })
       .subscribe(
         (data: any) => {
-          alert('success add');
-          this.router.navigate(['branch']);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
         },
-        (error) => {
-          alert('error !!!!!');
-          console.log(error);
+        (error: any) => {
+          alert('error !!!!!!!!');
         }
-      );
+        );
+        this.BranchForm.reset();
   }
 
-  openModal() {
-    this.formModel.show();
+  getData(id: any) {
+    this.branchService.getBranchById(id).subscribe((data: Branch) => {
+      console.log(data);
+      this.BranchForm.setValue({
+        branchName: data.branchName,
+        createdAt: data.createdAt,
+      });
+    });
   }
 
-  doSomething() {
-    this.formModel.hide();
+  // Search
+  filterData(inputValue: string) {
+    const searchTerm = inputValue.toLowerCase().trim();
+    return this.branches.filter((item) => {
+      const itemName = item.branchName?.toLowerCase();
+      return itemName?.startsWith(searchTerm);
+    });
+  }
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.filteredData = this.filterData(inputValue);
   }
 }

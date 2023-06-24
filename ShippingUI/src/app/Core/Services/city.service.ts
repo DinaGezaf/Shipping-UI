@@ -11,6 +11,9 @@ export class CityService {
   AddCity(City: {}) {
     return this.http.post('https://localhost:44355/api/Cities', City);
   }
+  getAllCities() {
+    return this.http.get('https://localhost:44355/api/Cities');
+  }
 
   getCityById(CityId: number) {
     return this.http.get(`https://localhost:44355/api/Cities/${CityId} `);
