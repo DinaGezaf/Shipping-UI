@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { City } from 'src/app/models/City';
-import { GovernmentDto } from 'src/app/models/Sales';
-import { CityService } from 'src/app/services/city.service';
-import { GovermentService } from 'src/app/services/goverment.service';
+import { City } from 'src/app/Core/Models/City';
+import { CityService } from 'src/app/Core/Services/city.service';
+import { GovermentService } from 'src/app/Core/Services/goverment.service';
 declare var window: any;
 
 @Component({

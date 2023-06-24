@@ -50,7 +50,7 @@ import { DisplayCityComponent } from './components/City/display-city/display-cit
     EditOrderComponent,
     OrdersStatesTraderComponent,
     WeightCostPerOrderComponent,
-    LoginComponent
+    LoginComponent,
     DisplayCityComponent,
   ],
   imports: [
