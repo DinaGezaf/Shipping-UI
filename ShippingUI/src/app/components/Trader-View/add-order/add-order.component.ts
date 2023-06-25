@@ -9,6 +9,7 @@ import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-order',
@@ -30,6 +31,9 @@ export class AddOrderComponent implements OnInit {
   weightOption = {};
   traderEmail: any;
   orders: any;
+  totalcost: any;
+  totalweight: any;
+  error!: string;
 
   constructor(
     private cityService: CityService,
@@ -79,9 +83,6 @@ export class AddOrderComponent implements OnInit {
   }
 
   AddOrder(): void {
-    // if (this.orderForm.invalid) {
-    //   return;
-    // }
     const role = localStorage.getItem('role');
     const formData = this.orderForm.value;
     this.email = this.authService.getEmail();
@@ -92,8 +93,8 @@ export class AddOrderComponent implements OnInit {
       shippingType: ShippingType[formData.shippingType],
       companyBranch: formData.branch,
       weightOption: this.weightOption,
-      totalCost: formData.totalcost,
-      totalWeight: formData.totalweight,
+      totalCost: this.totalcost,
+      totalWeight: this.totalweight,
       deliverToVillageCost: 0,
       deliveredToVillage: formData.villageDeliverd,
       customer: {
@@ -113,18 +114,27 @@ export class AddOrderComponent implements OnInit {
       })),
     };
 
-    this.orderService
-      .addOrder(orderData, this.email)
-      .subscribe((response: any) => {
-        if (role == 'trader') {
-          this.router.navigate(['/home/order/list/trader']);
-        } else if (role == 'admin') {
-          this.router.navigate(['/home/order/list/employee']);
-        }
-        // this.dialogRef.close();
+    this.orderService.addOrder(orderData, this.email).subscribe(
+      (response: any) => {
+        this.router.navigate(['/home/order/list/trader']);
         this.Message();
         this.loadOrders();
-      });
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Invalid Inputs, Please Enter Valid Order.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    );
   }
 
   loadOrders(): void {
@@ -142,26 +152,26 @@ export class AddOrderComponent implements OnInit {
     const productsFormArray = this.orderForm.get('products') as FormArray;
 
     productsFormArray.valueChanges.subscribe((products) => {
-      let totalcost = 0;
-      let totalweight = 0;
+      this.totalcost = 0;
+      this.totalweight = 0;
 
       products.forEach((product: any) => {
-        const price = parseFloat(product.price);
-        const quantity = parseFloat(product.quantity);
-        const weight = parseFloat(product.weight);
+        const price = parseInt(product.price);
+        const quantity = parseInt(product.quantity);
+        const weight = parseInt(product.weight);
 
         if (!isNaN(price) && !isNaN(quantity)) {
-          totalcost += price * quantity;
+          this.totalcost += price * quantity;
         }
 
         if (!isNaN(weight) && !isNaN(quantity)) {
-          totalweight += weight * quantity;
+          this.totalweight += weight * quantity;
         }
       });
 
       this.orderForm.patchValue({
-        totalcost: totalcost.toFixed(2),
-        totalweight: totalweight.toFixed(2),
+        totalcost: this.totalcost,
+        totalweight: this.totalweight,
       });
     });
   }

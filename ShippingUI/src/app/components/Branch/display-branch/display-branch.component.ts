@@ -159,7 +159,6 @@ export class DisplayBranchComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        // this.formModel.hide();
         this.formModel = document.getElementById('branchModel');
         this.formModel.classList.remove('show');
         this.formModel.style.display = 'none';
@@ -179,7 +178,6 @@ export class DisplayBranchComponent implements OnInit {
         });
       }
     });
-    this.BranchForm.reset();
   }
 
   // Edit
