@@ -32,7 +32,7 @@ import { AddOrderComponent } from './components/Trader-View/add-order/add-order.
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: AddPrivellageComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
