@@ -22,7 +22,8 @@ import { DisplayCityComponent } from './components/City/display-city/display-cit
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: DisplayEmployeeComponent },
+  // { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',

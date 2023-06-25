@@ -26,6 +26,7 @@ export class DisplayEmployeeComponent implements OnInit {
   employeeForm!: FormGroup;
   empId!: number;
   selectedOption = 'action';
+  backdropElement: any;
 
   constructor(
     private router: Router,
@@ -38,17 +39,18 @@ export class DisplayEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
       this.employees = this.filteredData = data;
-      console.log(this.filteredData);
     });
     console.log(this.employees);
 
     this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
+      document.getElementById('employeeModel')
     );
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
-
+    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
+    //   this.privilegesarray = data;
+    // });
 
     this.employeeForm = new FormGroup({
       name: new FormControl(null, [
@@ -83,10 +85,13 @@ export class DisplayEmployeeComponent implements OnInit {
       this.empId = id;
       this.getData(id);
     }
-     this.formModel = document.getElementById('employeeModel');
-     this.formModel.classList.add('show');
-     this.formModel.style.display = 'block';
-     document.body.classList.add('modal-open');
+    this.formModel = document.getElementById('employeeModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
+    const backdropElement = document.createElement('div');
+    backdropElement.classList.add('modal-backdrop', 'fade', 'show');
+    document.body.appendChild(backdropElement);
   }
 
   close() {
@@ -102,10 +107,12 @@ export class DisplayEmployeeComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-       this.formModel = document.getElementById('employeeModel');
-       this.formModel.classList.remove('show');
-       this.formModel.style.display = 'none';
-       document.body.classList.remove('modal-open');
+        this.formModel = document.getElementById('employeeModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        this.backdropElement = document.querySelector('.modal-backdrop');
+        document.body.removeChild(this.backdropElement);
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -188,6 +195,8 @@ export class DisplayEmployeeComponent implements OnInit {
             this.formModel.classList.remove('show');
             this.formModel.style.display = 'none';
             document.body.classList.remove('modal-open');
+            this.backdropElement = document.querySelector('.modal-backdrop');
+            document.body.removeChild(this.backdropElement);
           },
           (error) => {
             alert('error !!!!!!');
@@ -219,6 +228,8 @@ export class DisplayEmployeeComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.backdropElement = document.querySelector('.modal-backdrop');
+          document.body.removeChild(this.backdropElement);
         },
         (error) => {
           alert('error!!!! data is not updated ');

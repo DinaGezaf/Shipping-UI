@@ -80,9 +80,9 @@ export class AddOrderComponent implements OnInit {
   }
 
   AddOrder(): void {
-    if (this.orderForm.invalid) {
-      return;
-    }
+    // if (this.orderForm.invalid) {
+    //   return;
+    // }
     const formData = this.orderForm.value;
     this.email = this.authService.getEmail();
     console.log(this.email);

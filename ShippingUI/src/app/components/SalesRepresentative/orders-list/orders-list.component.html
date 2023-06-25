@@ -96,7 +96,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders; let i = index">
+        <tr *ngFor="let order of filteredDataOrder; let i = index">
           <td class="ps-5">{{ i + 1 }}</td>
           <td class="emp-name">{{ order.orderDate }}</td>
           <td>

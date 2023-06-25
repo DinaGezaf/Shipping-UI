@@ -74,7 +74,7 @@
           </svg>
           <input
             type="text"
-            placeholder="Search SalesRepresentator"
+            placeholder="Search orders"
             class="d-inline form-control-solid border-0 px-2"
             style="outline: 0; padding: 5px 0px"
             (input)="onInputChange($event)"
@@ -104,7 +104,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders; let i = index">
+        <tr *ngFor="let order of filteredDataOrder; let i = index">
           <td class="ps-5">{{ i + 1 }}</td>
           <td class="emp-name">{{ order.orderDate }}</td>
           <td>
@@ -120,9 +120,9 @@
           </td>
 
           <td>
-            <button class="btn px-3 py-1 text-dark bg-light me-2 fs-3">
+            <!-- <button class="btn px-3 py-1 text-dark bg-light me-2 fs-3">
               <i class="bi bi-person-fill-check"></i>
-            </button>
+            </button> -->
             <button
               class="btn btn-info px-3 py-2 text-light"
               (click)="openOrderStateForm(order)"

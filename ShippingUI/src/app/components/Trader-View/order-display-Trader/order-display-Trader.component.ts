@@ -22,6 +22,7 @@ export class OrderDispalyTraderComponent implements OnInit {
   orders: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
+  filteredDataOrder: any;
 
   constructor(
     private orderService: OrderService,
@@ -50,9 +51,9 @@ export class OrderDispalyTraderComponent implements OnInit {
           const filteredOrdersByState = filteredOrders.filter(
             (order: any) => order.state === this.selectedState
           );
-          this.orders = filteredOrdersByState;
+          this.orders = this.filteredDataOrder = filteredOrdersByState;
         } else {
-          this.orders = filteredOrders;
+          this.orders = this.filteredDataOrder = filteredOrders;
         }
 
         this.orders.paginator = this.paginator;
@@ -90,19 +91,20 @@ export class OrderDispalyTraderComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.orders.filter((item: any) => {
-      const itemName = item.customer?.name?.toLowerCase();
-
+      const itemName = item.customer?.goverment.toLowerCase();
+      console.log(itemName);
       return itemName?.startsWith(searchTerm);
     });
   }
   onInputChange(event: any) {
     const inputValue = event.target.value;
-    this.orders = this.filterData(inputValue);
+    console.log(inputValue);
+    this.filteredDataOrder = this.filterData(inputValue);
   }
 
   applyPagination() {
     const filteredOrders = this.selectedState
-      ? this.orders.filter((order:any) => order.state === this.selectedState)
+      ? this.orders.filter((order: any) => order.state === this.selectedState)
       : this.orders;
 
     this.totalItems = filteredOrders.length;

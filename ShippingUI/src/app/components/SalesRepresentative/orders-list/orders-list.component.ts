@@ -17,7 +17,7 @@ export class OrdersListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
   salesEmail: any;
-
+  filteredDataOrder: any;
   constructor(
     private orderService: OrderService,
     private dialog: MatDialog,
@@ -31,7 +31,7 @@ export class OrdersListComponent implements OnInit {
   selectState(state: string): void {
     this.selectedState = state === 'All' ? '' : state;
     this.loadOrders();
-    console.log(this.orders)
+    console.log(this.orders);
   }
 
   loadOrders(): void {
@@ -45,7 +45,7 @@ export class OrdersListComponent implements OnInit {
             ? orders.filter((order: any) => order.state === this.selectedState)
             : orders;
 
-        this.orders = filteredOrders;
+        this.orders = this.filteredDataOrder = filteredOrders;
         this.orders.paginator = this.paginator;
       });
   }
@@ -60,14 +60,15 @@ export class OrdersListComponent implements OnInit {
   filterData(inputValue: string) {
     const searchTerm = inputValue.toLowerCase().trim();
 
-    return this.orders.filter((item:any) => {
-      const itemName = item.name?.toLowerCase();
-
+    return this.orders.filter((item: any) => {
+      const itemName = item.customer?.goverment.toLowerCase();
+      console.log(itemName);
       return itemName?.startsWith(searchTerm);
     });
   }
   onInputChange(event: any) {
     const inputValue = event.target.value;
-    this.orders = this.filterData(inputValue);
+    console.log(inputValue);
+    this.filteredDataOrder = this.filterData(inputValue);
   }
 }
