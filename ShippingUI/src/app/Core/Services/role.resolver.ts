@@ -58,6 +58,7 @@ export const generateRoutesForRole = (): Promise<Routes> => {
         { path: 'privilege/add', component: AddPrivellageComponent },
         { path: 'privilege/edit/:id', component: EditPrevillageComponent },
         { path: 'government', component: DisplayGovernmentComponent },
+        { path: 'branch', component: DisplayBranchComponent },
       ];
     } else if (storedRole === Roles.Trader) {
       routes = [
