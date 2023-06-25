@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { privilege } from 'src/app/Core/Models/Privellage';
 import { PrivellageService } from 'src/app/Core/Services/privellage.service';
+import Swal from 'sweetalert2';
 
 declare var window: any;
 @Component({
@@ -13,8 +14,9 @@ declare var window: any;
 export class DisplayPrivellageComponent implements OnInit {
   privileges: privilege[] = [];
   filteredData: privilege[] = [];
-  addPrivilegeForm!: FormGroup;
+  privilegeForm!: FormGroup;
   formModel: any;
+  id!: number;
 
   constructor(
     private privellageser: PrivellageService,
@@ -30,19 +32,23 @@ export class DisplayPrivellageComponent implements OnInit {
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('exampleModalCenter')
     );
-  }
-
-  addPrivilege() {
-    this.router.navigate(['add'], { relativeTo: this.route });
+    this.privilegeForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      date: new FormControl(null, Validators.required),
+    });
   }
 
   deletePrivilege(id: number) {
     this.privellageser.deletePrivilege(id).subscribe(
       (data: any) => {
-        alert('success delete');
+        Swal.fire({
+          title: 'Deleted successfully!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+        });
         this.privellageser.getAllPrivellages().subscribe((data: any) => {
           this.privileges = this.filteredData = data;
-          console.log(data);
         });
       },
       (error) => {
@@ -54,12 +60,12 @@ export class DisplayPrivellageComponent implements OnInit {
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
-      const privellgeid = selectedValue.substr(5);
-      this.router.navigate(['edit/' + privellgeid], { relativeTo: this.route });
+      const privilegeId = selectedValue.substr(5);
+      this.router.navigate([]);
     } else {
-      const privellgeid = selectedValue;
-      this.deletePrivilege(privellgeid);
+      this.deletePrivilege(selectedValue);
     }
+    event.target.value = 'action';
   }
 
   filterData(inputValue: string) {
@@ -80,12 +86,20 @@ export class DisplayPrivellageComponent implements OnInit {
   onsubmit() {
     this.privellageser
       .addPrivilege({
-        ...this.addPrivilegeForm.value,
+        ...this.privilegeForm.value,
       })
       .subscribe(
         (data) => {
-          alert('success add');
-          this.router.navigate(['privilege']);
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+            width: '416px',
+          });
+          this.formModel.hide();
+          this.privellageser.getAllPrivellages().subscribe((data: any) => {
+            this.privileges = this.filteredData = data;
+          });
         },
         (error) => {
           alert('error !!!!!');
@@ -94,11 +108,38 @@ export class DisplayPrivellageComponent implements OnInit {
       );
   }
 
-  openModal() {
-    this.formModel.show();
+  getData(id: any) {
+    this.privellageser.getPrivilegeById(id).subscribe((data: privilege) => {
+      console.log(data);
+
+      this.privilegeForm.setValue({
+        name: data.name,
+        date: data.date,
+      });
+    });
   }
 
-  doSomething() {
-    this.formModel.hide();
+  onEdit() {
+    this.privellageser
+      .updatePrivilege(this.id, {
+        ...this.privilegeForm.value,
+        id: this.id,
+      })
+      .subscribe(
+        (data) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel.hide();
+          this.privellageser.getAllPrivellages().subscribe((data: any) => {
+            this.privileges = this.filteredData = data;
+          });
+        },
+        (error) => {
+          alert('error !!!!!!!!');
+        }
+      );
   }
 }

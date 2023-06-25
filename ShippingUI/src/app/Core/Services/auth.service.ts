@@ -1,8 +1,6 @@
 import { Data, Route, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as jwt_decode from 'jwt-decode';
-import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
