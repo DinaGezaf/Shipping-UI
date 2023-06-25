@@ -89,9 +89,9 @@ export class DisplayEmployeeComponent implements OnInit {
     this.formModel.classList.add('show');
     this.formModel.style.display = 'block';
     document.body.classList.add('modal-open');
-    const backdropElement = document.createElement('div');
-    backdropElement.classList.add('modal-backdrop', 'fade', 'show');
-    document.body.appendChild(backdropElement);
+    // const backdropElement = document.createElement('div');
+    // backdropElement.classList.add('modal-backdrop', 'fade', 'show');
+    // document.body.appendChild(backdropElement);
   }
 
   close() {
@@ -111,8 +111,8 @@ export class DisplayEmployeeComponent implements OnInit {
         this.formModel.classList.remove('show');
         this.formModel.style.display = 'none';
         document.body.classList.remove('modal-open');
-        this.backdropElement = document.querySelector('.modal-backdrop');
-        document.body.removeChild(this.backdropElement);
+        // this.backdropElement = document.querySelector('.modal-backdrop');
+        // document.body.removeChild(this.backdropElement);
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',

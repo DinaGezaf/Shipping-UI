@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './Core/Services/auth.guard';
 import { SidebarComponent } from './Shared/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
-import { Roles } from './Core/Models/Roles';
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
 import { DisplayGovernmentComponent } from './components/Government/display/display.component';
 import { DisplayBranchComponent } from './components/Branch/display-branch/display-branch.component';
@@ -20,10 +19,11 @@ import { OrderDispalyTraderComponent } from './components/Trader-View/order-disp
 import { OrdersStatesTraderComponent } from './components/Trader-View/orders-states-trader/orders-states-trader.component';
 import { DisplayCityComponent } from './components/City/display-city/display-city.component';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
+import { AddOrderComponent } from './components/Trader-View/add-order/add-order.component';
+import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 
 const routes: Routes = [
-  { path: '', component: DisplayEmployeeComponent },
-  // { path: '', component: LoginComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
@@ -39,6 +39,15 @@ const routes: Routes = [
         path: 'order/states/employee',
         component: DisplayOrdersStatesComponent,
       },
+      {
+        path: 'order/list/employee/order/add',
+        component: AddOrderComponent,
+      },
+      {
+        path: 'order/list/employee/order/edit/:id',
+        component: EditOrderComponent,
+      },
+
       { path: 'order/list/employee', component: DisplayOrdersComponent },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
       { path: 'privilege', component: DisplayPrivellageComponent },
@@ -51,6 +60,11 @@ const routes: Routes = [
 
       { path: 'order/list/sales', component: OrdersListComponent },
       { path: 'order/states/sales', component: OrdersStatesComponent },
+      { path: 'order/list/trader/order/add', component: AddOrderComponent },
+      {
+        path: 'order/list/trader/order/edit/:id',
+        component: EditOrderComponent,
+      },
     ],
   },
 ];

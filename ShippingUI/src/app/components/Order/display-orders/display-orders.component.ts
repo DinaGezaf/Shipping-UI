@@ -19,6 +19,7 @@ export class DisplayOrdersComponent implements OnInit {
   salesRepresentativeId: any;
   empEmail: any;
   filteredDataOrder: any;
+  role: any;
 
   constructor(
     private orderService: OrderService,
@@ -28,6 +29,7 @@ export class DisplayOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
+    this.role=localStorage.getItem("role")
   }
 
   selectState(state: string): void {

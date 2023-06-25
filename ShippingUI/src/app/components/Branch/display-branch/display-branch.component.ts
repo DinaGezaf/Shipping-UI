@@ -98,7 +98,10 @@ export class DisplayBranchComponent implements OnInit {
               confirmButtonColor: '#00b2ff',
               width: '416px',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('branchModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
           },
           (error) => {
             alert('error !!!!!');

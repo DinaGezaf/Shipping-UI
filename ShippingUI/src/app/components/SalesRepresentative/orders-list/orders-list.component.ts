@@ -17,6 +17,8 @@ export class OrdersListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
   salesEmail: any;
+  role: any;
+
   filteredDataOrder: any;
   constructor(
     private orderService: OrderService,
@@ -26,6 +28,7 @@ export class OrdersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
+    this.role=localStorage.getItem("role")
   }
 
   selectState(state: string): void {
