@@ -11,7 +11,7 @@ export class AuthService {
   private token = '';
 
   constructor(private http: HttpClient) {
-    let tokenstring = JSON.parse(localStorage.getItem('authToken')!);
+    let tokenstring = localStorage.getItem('authToken');
     let claims = JSON.parse(localStorage.getItem('claims')!);
     if (!tokenstring) {
       return;

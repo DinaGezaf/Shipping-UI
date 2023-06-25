@@ -16,6 +16,7 @@ import {
   Sales,
   Trader,
 } from 'src/app/Core/Models/Permission';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-add',
@@ -28,71 +29,69 @@ export class AddPrivellageComponent implements OnInit {
   constructor(
     private privilegeservice: PrivellageService,
     private router: Router,
-    private route: ActivatedRoute,
-    private fb: FormBuilder
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.addPrivilegeForm = this.fb.group({
-      privellgeName: ['', Validators.required],
+    this.addPrivilegeForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
 
-      Government: this.fb.group({
-        [Government.Read]: [false, Validators.required],
-        [Government.Create]: [false, Validators.required],
-        [Government.Update]: [false, Validators.required],
-        [Government.Delete]: [false, Validators.required],
-      }),
+      [Government.Read]: new FormControl(null, Validators.required),
+      [Government.Create]: new FormControl(null, Validators.required),
+      [Government.Update]: new FormControl(null, Validators.required),
+      [Government.Delete]: new FormControl(null, Validators.required),
 
-      City: this.fb.group({
-        [City.Read]: [false, Validators.required],
-        [City.Create]: [false, Validators.required],
-        [City.Update]: [false, Validators.required],
-        [City.Delete]: [false, Validators.required],
-      }),
+      [City.Read]: new FormControl(null, Validators.required),
+      [City.Create]: new FormControl(null, Validators.required),
+      [City.Update]: new FormControl(null, Validators.required),
+      [City.Delete]: new FormControl(null, Validators.required),
 
-      Trader: this.fb.group({
-        [Trader.Read]: [false, Validators.required],
-        [Trader.Create]: [false, Validators.required],
-        [Trader.Update]: [false, Validators.required],
-        [Trader.Delete]: [false, Validators.required],
-      }),
+      [Trader.Read]: new FormControl(null, Validators.required),
+      [Trader.Create]: new FormControl(null, Validators.required),
+      [Trader.Update]: new FormControl(null, Validators.required),
+      [Trader.Delete]: new FormControl(null, Validators.required),
 
-      Employee: this.fb.group({
-        [Employee.Read]: [false, Validators.required],
-        [Employee.Create]: [false, Validators.required],
-        [Employee.Update]: [false, Validators.required],
-        [Employee.Delete]: [false, Validators.required],
-      }),
+      [Employee.Read]: new FormControl(null, Validators.required),
+      [Employee.Create]: new FormControl(null, Validators.required),
+      [Employee.Update]: new FormControl(null, Validators.required),
+      [Employee.Delete]: new FormControl(null, Validators.required),
 
-      Branch: this.fb.group({
-        [Branch.Read]: [false, Validators.required],
-        [Branch.Create]: [false, Validators.required],
-        [Branch.Update]: [false, Validators.required],
-        [Branch.Delete]: [false, Validators.required],
-      }),
+      [Branch.Read]: new FormControl(null, Validators.required),
+      [Branch.Create]: new FormControl(null, Validators.required),
+      [Branch.Update]: new FormControl(null, Validators.required),
+      [Branch.Delete]: new FormControl(null, Validators.required),
 
-      Sales: this.fb.group({
-        [Sales.Read]: [false, Validators.required],
-        [Sales.Create]: [false, Validators.required],
-        [Sales.Update]: [false, Validators.required],
-        [Sales.Delete]: [false, Validators.required],
-      }),
+      [Sales.Read]: new FormControl(null, Validators.required),
+      [Sales.Create]: new FormControl(null, Validators.required),
+      [Sales.Update]: new FormControl(null, Validators.required),
+      [Sales.Delete]: new FormControl(null, Validators.required),
 
-      Order: this.fb.group({
-        [Order.Read]: [false, Validators.required],
-        [Order.Create]: [false, Validators.required],
-        [Order.Update]: [false, Validators.required],
-        [Order.Delete]: [false, Validators.required],
-      }),
+      [Order.Read]: new FormControl(null, Validators.required),
+      [Order.Create]: new FormControl(null, Validators.required),
+      [Order.Update]: new FormControl(null, Validators.required),
+      [Order.Delete]: new FormControl(null, Validators.required),
     });
   }
 
   onsubmit() {
-    this.privilegeservice
-      .addPrivilege({
-        ...this.addPrivilegeForm.value,
-      })
-      .subscribe(
+    const claims: string[] = [];
+
+    Object.entries(this.addPrivilegeForm.value).forEach(([key, value]) => {
+      if (value == true || value == 'true') {
+        claims.push(key);
+      }
+    });
+    console.log(claims);
+
+    const role = {
+      name: this.addPrivilegeForm.get('name')?.value,
+      data: new Date(),
+      claims: claims,
+    };
+
+    if (claims.length > 0) {
+      console.log(role);
+      this.privilegeservice.addPrivilege(role).subscribe(
         (data) => {
           alert('success add');
           this.router.navigate(['privilege']);
@@ -102,5 +101,8 @@ export class AddPrivellageComponent implements OnInit {
           console.log(error);
         }
       );
+    } else {
+      alert('permissions must be found');
+    }
   }
 }
