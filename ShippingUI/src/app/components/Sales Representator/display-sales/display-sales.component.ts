@@ -3,7 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Branch } from 'src/app/Core/Models/Branch';
 import { Goverment } from 'src/app/Core/Models/Goverment';
+import { Sales } from 'src/app/Core/Models/Permission';
 import { SalesRepresentator } from 'src/app/Core/Models/Sales';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { SalesService } from 'src/app/Core/Services/sales.service';
@@ -29,13 +31,22 @@ export default class DisplaySalesComponent implements OnInit {
   salesForm!: FormGroup;
   formModel: any;
 
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
+
   constructor(
     private salesservice: SalesService,
     private branchservice: BranchService,
     private GovermentService: GovermentService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Sales.Update);
+    this.createPermission = auth.checkPermission(Sales.Create);
+    this.deletePermission = auth.checkPermission(Sales.Delete);
+  }
 
   ngOnInit(): void {
     this.salesservice.getAllSales().subscribe((data: any) => {

@@ -122,7 +122,8 @@
           <span>{{ allowEdit ? "Edit Employee" : "Add Employee" }}</span>
         </h2>
         <span (click)="close()" class="svg-icon svg-icon-1"
-          ><svg
+          >
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -147,8 +148,11 @@
               rx="1"
               transform="rotate(45 7.41422 6)"
               fill="currentColor"
-            ></rect></svg
-        ></span>
+            >
+          </rect>
+            </svg
+        >
+      </span>
       </div>
       <div class="modal-body p-0">
         <div class="modal-body py-10">
@@ -181,7 +185,7 @@
                     *ngIf="
                       employeeForm.get('name')?.invalid &&
                       employeeForm.get('name')?.touched
-                    "
+                        "
                   >
                     <span
                       *ngIf="employeeForm.get('name')?.hasError('required')"

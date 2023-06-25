@@ -22,6 +22,7 @@ export class DisplayBranchComponent implements OnInit {
   formModel: any;
   allowEdit = false;
   branchId!: number;
+
   editPermission = false;
   deletePermission = false;
   createPermission = false;

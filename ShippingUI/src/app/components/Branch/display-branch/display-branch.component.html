@@ -76,8 +76,10 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ branch.id }}">Edit</option>
-              <option value="{{ branch.id }}" (click)="changeState(branch.id!)">
+              <option
+              *ngIf="editPermission"
+              value="edit/{{ branch.id }}">Edit</option>
+              <option *ngIf="deletePermission" value="{{ branch.id }}" (click)="changeState(branch.id!)">
                 Delete
               </option>
             </select>

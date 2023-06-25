@@ -3,6 +3,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PrivellageService } from 'src/app/Core/Services/privellage.service';
 import { privilege } from 'src/app/Core/Models/Privellage';
+import {
+  Branch,
+  City,
+  Employee,
+  Government,
+  Order,
+  Sales,
+  Trader,
+} from 'src/app/Core/Models/Permission';
 
 @Component({
   selector: 'app-edit',
@@ -12,31 +21,97 @@ import { privilege } from 'src/app/Core/Models/Privellage';
 export class EditPrevillageComponent implements OnInit {
   editPrivilegeForm!: FormGroup;
   id!: number;
-  privilege!: privilege;
+
   constructor(
-    private route: ActivatedRoute,
     private privilegeservice: PrivellageService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.editPrivilegeForm = new FormGroup({
-      privellgeName: new FormControl(this.privilege?.name, Validators.required),
-      date: new FormControl(this.privilege?.date, Validators.required),
+      name: new FormControl(null, Validators.required),
+
+      [Government.Read]: new FormControl(null, Validators.required),
+      [Government.Create]: new FormControl(null, Validators.required),
+      [Government.Update]: new FormControl(null, Validators.required),
+      [Government.Delete]: new FormControl(null, Validators.required),
+
+      [City.Read]: new FormControl(null, Validators.required),
+      [City.Create]: new FormControl(null, Validators.required),
+      [City.Update]: new FormControl(null, Validators.required),
+      [City.Delete]: new FormControl(null, Validators.required),
+
+      [Trader.Read]: new FormControl(null, Validators.required),
+      [Trader.Create]: new FormControl(null, Validators.required),
+      [Trader.Update]: new FormControl(null, Validators.required),
+      [Trader.Delete]: new FormControl(null, Validators.required),
+
+      [Employee.Read]: new FormControl(null, Validators.required),
+      [Employee.Create]: new FormControl(null, Validators.required),
+      [Employee.Update]: new FormControl(null, Validators.required),
+      [Employee.Delete]: new FormControl(null, Validators.required),
+
+      [Branch.Read]: new FormControl(null, Validators.required),
+      [Branch.Create]: new FormControl(null, Validators.required),
+      [Branch.Update]: new FormControl(null, Validators.required),
+      [Branch.Delete]: new FormControl(null, Validators.required),
+
+      [Sales.Read]: new FormControl(null, Validators.required),
+      [Sales.Create]: new FormControl(null, Validators.required),
+      [Sales.Update]: new FormControl(null, Validators.required),
+      [Sales.Delete]: new FormControl(null, Validators.required),
+
+      [Order.Read]: new FormControl(null, Validators.required),
+      [Order.Create]: new FormControl(null, Validators.required),
+      [Order.Update]: new FormControl(null, Validators.required),
+      [Order.Delete]: new FormControl(null, Validators.required),
     });
 
-    this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.privilegeservice
-        .getPrivilegeById(this.id)
-        .subscribe((data: privilege) => {
-          console.log(data);
+    const id = this.route.snapshot.params['id'];
+    this.id = id;
 
-          this.editPrivilegeForm.setValue({
-            privellgeName: data.name,
-            date: data.date,
-          });
+    this.privilegeservice.getPrivilegeById(id).subscribe((data: any) => {
+      let newdata = data as { name: string; claims: string[] };
+      this.editPrivilegeForm.patchValue({ name: newdata.name });
+      newdata.claims.forEach((item) => {
+        this.editPrivilegeForm.patchValue({
+          [item]: true,
         });
+      });
     });
+  }
+
+  onsubmit() {
+    const claims: string[] = [];
+
+    Object.entries(this.editPrivilegeForm.value).forEach(([key, value]) => {
+      if (value == true || value == 'true') {
+        claims.push(key);
+      }
+    });
+    console.log(claims);
+
+    const role = {
+      name: this.editPrivilegeForm.get('name')?.value,
+      data: new Date(),
+      claims: claims,
+    };
+
+    if (claims.length > 0) {
+      console.log(role);
+      this.privilegeservice.updatePrivilege(this.id, role).subscribe(
+        (data) => {
+          alert('success update');
+          this.router.navigate(['privilege']);
+        },
+        (error) => {
+          alert('error !!!!!');
+          console.log(error);
+        }
+      );
+    } else {
+      alert('permissions must be found');
+    }
   }
 }

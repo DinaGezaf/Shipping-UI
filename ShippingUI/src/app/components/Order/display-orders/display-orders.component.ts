@@ -39,11 +39,11 @@ export class DisplayOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
-    this.role=localStorage.getItem("role")
+    this.role = localStorage.getItem('role');
   }
 
-  selectState(state: string): void {
-    this.selectedState = state === 'All' ? '' : state;
+  selectState(e: any): void {
+    this.selectedState = e.target.value === 'All' ? '' : e.target.value;
     this.loadOrders();
   }
 

@@ -41,6 +41,7 @@
 
         class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
+        *ngIf="createPermission"
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
           (click)="openModal(0)"
         >
@@ -86,10 +87,13 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option   value="edit/{{ item.salesRepresentativeId }}">
+              <option
+                *ngIf="editPermission"
+                value="edit/{{ item.salesRepresentativeId }}">
                 Edit
               </option>
               <option
+              *ngIf="deletePermission"
                 value="{{ item.salesRepresentativeId }}"
                 (click)="deleteSales(item.salesRepresentativeId!)"
               >
