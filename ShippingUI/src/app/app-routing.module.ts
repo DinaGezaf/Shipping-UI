@@ -32,7 +32,7 @@ import { AddOrderComponent } from './components/Trader-View/add-order/add-order.
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: DisplayPrivellageComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
@@ -85,9 +85,9 @@ const routes: Routes = [
         data: { permission: Order.Update },
       },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
-      { path: 'privilege', component: DisplayPrivellageComponent },
-      { path: 'privilege/add', component: AddPrivellageComponent },
-      { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+      // { path: 'privilege', component: DisplayPrivellageComponent },
+      // { path: 'privilege/add', component: AddPrivellageComponent },
+      // { path: 'privilege/edit/:id', component: EditPrevillageComponent },
       {
         path: 'government',
         component: DisplayGovernmentComponent,
