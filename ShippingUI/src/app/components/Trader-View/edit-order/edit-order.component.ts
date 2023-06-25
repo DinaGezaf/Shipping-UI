@@ -30,7 +30,7 @@ export class EditOrderComponent implements OnInit {
   order: any;
   weightOption: any;
   traderEmail: any;
-
+  orders: any;
   constructor(
     private cityService: CityService,
     private governmentService: GovermentService,
@@ -105,6 +105,9 @@ export class EditOrderComponent implements OnInit {
     });
   }
   UpdateOrder(): void {
+    if (this.orderForm.invalid) {
+      return;
+    }
     const formData = this.orderForm.value;
     const orderData = {
       state: 'New',
@@ -138,15 +141,21 @@ export class EditOrderComponent implements OnInit {
       .updateOrder(this.order.orderId, orderData)
       .subscribe((response: any) => {
         this.Message();
+        this.loadOrders();
+        this.dialogRef.close();
       });
-    this.loadOrders();
-    this.dialogRef.close();
+
   }
-  loadOrders() {
-    this.traderEmail = this.authService.getEmail();
-    this.orderService
-      .getAllOrders(this.traderEmail)
-      .subscribe((data: any) => {});
+  loadOrders(): void {
+    this.email = this.authService.getEmail();
+    this.orderService.getAllOrders(this.email).subscribe((orders: any) => {
+      console.log(orders);
+
+      if (orders) {
+        const filteredOrders = orders.filter((order: any) => !order.isDeleted);
+        this.orders = filteredOrders;
+      }
+    });
   }
   fetchOrderData() {
     this.orderService.getOrderById(this.data).subscribe((order: any) => {
@@ -215,7 +224,7 @@ export class EditOrderComponent implements OnInit {
     const governmentControl = this.orderForm.get('government');
     return governmentControl?.value === '';
   }
-  
+
   onVillageDeliveryToggle(event: any) {
     const isChecked = event.checked;
     this.orderForm.get('villageDeliverd')?.setValue(isChecked);

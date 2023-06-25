@@ -22,11 +22,5 @@ export class SidebarComponent {
     }
   }
 
-  ngOnInit() {
-    // this.route.url.subscribe((url) => {
-    //   if (url[0].path === 'home') {
-    //     this.router.navigate(['/home/trader']);
-    //   }
-    // });
-  }
+ 
 }

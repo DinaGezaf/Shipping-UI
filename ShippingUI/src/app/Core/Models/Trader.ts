@@ -7,5 +7,5 @@ export interface Trader {
   phoneNumber?: number;
   costPerRefusedOrder?: number;
   companyBranch?: string;
-  //branchId?: number;
+  // branchId?: number;
 }

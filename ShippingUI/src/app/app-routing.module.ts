@@ -22,23 +22,35 @@ import { DisplayCityComponent } from './components/City/display-city/display-cit
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/employee', pathMatch: 'full' },
-  { path: 'employee', component: DisplayEmployeeComponent },
-  { path: 'trader', component: DisplayTraderComponent },
-  { path: 'privilege', component: DisplayPrivellageComponent },
-  { path: 'privilege/add', component: AddPrivellageComponent },
-  { path: 'privilege/edit/:id', component: EditPrevillageComponent },
-  { path: 'government', component: DisplayGovernmentComponent },
-  { path: 'branch', component: DisplayBranchComponent },
-  { path: 'salesRepresentator', component: DisplaySalesComponent },
-  { path: 'city', component: DisplayCityComponent },
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
     component: SidebarComponent,
     canActivate: [AuthGuard],
-    children: [],
+    children: [
+      { path: 'branch', component: DisplayBranchComponent },
+      { path: 'city', component: DisplayCityComponent },
+      { path: 'trader', component: DisplayTraderComponent },
+      { path: 'employee', component: DisplayEmployeeComponent },
+      { path: 'sales', component: DisplaySalesComponent },
+      {
+        path: 'order/states/employee',
+        component: DisplayOrdersStatesComponent,
+      },
+      { path: 'order/list/employee', component: DisplayOrdersComponent },
+      { path: 'order/weightoption', component: WeightCostPerOrderComponent },
+      { path: 'privilege', component: DisplayPrivellageComponent },
+      { path: 'privilege/add', component: AddPrivellageComponent },
+      { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+      { path: 'government', component: DisplayGovernmentComponent },
+
+      { path: 'order/list/trader', component: OrderDispalyTraderComponent },
+      { path: 'order/states/trader', component: OrdersStatesTraderComponent },
+
+      { path: 'order/list/sales', component: OrdersListComponent },
+      { path: 'order/states/sales', component: OrdersStatesComponent },
+    ],
   },
 ];
 
@@ -46,6 +58,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
-
+export class AppRoutingModule {}

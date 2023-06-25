@@ -29,6 +29,7 @@ export class AddOrderComponent implements OnInit {
   productsFormArray: any;
   weightOption = {};
   traderEmail: any;
+  orders: any;
 
   constructor(
     private cityService: CityService,
@@ -79,6 +80,9 @@ export class AddOrderComponent implements OnInit {
   }
 
   AddOrder(): void {
+    if (this.orderForm.invalid) {
+      return;
+    }
     const formData = this.orderForm.value;
     this.email = this.authService.getEmail();
     console.log(this.email);
@@ -111,17 +115,24 @@ export class AddOrderComponent implements OnInit {
 
     this.orderService
       .addOrder(orderData, this.email)
-      .subscribe((response: any) => {});
-    this.Message();
-    this.loadOrders();
-    this.dialogRef.close();
+      .subscribe((response: any) => {
+        this.dialogRef.close();
+        this.Message();
+        this.loadOrders();
+       });
+
   }
 
-  loadOrders() {
-    this.traderEmail = this.authService.getEmail();
-    this.orderService
-      .getAllOrders(this.traderEmail)
-      .subscribe((data: any) => {});
+  loadOrders(): void {
+    this.email = this.authService.getEmail();
+    this.orderService.getAllOrders(this.email).subscribe((orders: any) => {
+      console.log(orders);
+
+      if (orders) {
+        const filteredOrders = orders.filter((order: any) => !order.isDeleted);
+        this.orders = filteredOrders;
+      }
+    });
   }
   subscribeToProductChanges() {
     const productsFormArray = this.orderForm.get('products') as FormArray;

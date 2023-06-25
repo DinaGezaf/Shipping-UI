@@ -38,6 +38,7 @@ export class WeightCostPerOrderComponent implements OnInit {
     console.log(this.weightForm.value);
     this.orderService.AddWeightOptions(weight, cost);
     this.Message();
+    this.dialogRef.close();
   }
 
   Message() {

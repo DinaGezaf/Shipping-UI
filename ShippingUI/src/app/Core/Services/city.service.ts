@@ -9,21 +9,18 @@ export class CityService {
   constructor(private http: HttpClient) {}
 
   AddCity(City: {}) {
-    return this.http.post('https://localhost:44355/api/Cities', City);
+    return this.http.post('http://localhost:5250/api/Cities', City);
   }
   getAllCities() {
-    return this.http.get('https://localhost:44355/api/Cities');
+    return this.http.get('http://localhost:5250/api/Cities');
   }
 
   getCityById(CityId: number) {
-    return this.http.get(`https://localhost:44355/api/Cities/${CityId} `);
+    return this.http.get(`http://localhost:5250/api/Cities/${CityId} `);
   }
 
   EditCity(CityId: number, City: City) {
-    return this.http.put(
-      `https://localhost:44355/api/Cities?id=${CityId}`,
-      City
-    );
+    return this.http.put(`http://localhost:5250/api/Cities/${CityId}`, City);
   }
 
   getCitiesByGovernment(governmentName: string) {

@@ -40,9 +40,6 @@ export class DisplayTraderComponent implements OnInit {
       this.branchesArray = data;
     });
 
-    this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
-    );
     this.traderForm = new FormGroup({
       userName: new FormControl(null, [
         Validators.required,
@@ -127,7 +124,10 @@ export class DisplayTraderComponent implements OnInit {
             confirmButtonColor: '#00b2ff',
             width: '416px',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('traderModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error) => {
           alert('error !!!!!!');
@@ -145,7 +145,10 @@ export class DisplayTraderComponent implements OnInit {
       this.getData(id);
       this.traderId = id;
     }
-    this.formModel.show();
+    this.formModel = document.getElementById('traderModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
 
   close() {
@@ -159,9 +162,12 @@ export class DisplayTraderComponent implements OnInit {
       cancelButtonText: 'No, return',
       width: '416px',
       cancelButtonColor: '#eff2f5',
-    }).then((result) => {
+    }).then((result: any) => {
       if (result.value) {
-        this.formModel.hide();
+        this.formModel = document.getElementById('traderModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -181,6 +187,8 @@ export class DisplayTraderComponent implements OnInit {
   }
 
   onEdit() {
+    console.log(this.traderForm.value);
+
     this.traderservice
       .updateTrader(this.traderId, this.traderForm.value)
       .subscribe(
@@ -191,7 +199,10 @@ export class DisplayTraderComponent implements OnInit {
             width: '416px',
             confirmButtonColor: '#00b2ff',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('traderModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error) => {
           alert('error !!! data is not updated');
@@ -206,11 +217,11 @@ export class DisplayTraderComponent implements OnInit {
       this.traderForm.setValue({
         userName: data.userName,
         email: data.email,
-        password: data.password,
         address: data.address,
-        phoneNumber: data.phoneNumber,
+        password: '',
         costPerRefusedOrder: data.costPerRefusedOrder,
         companyBranch: data.companyBranch,
+        phoneNumber: data.phoneNumber,
       });
     });
   }

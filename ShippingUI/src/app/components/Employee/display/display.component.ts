@@ -84,7 +84,10 @@ export class DisplayEmployeeComponent implements OnInit {
       this.empId = id;
       this.getData(id);
     }
-    this.formModel.show();
+     this.formModel = document.getElementById('employeeModel');
+     this.formModel.classList.add('show');
+     this.formModel.style.display = 'block';
+     document.body.classList.add('modal-open');
   }
 
   close() {
@@ -100,7 +103,10 @@ export class DisplayEmployeeComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+       this.formModel = document.getElementById('employeeModel');
+       this.formModel.classList.remove('show');
+       this.formModel.style.display = 'none';
+       document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -179,7 +185,10 @@ export class DisplayEmployeeComponent implements OnInit {
               width: '416px',
               confirmButtonColor: '#00b2ff',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('employeeModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
           },
           (error) => {
             alert('error !!!!!!');
@@ -207,7 +216,10 @@ export class DisplayEmployeeComponent implements OnInit {
             confirmButtonColor: '#00b2ff',
             width: '416px',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('employeeModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error) => {
           alert('error!!!! data is not updated ');

@@ -34,8 +34,9 @@ export class DisplayBranchComponent implements OnInit {
       branchName: new FormControl(null, Validators.required),
       createdAt: new FormControl(null, Validators.required),
     });
+
     this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
+      document.getElementById('branchModel')
     );
   }
 
@@ -67,7 +68,6 @@ export class DisplayBranchComponent implements OnInit {
     event.target.value = 'action';
   }
 
-  
   changeState(id: number) {
     alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
@@ -86,8 +86,8 @@ export class DisplayBranchComponent implements OnInit {
   onsubmit() {
     if (!this.allowEdit) {
       this.branchService
-      .addBranch({
-        ...this.BranchForm.value,
+        .addBranch({
+          ...this.BranchForm.value,
           state: true,
         })
         .subscribe(
@@ -104,12 +104,12 @@ export class DisplayBranchComponent implements OnInit {
             alert('error !!!!!');
             console.log(error);
           }
-          );
-          this.BranchForm.reset();
-        } else this.onEdit();
-        this.branchService.getAllBranches().subscribe((data: any) => {
-          this.branches = this.filteredData = data;
-        });
+        );
+      this.BranchForm.reset();
+    } else this.onEdit();
+    this.branchService.getAllBranches().subscribe((data: any) => {
+      this.branches = this.filteredData = data;
+    });
   }
 
   openModal(id: any) {
@@ -119,9 +119,13 @@ export class DisplayBranchComponent implements OnInit {
       this.getData(id);
       this.branchId = id;
     }
-    this.formModel.show();
+
+    this.formModel = document.getElementById('branchModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
-  
+
   close() {
     Swal.fire({
       title: 'Are you sure you would like to cancel?',
@@ -135,7 +139,11 @@ export class DisplayBranchComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+        // this.formModel.hide();
+        this.formModel = document.getElementById('branchModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -169,13 +177,16 @@ export class DisplayBranchComponent implements OnInit {
             confirmButtonColor: '#00b2ff',
             width: '416px',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('branchModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error: any) => {
           alert('error !!!!!!!!');
         }
-        );
-        this.BranchForm.reset();
+      );
+    this.BranchForm.reset();
   }
 
   getData(id: any) {

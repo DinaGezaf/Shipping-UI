@@ -60,7 +60,7 @@ export class LoginComponent {
             this.router.config.unshift(homeRoute);
             switch (role) {
               case Roles.Employee:
-                this.router.navigate(['/home/trader']);
+                this.router.navigate(['/home/branch']);
                 break;
               case Roles.Trader:
                 this.router.navigate(['/home/order/list/trader']);

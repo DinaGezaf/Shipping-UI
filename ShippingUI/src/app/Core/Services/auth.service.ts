@@ -1,4 +1,4 @@
-import { Data } from '@angular/router';
+import { Data, Route, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as jwt_decode from 'jwt-decode';
@@ -9,15 +9,29 @@ import * as CryptoJS from 'crypto-js';
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'authToken';
+  private isAuthenticated = false;
+  LoggedIn: boolean = false;
+  generatedRoutes!:string;
 
   URL: string = 'http://localhost:5250/api/Account';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.isAuthenticated = !!localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    const generatedRoutesString = localStorage.getItem('generatedRoutes');
+    let generatedRoutes: Routes = [];
+
+    if (role && generatedRoutesString) {
+      generatedRoutes = JSON.parse(generatedRoutesString);
+      this.LoggedIn = true;
+    }
+  }
 
   login(email: string, password: string) {
     const loginData = {
       email: email,
       password: password,
     };
+    this.isAuthenticated = true;
 
     return this.http.post(`${this.URL}/login`, loginData);
   }
@@ -26,14 +40,11 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem('role');
     localStorage.removeItem('email');
+    this.isAuthenticated = false;
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
   }
 
   setToken(token: string) {
@@ -52,5 +63,28 @@ export class AuthService {
   }
   getUserRole() {
     return localStorage.getItem('role');
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticated;
+  }
+
+  verifyToken(): boolean {
+    const token = this.getToken();
+
+    if (token) {
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
+
+    return this.isAuthenticated;
+  }
+  getGeneratedRoutes() {
+    const generatedRoutes = localStorage.getItem('generatedRoutes');
+    return generatedRoutes ? JSON.parse(generatedRoutes) : null;
+  }
+  setGeneratedRoutes(routes: string) {
+    this.generatedRoutes = routes;
   }
 }
