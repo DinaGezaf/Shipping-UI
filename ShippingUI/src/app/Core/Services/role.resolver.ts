@@ -69,6 +69,30 @@ export const generateRoutesForRole = (): Promise<Routes> => {
         { path: 'order/list/sales', component: OrdersListComponent },
         { path: 'order/states/sales', component: OrdersStatesComponent },
       ];
+    } else if (storedRole == Roles.Admin) {
+      routes = [
+        { path: 'branch', component: DisplayBranchComponent },
+        { path: 'city', component: DisplayCityComponent },
+        { path: 'trader', component: DisplayTraderComponent },
+        { path: 'employee', component: DisplayEmployeeComponent },
+        { path: 'sales', component: DisplaySalesComponent },
+        {
+          path: 'order/states/employee',
+          component: DisplayOrdersStatesComponent,
+        },
+        { path: 'order/list/employee', component: DisplayOrdersComponent },
+        { path: 'order/weightoption', component: WeightCostPerOrderComponent },
+        { path: 'privilege', component: DisplayPrivellageComponent },
+        { path: 'privilege/add', component: AddPrivellageComponent },
+        { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+        { path: 'government', component: DisplayGovernmentComponent },
+
+        { path: 'order/list/trader', component: OrderDispalyTraderComponent },
+        { path: 'order/states/trader', component: OrdersStatesTraderComponent },
+
+        { path: 'order/list/sales', component: OrdersListComponent },
+        { path: 'order/states/sales', component: OrdersStatesComponent },
+      ];
     }
 
     resolve(routes);

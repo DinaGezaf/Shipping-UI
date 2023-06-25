@@ -17,10 +17,8 @@ export class SidebarComponent {
     private authService: AuthService
   ) {
     this.role = this.authService.getUserRole();
-    if (this.role == "employee") {
+    if (this.role == 'employee' || this.role == 'admin') {
       this.Enable = true;
     }
   }
-
- 
 }

@@ -38,6 +38,7 @@ export class DisplayEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
       this.employees = this.filteredData = data;
+      console.log(this.filteredData);
     });
     console.log(this.employees);
 
@@ -47,9 +48,7 @@ export class DisplayEmployeeComponent implements OnInit {
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
-    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-    //   this.privilegesarray = data;
-    // });
+
 
     this.employeeForm = new FormGroup({
       name: new FormControl(null, [
