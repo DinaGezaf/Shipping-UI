@@ -66,6 +66,8 @@ export class DisplayGovernmentComponent implements OnInit {
       govermentName: this.governmentForm.value.governmentName,
       state: Boolean(this.governmentForm.value.state),
     };
+    console.log(government);
+    
     this.governmentService
       .EditGovernment(this.governmentId, government)
       .subscribe(

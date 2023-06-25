@@ -35,4 +35,9 @@ export class GovermentService {
       `http://localhost:5250/api/Goverments/${GovernmentId} `
     );
   }
+  deleteGovernment(GovernmentId: number) {
+    return this.http.delete(
+      `http://localhost:5250/api/Goverments/${GovernmentId} `
+    );
+  }
 }

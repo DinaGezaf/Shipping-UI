@@ -47,6 +47,7 @@ const routes: Routes = [
       {
         path: 'city',
         component: DisplayCityComponent,
+        data: { permission: City.Read },
       },
       {
         path: 'trader',
@@ -76,13 +77,13 @@ const routes: Routes = [
       {
         path: 'order/list/employee/order/add',
         component: AddOrderComponent,
+        data: { permission: Order.Create },
       },
       {
         path: 'order/list/employee/order/edit/:id',
         component: EditOrderComponent,
+        data: { permission: Order.Update },
       },
-
-      { path: 'order/list/employee', component: DisplayOrdersComponent },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
       { path: 'privilege', component: DisplayPrivellageComponent },
       { path: 'privilege/add', component: AddPrivellageComponent },

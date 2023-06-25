@@ -62,6 +62,11 @@ export class DisplayCityComponent {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
   }
+  loadData() {
+    this.cityService.getAllCities().subscribe((data: any) => {
+      this.cities = this.filteredData = data;
+    });
+  }
 
   // Add  Modal
 
@@ -83,6 +88,7 @@ export class DisplayCityComponent {
             this.formModel.classList.remove('show');
             this.formModel.style.display = 'none';
             document.body.classList.remove('modal-open');
+            this.loadData();
           },
           (error) => {
             alert('error !!!!!');
@@ -165,10 +171,11 @@ export class DisplayCityComponent {
             icon: 'success',
             confirmButtonColor: '#00b2ff',
           });
-           this.formModel = document.getElementById('cityModel');
-           this.formModel.classList.remove('show');
-           this.formModel.style.display = 'none';
-           document.body.classList.remove('modal-open');
+          this.formModel = document.getElementById('cityModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error: any) => {
           alert('error !!!!!!!!');

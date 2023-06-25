@@ -46,7 +46,6 @@ export class DisplayTraderComponent implements OnInit {
   ngOnInit(): void {
     this.traderservice.GetAllTraders().subscribe((data: any) => {
       this.traders = this.filteredData = data;
-      console.log(data);
     });
     this.branchservice.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
@@ -75,23 +74,48 @@ export class DisplayTraderComponent implements OnInit {
       companyBranch: new FormControl(null, Validators.required),
     });
   }
-
+  loadData() {
+    this.traderservice.GetAllTraders().subscribe((data: any) => {
+      this.traders = this.filteredData = data;
+    });
+  }
   DeleteTrader(id: number) {
-    if (confirm('do you want to delete ?')) {
-      this.traderservice.DeleteTrader(id).subscribe((data: any) => {
-        alert('success deleted');
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result: any) => {
+      if (result.value) {
+        this.traderservice.DeleteTrader(id).subscribe((data: any) => {
+          Swal.fire({
+            title: 'Trader has been successfully Deleted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
 
-        this.traderservice.GetAllTraders().subscribe((data: any) => {
-          this.traders = this.filteredData = data;
-          console.log(data);
+          this.loadData();
         });
-      });
-    } else {
-      this.traderservice.GetAllTraders().subscribe((data: any) => {
-        this.traders = this.filteredData = data;
-        console.log(data);
-      });
-    }
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
   }
 
   onOptionSelected(event: any) {
@@ -125,7 +149,6 @@ export class DisplayTraderComponent implements OnInit {
   onsubmit() {
     this.traderservice.GetAllTraders().subscribe((data: any) => {
       this.traders = this.filteredData = data;
-      console.log(data);
     });
     if (!this.allowEdit) {
       this.traderservice.AddTrader(this.traderForm.value).subscribe(
@@ -140,6 +163,7 @@ export class DisplayTraderComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error) => {
           alert('error !!!!!!');
@@ -195,12 +219,9 @@ export class DisplayTraderComponent implements OnInit {
         });
       }
     });
-    this.traderForm.reset();
   }
 
   onEdit() {
-    console.log(this.traderForm.value);
-
     this.traderservice
       .updateTrader(this.traderId, this.traderForm.value)
       .subscribe(
@@ -215,6 +236,7 @@ export class DisplayTraderComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error) => {
           alert('error !!! data is not updated');

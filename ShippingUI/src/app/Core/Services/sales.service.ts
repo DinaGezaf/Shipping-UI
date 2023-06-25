@@ -8,7 +8,7 @@ export class SalesService {
   constructor(private http: HttpClient) {}
 
   getSalesByID(id: number) {
-    return this.http.get('https://localhost:5250/api/Sales/id', {
+    return this.http.get('http://localhost:5250/api/Sales/id', {
       params: new HttpParams().set('id', id),
     });
   }

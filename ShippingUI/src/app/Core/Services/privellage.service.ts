@@ -27,7 +27,7 @@ export class PrivellageService {
 
   deletePrivilege(privilege_id: number) {
     return this.http.delete(
-      `https://localhost:5250/api/Permissions/${privilege_id}`,
+      `http://localhost:5250/api/Permissions/${privilege_id}`,
       {
         responseType: 'text',
       }
@@ -36,7 +36,7 @@ export class PrivellageService {
 
   updatePrivilege(id: number, privilege: any) {
     return this.http.put(
-      `https://localhost:5250/api/Permissions/${id}`,
+      `http://localhost:5250/api/Permissions/${id}`,
       privilege,
       {
         responseType: 'text',
