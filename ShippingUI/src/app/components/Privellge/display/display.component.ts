@@ -63,7 +63,7 @@ export class DisplayPrivellageComponent implements OnInit {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
       const privilegeId = selectedValue.substr(5);
-      this.router.navigate([]);
+      this.router.navigate([`/home/privilege/edit/${privilegeId}`]);
     } else {
       this.deletePrivilege(selectedValue);
     }

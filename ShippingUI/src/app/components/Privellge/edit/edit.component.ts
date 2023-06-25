@@ -103,7 +103,7 @@ export class EditPrevillageComponent implements OnInit {
       this.privilegeservice.updatePrivilege(this.id, role).subscribe(
         (data) => {
           alert('success update');
-          this.router.navigate(['privilege']);
+          this.router.navigate(['/home/privilege']);
         },
         (error) => {
           alert('error !!!!!');
