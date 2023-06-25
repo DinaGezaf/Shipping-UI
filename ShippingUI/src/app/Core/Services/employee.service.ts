@@ -32,10 +32,11 @@ export class EmployeeService {
   }
 
   changeIsActive(employeeId: number) {
-    alert(employeeId);
-    return this.http.delete('http://localhost:5250/api/Employees', {
-      params: new HttpParams().set('id', employeeId),
-      responseType: 'text',
-    });
+    return this.http.delete(
+      `http://localhost:5250/api/Employees/${employeeId}`,
+      {
+        responseType: 'text',
+      }
+    );
   }
 }

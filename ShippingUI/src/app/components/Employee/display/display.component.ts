@@ -139,12 +139,15 @@ export class DisplayEmployeeComponent implements OnInit {
   changeIsActive(employeeId: number) {
     if (confirm('do you want to delete ?')) {
       this.employeeser.changeIsActive(employeeId).subscribe((data: any) => {
-        Swal.fire({
-          title: 'Employee has been successfully Deleted!',
-          icon: 'success',
-          confirmButtonColor: '#00b2ff',
+        console.log(data);
+        this.employeeser.GetAllEmployees().subscribe((data: any) => {
+          this.employees = this.filteredData = data;
         });
-        this.loadData();
+        // Swal.fire({
+        // title: 'Employee has been successfully Deleted!',
+        // icon: 'success',
+        // confirmButtonColor: '#00b2ff',
+        // });
       });
     }
   }
@@ -219,6 +222,8 @@ export class DisplayEmployeeComponent implements OnInit {
       })
       .subscribe(
         (data: any) => {
+          this.loadData();
+
           Swal.fire({
             title: 'Form has been successfully submitted!',
             icon: 'success',
@@ -229,7 +234,6 @@ export class DisplayEmployeeComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
-          this.loadData();
         },
         (error) => {
           alert('error!!!! data is not updated ');
