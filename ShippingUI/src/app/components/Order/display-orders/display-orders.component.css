@@ -66,12 +66,24 @@ td {
   font-weight: 500;
 }
 
-.container {
+/* .container {
   box-shadow: 0px 10px 35px 0px rgba(56, 71, 109, 0.075);
-}
+} */
 
 input::placeholder {
   color: #5e6278;
+}
+
+.actions-select {
+  font-size: 13px;
+  font-weight: 500;
+}
+.w-95px {
+  width: 95px;
+}
+
+.mt-7 {
+  margin-top: 50px;
 }
 
 ::ng-deep .mat-paginator-range-label {
