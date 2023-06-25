@@ -41,8 +41,8 @@ export enum Sales {
 }
 
 export enum Order {
-  Read = 'permission.order.read',
-  Create = 'permission.order.add',
-  Update = 'permission.order.update',
-  Delete = 'permission.order.delete',
+  Read = 'permission.orders.read',
+  Create = 'permission.orders.add',
+  Update = 'permission.orders.update',
+  Delete = 'permission.orders.delete',
 }

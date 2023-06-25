@@ -72,6 +72,7 @@ export class AuthService {
   }
 
   checkPermission(permission: string) {
+
     for (let p of this.permissions) {
       if (p == permission) {
         return true;

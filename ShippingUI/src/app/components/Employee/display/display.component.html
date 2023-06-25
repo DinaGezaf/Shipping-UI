@@ -1,4 +1,4 @@
-<div class="vh-100 p-4">
+<div class="p-4">
   <h5 class="mb-5 pb-4 fw-medium" style="font-size: 19.5px">
     Employee Listing
   </h5>
@@ -37,12 +37,12 @@
           />
         </span>
       </div>
-      <div *ngIf="createPermission"
-
-      class="col-md-4 ps-4 pe-5" style="text-align: end">
-
+      <div
+        *ngIf="createPermission"
+        class="col-md-4 ps-4 pe-5"
+        style="text-align: end"
+      >
         <button
-
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
           (click)="openModal(0)"
         >
@@ -66,26 +66,32 @@
       <tbody>
         <tr *ngFor="let employee of filteredData; let i = index">
           <td class="ps-5">{{ i + 1 }}</td>
-          <td class="emp-name">{{ employee.name }}</td>
-          <td>{{ employee.email }}</td>
+          <td class="emp-name">{{ employee?.name }}</td>
+          <td>{{ employee?.email }}</td>
           <td>
-            <span *ngIf="employee.isActive" class="active">Active</span>
+            <span *ngIf="employee?.isActive" class="active">Active</span>
 
-            <span *ngIf="!employee.isActive" class="locked">Locked</span>
+            <span *ngIf="!employee?.isActive" class="locked">Locked</span>
           </td>
-          <td>{{ employee.branch?.branchName }}</td>
+          <td>{{ employee?.branch?.branchName }}</td>
           <!-- <td>{{ employee.privellage?.privellgeName }}</td> -->
-          <td>{{ employee.phoneNumber }}</td>
+          <td>{{ employee?.phoneNumber }}</td>
           <td>
             <select
-              *ngIf="employee.isActive"
+              *ngIf="employee?.isActive"
               class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
               (change)="onOptionSelected($event)"
               [(ngModel)]="selectedOption"
             >
               <option value="action">Action</option>
-              <option *ngIf="editPermission" value="edit/{{ employee.employeeId }}">Edit</option>
-              <option  *ngIf="deletePermission"
+              <option
+                *ngIf="editPermission"
+                value="edit/{{ employee.employeeId }}"
+              >
+                Edit
+              </option>
+              <option
+                *ngIf="deletePermission"
                 value="{{ employee.employeeId }}"
                 (click)="changeIsActive(employee.employeeId!)"
               >
@@ -104,13 +110,6 @@
     </mat-paginator> -->
   </div>
 </div>
-
-<!-- ---------------------------------------------------------------- -->
-
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button> -->
 
 <!-- Modal -->
 <div

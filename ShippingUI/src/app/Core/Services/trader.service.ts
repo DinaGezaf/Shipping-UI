@@ -10,7 +10,7 @@ export class TraderService {
   constructor(private http: HttpClient) {}
 
   AddTrader(newTrader: Trader) {
-    return this.http.post('https://localhost:5250/api/traders', newTrader, {
+    return this.http.post('http://localhost:5250/api/traders', newTrader, {
       responseType: 'text',
     });
   }
@@ -20,18 +20,18 @@ export class TraderService {
   }
 
   getTraderById(traderId: number) {
-    return this.http.get(`https://localhost:5250/api/traders/${traderId}`);
+    return this.http.get(`http://localhost:5250/api/traders/${traderId}`);
   }
 
   DeleteTrader(traderid: number) {
-    return this.http.delete(`https://localhost:5250/api/traders/${traderid}`, {
+    return this.http.delete(`http://localhost:5250/api/traders/${traderid}`, {
       responseType: 'text',
     });
   }
 
   updateTrader(id: number, updatedTrader: any) {
     return this.http.put(
-      `https://localhost:5250/api/traders/${id}`,
+      `http://localhost:5250/api/traders/${id}`,
       updatedTrader,
       {
         responseType: 'text',

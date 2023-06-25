@@ -47,7 +47,6 @@
 
 <div class="vh-100 p-4">
   <div class="container bg-white p-3 my-5 rounded">
-
     <div class="row py-3">
       <div class="col-md-8">
         <span class="form-control w-250px py-1 form-control-solid ms-2">
@@ -111,9 +110,13 @@
           </td>
 
           <td>
-            <a class="btn px-3 py-2 text-info fs-4" (click)="EditOrder(order)">
+            <a
+              class="btn px-3 py-2 text-info fs-4"
+              [routerLink]="'order/edit/' + order.orderId"
+            >
               <i class="bi bi-pencil-square"></i>
             </a>
+
             <a
               class="btn ms-3 px-3 py-2 text-danger fs-4"
               (click)="deleteOrder(order.orderId)"
@@ -126,6 +129,6 @@
     </table>
   </div>
 </div>
-<button class="pull-bottom-right bg-info" mat-fab (click)="AddOrder()">
+<button class="pull-bottom-right bg-info" mat-fab routerLink="order/add">
   <mat-icon>add</mat-icon>
 </button>

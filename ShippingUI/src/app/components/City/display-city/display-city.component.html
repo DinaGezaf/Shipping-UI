@@ -35,9 +35,9 @@
           />
         </span>
       </div>
-      <div  class="col-md-4 ps-4 pe-5" style="text-align: end">
+      <div class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
-        *ngIf="createPermission"
+          *ngIf="createPermission"
           class="btn d-inline bg-blue text-white p-2 px-3 me-2"
           (click)="openModal(0)"
         >
@@ -51,7 +51,7 @@
           <th>#</th>
           <th>Name</th>
           <th>Normal Shipping Cost</th>
-          <th>Pickup Shipping Cost</th>
+          <!-- <th>Pickup Shipping Cost</th> -->
           <th>Government</th>
           <th>Actions</th>
         </tr>
@@ -61,11 +61,11 @@
           <td>{{ i + 1 }}</td>
           <td class="emp-name">{{ city.cityName }}</td>
           <td>{{ city.normalShippingCost }}</td>
-          <td>{{ city.pickupShippingCost }}</td>
+          <!-- <td>{{ city.pickupShippingCost }}</td> -->
           <td>{{ city.govermentName }}</td>
           <td>
             <button
-            *ngIf="editPermission"
+              *ngIf="editPermission"
               class="btn bg-blue text-white"
               (click)="openModal(city.cityId)"
             >

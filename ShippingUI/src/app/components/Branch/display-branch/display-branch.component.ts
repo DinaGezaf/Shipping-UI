@@ -51,15 +51,20 @@ export class DisplayBranchComponent implements OnInit {
       document.getElementById('branchModel')
     );
   }
-
+  loadData() {
+    this.branchService.getAllBranches().subscribe((data: any) => {
+      this.branches = this.filteredData = data;
+    });
+  }
   deleteBranch(id: number) {
     this.branchService.deleteBranch(id).subscribe(
       (data: any) => {
-        alert('success delete');
-
-        this.branchService.getAllBranches().subscribe((data: any) => {
-          this.branches = this.filteredData = data;
+        Swal.fire({
+          title: 'Form has been successfully submitted!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
         });
+        this.loadData();
       },
       (error) => {
         alert('error !!!!!');
@@ -110,7 +115,11 @@ export class DisplayBranchComponent implements OnInit {
               confirmButtonColor: '#00b2ff',
               width: '416px',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('branchModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            this.loadData();
           },
           (error) => {
             alert('error !!!!!');
@@ -193,6 +202,7 @@ export class DisplayBranchComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error: any) => {
           alert('error !!!!!!!!');
@@ -203,7 +213,6 @@ export class DisplayBranchComponent implements OnInit {
 
   getData(id: any) {
     this.branchService.getBranchById(id).subscribe((data: Branch_1) => {
-      console.log(data);
       this.BranchForm.setValue({
         branchName: data.branchName,
         createdAt: data.createdAt,

@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './Core/Services/auth.guard';
 import { SidebarComponent } from './Shared/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
-import { Roles } from './Core/Models/Roles';
 import { DisplayEmployeeComponent } from './components/Employee/display/display.component';
 import { DisplayGovernmentComponent } from './components/Government/display/display.component';
 import { DisplayBranchComponent } from './components/Branch/display-branch/display-branch.component';
@@ -33,37 +32,6 @@ import { AddOrderComponent } from './components/Trader-View/add-order/add-order.
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  { path: 'privilege', component: DisplayPrivellageComponent },
-  { path: 'privilege/add', component: AddPrivellageComponent },
-  { path: 'privilege/edit/:id', component: EditPrevillageComponent },
-  {
-    path: 'government',
-    component: DisplayGovernmentComponent,
-    data: { permission: Government.Read },
-  },
-
-  {
-    path: 'branch',
-    component: DisplayBranchComponent,
-    data: { permission: Branch.Read },
-  },
-
-  {
-    path: 'salesRepresentator',
-    component: DisplaySalesComponent,
-    data: { permission: Sales.Read },
-  },
-
-  {
-    path: 'city',
-    component: DisplayCityComponent,
-    data: { permission: City.Read },
-  },
-  { path: '', component: LoginComponent },
-  { path: '', component: DisplayEmployeeComponent },
-
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
@@ -79,6 +47,7 @@ const routes: Routes = [
       {
         path: 'city',
         component: DisplayCityComponent,
+        data: { permission: City.Read },
       },
       {
         path: 'trader',
@@ -104,6 +73,16 @@ const routes: Routes = [
         path: 'order/list/employee',
         component: DisplayOrdersComponent,
         data: { permission: Order.Read },
+      },
+      {
+        path: 'order/list/employee/order/add',
+        component: AddOrderComponent,
+        data: { permission: Order.Create },
+      },
+      {
+        path: 'order/list/employee/order/edit/:id',
+        component: EditOrderComponent,
+        data: { permission: Order.Update },
       },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
       { path: 'privilege', component: DisplayPrivellageComponent },

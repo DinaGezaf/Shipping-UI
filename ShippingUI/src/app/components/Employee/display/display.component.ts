@@ -51,7 +51,6 @@ export class DisplayEmployeeComponent implements OnInit {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
       this.employees = this.filteredData = data;
     });
-    console.log(this.employees);
 
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('employeeModel')
@@ -59,9 +58,6 @@ export class DisplayEmployeeComponent implements OnInit {
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
-    // this.privilegeser.getAllPrivellages().subscribe((data: any) => {
-    //   this.privilegesarray = data;
-    // });
 
     this.employeeForm = new FormGroup({
       name: new FormControl(null, [
@@ -88,7 +84,11 @@ export class DisplayEmployeeComponent implements OnInit {
       branchid: new FormControl(null, Validators.required),
     });
   }
-
+  loadData() {
+    this.employeeser.GetAllEmployees().subscribe((data: any) => {
+      this.employees = this.filteredData = data;
+    });
+  }
   openModal(id: any) {
     if (!id) {
       this.allowEdit = false;
@@ -100,9 +100,6 @@ export class DisplayEmployeeComponent implements OnInit {
     this.formModel.classList.add('show');
     this.formModel.style.display = 'block';
     document.body.classList.add('modal-open');
-    const backdropElement = document.createElement('div');
-    backdropElement.classList.add('modal-backdrop', 'fade', 'show');
-    document.body.appendChild(backdropElement);
   }
 
   close() {
@@ -122,8 +119,6 @@ export class DisplayEmployeeComponent implements OnInit {
         this.formModel.classList.remove('show');
         this.formModel.style.display = 'none';
         document.body.classList.remove('modal-open');
-        this.backdropElement = document.querySelector('.modal-backdrop');
-        document.body.removeChild(this.backdropElement);
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -139,22 +134,18 @@ export class DisplayEmployeeComponent implements OnInit {
         });
       }
     });
-    this.employeeForm.reset();
   }
 
   changeIsActive(employeeId: number) {
     if (confirm('do you want to delete ?')) {
       this.employeeser.changeIsActive(employeeId).subscribe((data: any) => {
-        console.log('success deleted');
-        alert('success deleted');
-
-        this.employeeser.GetAllEmployees().subscribe((data: any) => {
-          this.employees = this.filteredData = data;
-
-          console.log(data);
+        Swal.fire({
+          title: 'Employee has been successfully Deleted!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
         });
+        this.loadData();
       });
-    } else {
     }
   }
 
@@ -206,8 +197,7 @@ export class DisplayEmployeeComponent implements OnInit {
             this.formModel.classList.remove('show');
             this.formModel.style.display = 'none';
             document.body.classList.remove('modal-open');
-            this.backdropElement = document.querySelector('.modal-backdrop');
-            document.body.removeChild(this.backdropElement);
+            this.loadData();
           },
           (error) => {
             alert('error !!!!!!');
@@ -239,8 +229,7 @@ export class DisplayEmployeeComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
-          this.backdropElement = document.querySelector('.modal-backdrop');
-          document.body.removeChild(this.backdropElement);
+          this.loadData();
         },
         (error) => {
           alert('error!!!! data is not updated ');
@@ -261,7 +250,6 @@ export class DisplayEmployeeComponent implements OnInit {
         email: data.email,
         password: data.password,
         phoneNumber: data.phoneNumber,
-        // privellge_Id: data.privellage?.privellge_Id,
         branchid: data.branch?.id,
       });
     });

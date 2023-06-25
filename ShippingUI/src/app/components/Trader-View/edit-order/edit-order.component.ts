@@ -8,6 +8,7 @@ import { CityService } from 'src/app/Core/Services/city.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-order',
@@ -31,15 +32,18 @@ export class EditOrderComponent implements OnInit {
   weightOption: any;
   traderEmail: any;
   orders: any;
+  id: any;
   constructor(
     private cityService: CityService,
     private governmentService: GovermentService,
     private branchService: BranchService,
     private orderService: OrderService,
     private authService: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<EditOrderComponent>
+    private router:Router
+    // private dialogRef: MatDialogRef<EditOrderComponent>
   ) {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
@@ -65,6 +69,9 @@ export class EditOrderComponent implements OnInit {
       phone1: new FormControl('', Validators.required),
       phone2: new FormControl('', Validators.required),
     });
+     this.route.params.subscribe((params) => {
+       this.id = params['id'];
+     });
 
     this.getGovernments();
     this.getBranches();
@@ -105,9 +112,10 @@ export class EditOrderComponent implements OnInit {
     });
   }
   UpdateOrder(): void {
-    if (this.orderForm.invalid) {
-      return;
-    }
+    // if (this.orderForm.invalid) {
+    //   return;
+    // }
+    const role = localStorage.getItem("role");
     const formData = this.orderForm.value;
     const orderData = {
       state: 'New',
@@ -142,7 +150,12 @@ export class EditOrderComponent implements OnInit {
       .subscribe((response: any) => {
         this.Message();
         this.loadOrders();
-        this.dialogRef.close();
+        // this.dialogRef.close();
+        if (role == 'trader') {
+          this.router.navigate(['/home/order/list/trader']);
+        } else if (role == 'admin') {
+          this.router.navigate(['/home/order/list/employee']);
+        }
       });
 
   }
@@ -158,7 +171,7 @@ export class EditOrderComponent implements OnInit {
     });
   }
   fetchOrderData() {
-    this.orderService.getOrderById(this.data).subscribe((order: any) => {
+    this.orderService.getOrderById(this.id).subscribe((order: any) => {
       this.order = order;
       console.log(this.order);
       this.populateFormWithSelectedOrder(this.order);

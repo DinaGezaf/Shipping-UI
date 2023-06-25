@@ -23,7 +23,7 @@ export class OrderDispalyTraderComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
   filteredDataOrder: any;
-
+  role: any;
   constructor(
     private orderService: OrderService,
     private dialog: MatDialog,
@@ -33,6 +33,7 @@ export class OrderDispalyTraderComponent implements OnInit {
   ngOnInit(): void {
     this.loadOrders();
     this.applyPagination();
+    this.role=localStorage.getItem("role")
   }
 
   selectState(state: string): void {

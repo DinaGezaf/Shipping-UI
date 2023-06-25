@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  Router,
   Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
   Routes,
 } from '@angular/router';
-import { Observable, delay, of, switchMap } from 'rxjs';
+import { Observable, delay, of } from 'rxjs';
 import { DisplayBranchComponent } from 'src/app/components/Branch/display-branch/display-branch.component';
 import { DisplayEmployeeComponent } from 'src/app/components/Employee/display/display.component';
 import { DisplayGovernmentComponent } from 'src/app/components/Government/display/display.component';
@@ -24,6 +21,8 @@ import { OrdersStatesTraderComponent } from 'src/app/components/Trader-View/orde
 import { DisplayTraderComponent } from 'src/app/components/Trader/display/display.component';
 import { Roles } from '../Models/Roles';
 import { DisplayCityComponent } from 'src/app/components/City/display-city/display-city.component';
+import { AddOrderComponent } from 'src/app/components/Trader-View/add-order/add-order.component';
+import { EditOrderComponent } from 'src/app/components/Trader-View/edit-order/edit-order.component';
 
 @Injectable({
   providedIn: 'root',
@@ -93,6 +92,8 @@ export const generateRoutesForRole = (): Promise<Routes> => {
 
         { path: 'order/list/sales', component: OrdersListComponent },
         { path: 'order/states/sales', component: OrdersStatesComponent },
+        { path: 'order/add', component: AddOrderComponent },
+        { path: 'order/edit/:id', component: EditOrderComponent },
       ];
     }
 

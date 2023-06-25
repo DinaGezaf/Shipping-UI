@@ -88,23 +88,52 @@ export default class DisplaySalesComponent implements OnInit {
       branchesIds: new FormControl(null, Validators.required),
     });
   }
+  loadData() {
+    this.salesservice.getAllSales().subscribe((data: any) => {
+      this.sales = this.filteredData = data;
+    });
+  }
   addSalesRepresentator() {
     this.router.navigate(['add'], { relativeTo: this.route });
   }
 
   deleteSales(id: number) {
-    this.salesservice.deleteSales(id).subscribe(
-      (data: any) => {
-        alert('success delete');
-        this.salesservice.getAllSales().subscribe((data: any) => {
-          this.sales = this.filteredData = data;
+    Swal.fire({
+      title: 'Are you sure you would like to cancel?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result: any) => {
+      if (result.value) {
+        this.salesservice.deleteSales(id).subscribe((data: any) => {
+          Swal.fire({
+            title: 'Trader has been successfully Deleted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
+
+          this.loadData();
         });
-      },
-      (error) => {
-        alert('error !!!!');
-        console.log(error.message);
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
       }
-    );
+    });
   }
 
   onOptionSelected(event: any) {
@@ -155,6 +184,7 @@ export default class DisplaySalesComponent implements OnInit {
             this.formModel.classList.remove('show');
             this.formModel.style.display = 'none';
             document.body.classList.remove('modal-open');
+            this.loadData();
           },
           (error) => {
             alert('error !!!');
@@ -164,10 +194,8 @@ export default class DisplaySalesComponent implements OnInit {
     } else {
       this.onEdit();
     }
-    this.salesservice.getAllSales().subscribe((data: any) => {
-      this.sales = this.filteredData = data;
-    });
   }
+
   openModal(id: any) {
     if (!id) {
       this.allowEdit = false;
@@ -213,7 +241,6 @@ export default class DisplaySalesComponent implements OnInit {
         });
       }
     });
-    this.salesForm.reset();
   }
 
   // Edit
@@ -236,6 +263,7 @@ export default class DisplaySalesComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error) => {
           alert('error !!!');

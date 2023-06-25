@@ -38,8 +38,7 @@ export class AddOrderComponent implements OnInit {
     private orderService: OrderService,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<AddOrderComponent>
+    private snackBar: MatSnackBar // private dialogRef: MatDialogRef<AddOrderComponent>
   ) {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
@@ -83,6 +82,7 @@ export class AddOrderComponent implements OnInit {
     // if (this.orderForm.invalid) {
     //   return;
     // }
+    const role = localStorage.getItem('role');
     const formData = this.orderForm.value;
     this.email = this.authService.getEmail();
     console.log(this.email);
@@ -116,11 +116,15 @@ export class AddOrderComponent implements OnInit {
     this.orderService
       .addOrder(orderData, this.email)
       .subscribe((response: any) => {
-        this.dialogRef.close();
+        if (role == 'trader') {
+          this.router.navigate(['/home/order/list/trader']);
+        } else if (role == 'admin') {
+          this.router.navigate(['/home/order/list/employee']);
+        }
+        // this.dialogRef.close();
         this.Message();
         this.loadOrders();
-       });
-
+      });
   }
 
   loadOrders(): void {
