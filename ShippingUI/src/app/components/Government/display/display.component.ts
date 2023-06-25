@@ -6,6 +6,8 @@ import { CityService } from 'src/app/Core/Services/city.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/Core/Services/auth.service';
+import { Government } from 'src/app/Core/Models/Permission';
 
 declare var window: any;
 @Component({
@@ -21,7 +23,18 @@ export class DisplayGovernmentComponent implements OnInit {
   governmentId!: number;
   governmentForm!: FormGroup;
 
-  constructor(private governmentService: GovermentService) {}
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
+
+  constructor(
+    private governmentService: GovermentService,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Government.Update);
+    this.createPermission = auth.checkPermission(Government.Create);
+    this.createPermission = auth.checkPermission(Government.Delete);
+  }
   ngOnInit(): void {
     this.governmentService.GetAllGovernment().subscribe((data: any) => {
       this.governments = this.filteredData = data;

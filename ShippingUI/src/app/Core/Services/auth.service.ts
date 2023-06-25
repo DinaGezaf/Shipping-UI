@@ -6,23 +6,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AuthService {
+  islogged = false;
+  permissions: string[] = [];
+  private token = '';
+
+  constructor(private http: HttpClient) {
+    let tokenstring = localStorage.getItem('authToken');
+    let claims = JSON.parse(localStorage.getItem('claims')!);
+    if (!tokenstring) {
+      return;
+    }
+
+    (this.islogged = true), (this.permissions = claims);
+    this.token = tokenstring;
+  }
+
   private readonly TOKEN_KEY = 'authToken';
   private isAuthenticated = false;
   LoggedIn: boolean = false;
-  generatedRoutes!:string;
+  generatedRoutes!: string;
 
   URL: string = 'http://localhost:5250/api/Account';
-  constructor(private http: HttpClient) {
-    this.isAuthenticated = !!localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const generatedRoutesString = localStorage.getItem('generatedRoutes');
-    let generatedRoutes: Routes = [];
-
-    if (role && generatedRoutesString) {
-      generatedRoutes = JSON.parse(generatedRoutesString);
-      this.LoggedIn = true;
-    }
-  }
 
   login(email: string, password: string) {
     const loginData = {
@@ -46,11 +50,15 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
   }
 
   setEmail(email: string) {
     localStorage.setItem('email', email);
+  }
+
+  setClaims(claims: any) {
+    localStorage.setItem('claims', JSON.stringify(claims));
   }
 
   getEmail() {
@@ -63,6 +71,14 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
+  checkPermission(permission: string) {
+    for (let p of this.permissions) {
+      if (p == permission) {
+        return true;
+      }
+    }
+    return false;
+  }
   isLoggedIn(): boolean {
     return this.isAuthenticated;
   }

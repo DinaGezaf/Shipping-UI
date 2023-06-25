@@ -35,7 +35,9 @@
           />
         </span>
       </div>
-      <div class="col-md-4" style="text-align: end">
+      <div
+      *ngIf="createPermission"
+       class="col-md-4" style="text-align: end">
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
           (click)="openModal(0)"
@@ -72,8 +74,9 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ trader.traderId }}">Edit</option>
+              <option *ngIf="editPermission" value="edit/{{ trader.traderId }}">Edit</option>
               <option
+              *ngIf="deletePermission"
                 value="{{ trader.traderId! }} "
                 (click)="DeleteTrader(trader.traderId!)"
               >
@@ -148,6 +151,7 @@
             data-kt-scroll-offset="300px"
             style="max-height: 92px"
           >
+
             <form [formGroup]="traderForm" (ngSubmit)="onsubmit()">
               <div class="form-inputs px-5">
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">

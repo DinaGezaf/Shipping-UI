@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Roles } from 'src/app/Core/Models/Roles';
 import { AuthGuard } from 'src/app/Core/Services/auth.guard';
 import { AuthService } from 'src/app/Core/Services/auth.service';
+import { TraderService } from 'src/app/Core/Services/trader.service';
 import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 
@@ -23,7 +24,8 @@ export class LoginComponent {
     private router: Router,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private routingModule: AppRoutingModule
+    private routingModule: AppRoutingModule,
+    private traderservice: TraderService
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +44,13 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe(
       (response: any) => {
+        console.log(response);
         const token = response.token;
         this.authService.setToken(token);
+
+        const claims = response.claims;
+        this.authService.setClaims(claims);
+
         const role = response.role;
         this.authService.setUserRole(role);
         this.authService.setEmail(email);

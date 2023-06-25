@@ -29,13 +29,13 @@ export class DisplayPrivellageComponent implements OnInit {
       this.privileges = this.filteredData = data;
       console.log(data);
     });
-    this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
-    );
-    this.privilegeForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      date: new FormControl(null, Validators.required),
-    });
+    // this.formModel = new window.bootstrap.Modal(
+    // document.getElementById('exampleModalCenter')
+    // );
+    // this.privilegeForm = new FormGroup({
+    // name: new FormControl(null, Validators.required),
+    // date: new FormControl(null, Validators.required),
+    // });
   }
 
   deletePrivilege(id: number) {
@@ -47,6 +47,7 @@ export class DisplayPrivellageComponent implements OnInit {
           confirmButtonColor: '#00b2ff',
           width: '416px',
         });
+
         this.privellageser.getAllPrivellages().subscribe((data: any) => {
           this.privileges = this.filteredData = data;
         });
@@ -57,6 +58,7 @@ export class DisplayPrivellageComponent implements OnInit {
       }
     );
   }
+
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
@@ -82,32 +84,6 @@ export class DisplayPrivellageComponent implements OnInit {
     this.filteredData = this.filterData(inputValue);
   }
 
-  // Add
-  onsubmit() {
-    this.privellageser
-      .addPrivilege({
-        ...this.privilegeForm.value,
-      })
-      .subscribe(
-        (data) => {
-          Swal.fire({
-            title: 'Form has been successfully submitted!',
-            icon: 'success',
-            confirmButtonColor: '#00b2ff',
-            width: '416px',
-          });
-          this.formModel.hide();
-          this.privellageser.getAllPrivellages().subscribe((data: any) => {
-            this.privileges = this.filteredData = data;
-          });
-        },
-        (error) => {
-          alert('error !!!!!');
-          console.log(error);
-        }
-      );
-  }
-
   getData(id: any) {
     this.privellageser.getPrivilegeById(id).subscribe((data: privilege) => {
       console.log(data);
@@ -119,27 +95,7 @@ export class DisplayPrivellageComponent implements OnInit {
     });
   }
 
-  onEdit() {
-    this.privellageser
-      .updatePrivilege(this.id, {
-        ...this.privilegeForm.value,
-        id: this.id,
-      })
-      .subscribe(
-        (data) => {
-          Swal.fire({
-            title: 'Form has been successfully submitted!',
-            icon: 'success',
-            confirmButtonColor: '#00b2ff',
-          });
-          this.formModel.hide();
-          this.privellageser.getAllPrivellages().subscribe((data: any) => {
-            this.privileges = this.filteredData = data;
-          });
-        },
-        (error) => {
-          alert('error !!!!!!!!');
-        }
-      );
+  onAdd() {
+    this.router.navigate(['add'], { relativeTo: this.route });
   }
 }

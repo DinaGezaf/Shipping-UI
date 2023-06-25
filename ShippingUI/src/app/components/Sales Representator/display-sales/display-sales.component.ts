@@ -22,8 +22,6 @@ export default class DisplaySalesComponent implements OnInit {
   branches: Branch[] = [];
   governments: Goverment[] = [];
 
-  durationInSeconds = 5;
-
   id!: number;
   allowEdit = false;
   salesId!: number;

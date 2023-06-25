@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Branch } from 'src/app/Core/Models/Branch';
-import { Trader } from 'src/app/Core/Models/Trader';
+import { Trader as Trader_1 } from 'src/app/Core/Models/Trader';
+
+import { Trader } from 'src/app/Core/Models/Permission';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { TraderService } from 'src/app/Core/Services/trader.service';
 import Swal from 'sweetalert2';
@@ -15,8 +18,8 @@ declare var window: any;
   styleUrls: ['./display.component.css'],
 })
 export class DisplayTraderComponent implements OnInit {
-  traders: Trader[] = [];
-  filteredData: Trader[] = [];
+  traders: Trader_1[] = [];
+  filteredData: Trader_1[] = [];
   Id!: number;
   branchesArray!: Branch[];
   formModel: any;
@@ -24,12 +27,21 @@ export class DisplayTraderComponent implements OnInit {
   allowEdit = false;
   traderId!: number;
 
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
+
   constructor(
     private traderservice: TraderService,
     private router: Router,
     private route: ActivatedRoute,
-    private branchservice: BranchService
-  ) {}
+    private branchservice: BranchService,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Trader.Update);
+    this.createPermission = auth.checkPermission(Trader.Create);
+    this.deletePermission = auth.checkPermission(Trader.Delete);
+  }
 
   ngOnInit(): void {
     this.traderservice.GetAllTraders().subscribe((data: any) => {
@@ -212,7 +224,7 @@ export class DisplayTraderComponent implements OnInit {
   }
 
   getData(id: any) {
-    this.traderservice.getTraderById(id).subscribe((data: Trader) => {
+    this.traderservice.getTraderById(id).subscribe((data: Trader_1) => {
       console.log(data);
       this.traderForm.setValue({
         userName: data.userName,
