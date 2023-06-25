@@ -56,7 +56,7 @@
           <th>EMAIL</th>
           <th>PHONE NUMBER</th>
           <th>COMPANY PERCENTAGE</th>
-          <th>BRANCHES</th>
+          <!-- <th>BRANCHES</th> -->
           <th>STATE</th>
           <th class="ps-5">ACTIONS</th>
         </tr>
@@ -68,11 +68,11 @@
           <td>{{ item.email }}</td>
           <td>{{ item.phoneNumber }}</td>
           <td>{{ item.companyPercentage }}</td>
-          <td>
+          <!-- <td>
             <p *ngFor="let branch of item.branches">
               {{ branch.branchName }}
             </p>
-          </td>
+          </td> -->
           <td>
             <span *ngIf="item.isActive" class="active">Active</span>
 
@@ -112,7 +112,7 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="exampleModalCenter"
+  id="salesModel"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalCenterTitle"

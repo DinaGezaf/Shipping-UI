@@ -47,6 +47,7 @@
 
 <div class="vh-100 p-4">
   <div class="container bg-white p-3 my-5 rounded">
+
     <div class="row py-3">
       <div class="col-md-8">
         <span class="form-control w-250px py-1 form-control-solid ms-2">
@@ -74,7 +75,7 @@
           </svg>
           <input
             type="text"
-            placeholder="Search SalesRepresentator"
+            placeholder="Search Orders"
             class="d-inline form-control-solid border-0 px-2"
             style="outline: 0; padding: 5px 0px"
             (input)="onInputChange($event)"
@@ -96,7 +97,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders; let i = index">
+        <tr *ngFor="let order of filteredDataOrder; let i = index">
           <td class="ps-5">{{ i + 1 }}</td>
           <td class="emp-name">{{ order.orderDate }}</td>
           <td>{{ order.customer.name }}<br />{{ order.customer.phone1 }}</td>

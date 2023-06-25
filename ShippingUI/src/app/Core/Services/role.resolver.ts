@@ -23,6 +23,7 @@ import { OrderDispalyTraderComponent } from 'src/app/components/Trader-View/orde
 import { OrdersStatesTraderComponent } from 'src/app/components/Trader-View/orders-states-trader/orders-states-trader.component';
 import { DisplayTraderComponent } from 'src/app/components/Trader/display/display.component';
 import { Roles } from '../Models/Roles';
+import { DisplayCityComponent } from 'src/app/components/City/display-city/display-city.component';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,8 @@ export const generateRoutesForRole = (): Promise<Routes> => {
 
     if (storedRole === Roles.Employee) {
       routes = [
+        { path: 'branch', component: DisplayBranchComponent },
+        { path: 'city', component: DisplayCityComponent },
         { path: 'trader', component: DisplayTraderComponent },
         { path: 'employee', component: DisplayEmployeeComponent },
         { path: 'sales', component: DisplaySalesComponent },
@@ -64,6 +67,30 @@ export const generateRoutesForRole = (): Promise<Routes> => {
       ];
     } else if (storedRole === Roles.SalesRepresentative) {
       routes = [
+        { path: 'order/list/sales', component: OrdersListComponent },
+        { path: 'order/states/sales', component: OrdersStatesComponent },
+      ];
+    } else if (storedRole == Roles.Admin) {
+      routes = [
+        { path: 'branch', component: DisplayBranchComponent },
+        { path: 'city', component: DisplayCityComponent },
+        { path: 'trader', component: DisplayTraderComponent },
+        { path: 'employee', component: DisplayEmployeeComponent },
+        { path: 'sales', component: DisplaySalesComponent },
+        {
+          path: 'order/states/employee',
+          component: DisplayOrdersStatesComponent,
+        },
+        { path: 'order/list/employee', component: DisplayOrdersComponent },
+        { path: 'order/weightoption', component: WeightCostPerOrderComponent },
+        { path: 'privilege', component: DisplayPrivellageComponent },
+        { path: 'privilege/add', component: AddPrivellageComponent },
+        { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+        { path: 'government', component: DisplayGovernmentComponent },
+
+        { path: 'order/list/trader', component: OrderDispalyTraderComponent },
+        { path: 'order/states/trader', component: OrdersStatesTraderComponent },
+
         { path: 'order/list/sales', component: OrdersListComponent },
         { path: 'order/states/sales', component: OrdersStatesComponent },
       ];

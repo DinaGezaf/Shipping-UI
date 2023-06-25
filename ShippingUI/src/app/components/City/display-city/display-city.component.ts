@@ -49,23 +49,7 @@ export class DisplayCityComponent {
       pickupShippingCost: new FormControl(null, Validators.required),
       governmentId: new FormControl(null, Validators.required),
     });
-    this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
-    );
   }
-
-  // onOptionSelected(event: any) {
-  //   const selectedValue = event.target.value;
-  //   if (selectedValue.startsWith('edit/')) {
-  //     const cityId = selectedValue.substr(5);
-  //     this.openModal(cityId);
-  //     this.allowEdit = true;
-  //   } else {
-  //     const cityId = selectedValue;
-  //     // this.deleteBranch(branchid);
-  //   }
-  //   event.target.value = 'action';
-  // }
 
   filterData(inputValue: string) {
     const searchTerm = inputValue.toLowerCase().trim();
@@ -95,7 +79,10 @@ export class DisplayCityComponent {
               icon: 'success',
               confirmButtonColor: '#00b2ff',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('cityModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
           },
           (error) => {
             alert('error !!!!!');
@@ -120,7 +107,11 @@ export class DisplayCityComponent {
       this.getData(id);
       this.cityId = id;
     }
-    this.formModel.show();
+    // this.formModel.show();
+    this.formModel = document.getElementById('cityModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
 
   close() {
@@ -136,7 +127,12 @@ export class DisplayCityComponent {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+        // this.formModel.hide();
+
+        this.formModel = document.getElementById('cityModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -169,7 +165,10 @@ export class DisplayCityComponent {
             icon: 'success',
             confirmButtonColor: '#00b2ff',
           });
-          this.formModel.hide();
+           this.formModel = document.getElementById('cityModel');
+           this.formModel.classList.remove('show');
+           this.formModel.style.display = 'none';
+           document.body.classList.remove('modal-open');
         },
         (error: any) => {
           alert('error !!!!!!!!');

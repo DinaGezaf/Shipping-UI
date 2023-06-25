@@ -68,12 +68,36 @@ const routes: Routes = [
     data: { permission: City.Read },
   },
   { path: '', component: LoginComponent },
+  { path: '', component: DisplayEmployeeComponent },
+  // { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
     component: SidebarComponent,
     canActivate: [AuthGuard],
-    children: [],
+    children: [
+      { path: 'branch', component: DisplayBranchComponent },
+      { path: 'city', component: DisplayCityComponent },
+      { path: 'trader', component: DisplayTraderComponent },
+      { path: 'employee', component: DisplayEmployeeComponent },
+      { path: 'sales', component: DisplaySalesComponent },
+      {
+        path: 'order/states/employee',
+        component: DisplayOrdersStatesComponent,
+      },
+      { path: 'order/list/employee', component: DisplayOrdersComponent },
+      { path: 'order/weightoption', component: WeightCostPerOrderComponent },
+      { path: 'privilege', component: DisplayPrivellageComponent },
+      { path: 'privilege/add', component: AddPrivellageComponent },
+      { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+      { path: 'government', component: DisplayGovernmentComponent },
+
+      { path: 'order/list/trader', component: OrderDispalyTraderComponent },
+      { path: 'order/states/trader', component: OrdersStatesTraderComponent },
+
+      { path: 'order/list/sales', component: OrdersListComponent },
+      { path: 'order/states/sales', component: OrdersStatesComponent },
+    ],
   },
 ];
 

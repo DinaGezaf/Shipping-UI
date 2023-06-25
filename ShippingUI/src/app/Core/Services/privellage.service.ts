@@ -26,10 +26,12 @@ export class PrivellageService {
   }
 
   deletePrivilege(privilege_id: number) {
-    return this.http.delete('https://localhost:44355/api/Permissions', {
-      params: new HttpParams().set('id', privilege_id),
-      responseType: 'text',
-    });
+    return this.http.delete(
+      `https://localhost:44355/api/Permissions/${privilege_id}`,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   updatePrivilege(id: number, privilege: any) {

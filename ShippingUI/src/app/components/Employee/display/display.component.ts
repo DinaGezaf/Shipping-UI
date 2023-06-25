@@ -28,6 +28,7 @@ export class DisplayEmployeeComponent implements OnInit {
   employeeForm!: FormGroup;
   empId!: number;
   selectedOption = 'action';
+  backdropElement: any;
 
   editPermission = false;
   deletePermission = false;
@@ -53,7 +54,7 @@ export class DisplayEmployeeComponent implements OnInit {
     console.log(this.employees);
 
     this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
+      document.getElementById('employeeModel')
     );
     this.branchser.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
@@ -95,7 +96,13 @@ export class DisplayEmployeeComponent implements OnInit {
       this.empId = id;
       this.getData(id);
     }
-    this.formModel.show();
+    this.formModel = document.getElementById('employeeModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
+    const backdropElement = document.createElement('div');
+    backdropElement.classList.add('modal-backdrop', 'fade', 'show');
+    document.body.appendChild(backdropElement);
   }
 
   close() {
@@ -111,7 +118,12 @@ export class DisplayEmployeeComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+        this.formModel = document.getElementById('employeeModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        this.backdropElement = document.querySelector('.modal-backdrop');
+        document.body.removeChild(this.backdropElement);
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -190,7 +202,12 @@ export class DisplayEmployeeComponent implements OnInit {
               width: '416px',
               confirmButtonColor: '#00b2ff',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('employeeModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            this.backdropElement = document.querySelector('.modal-backdrop');
+            document.body.removeChild(this.backdropElement);
           },
           (error) => {
             alert('error !!!!!!');
@@ -218,7 +235,12 @@ export class DisplayEmployeeComponent implements OnInit {
             confirmButtonColor: '#00b2ff',
             width: '416px',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('employeeModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
+          this.backdropElement = document.querySelector('.modal-backdrop');
+          document.body.removeChild(this.backdropElement);
         },
         (error) => {
           alert('error!!!! data is not updated ');

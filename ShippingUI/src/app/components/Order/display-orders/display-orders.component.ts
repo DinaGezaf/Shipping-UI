@@ -19,6 +19,7 @@ export class DisplayOrdersComponent implements OnInit {
   selectedState: string | null = '';
   salesRepresentativeId: any;
   empEmail: any;
+  filteredDataOrder: any;
 
   editPermission = false;
   deletePermission = false;
@@ -54,7 +55,7 @@ export class DisplayOrdersComponent implements OnInit {
             ? orders.filter((order: any) => order.state === this.selectedState)
             : orders;
 
-        this.orders = filteredOrders;
+        this.orders = this.filteredDataOrder = filteredOrders;
         this.orders.paginator = this.paginator;
       });
   }
@@ -71,14 +72,15 @@ export class DisplayOrdersComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.orders.filter((item: any) => {
-      const itemName = item.name?.toLowerCase();
-
+      const itemName = item.customer?.goverment.toLowerCase();
+      console.log(itemName);
       return itemName?.startsWith(searchTerm);
     });
   }
   onInputChange(event: any) {
     const inputValue = event.target.value;
-    this.orders = this.filterData(inputValue);
+    console.log(inputValue);
+    this.filteredDataOrder = this.filterData(inputValue);
   }
   openModal(): void {
     const dialogRef = this.dialog.open(WeightCostPerOrderComponent, {});

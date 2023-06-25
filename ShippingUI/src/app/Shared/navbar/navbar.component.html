@@ -13,7 +13,15 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="fs-3 text-light">
+    <div
+      class="fs-3 text-light"
+      *ngIf="role == 'trader' || role == 'salesrepresentative'"
+    >
+      <a routerLink="/dashboard" class="nav-link text-info mx-5">
+        CargoSwift
+      </a>
+    </div>
+    <div class="fs-3 text-light ms-5 ps-5" *ngIf="role == 'employee'">
       <a routerLink="/dashboard" class="nav-link text-info mx-5">
         CargoSwift
       </a>
@@ -40,6 +48,12 @@
         <li class="nav-item px-2">
           <a class="nav-link" routerLink="order/states/sales">Orders States</a>
         </li>
+      </ul>
+      <ul class="navbar-nav main-menu" *ngIf="role == 'employee'">
+        <li class="nav-item px-2"></li>
+      </ul>
+      <ul class="navbar-nav main-menu" *ngIf="role == 'admin'">
+        <li class="nav-item px-2"></li>
       </ul>
     </div>
 

@@ -13,10 +13,16 @@ import { EditOrderComponent } from '../edit-order/edit-order.component';
   styleUrls: ['./order-display-Trader.component.css'],
 })
 export class OrderDispalyTraderComponent implements OnInit {
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalItems: number = 0;
+  totalPages!: number;
+  pages!: number[];
   email: any;
   orders: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   selectedState: string | null = '';
+  filteredDataOrder: any;
 
   constructor(
     private orderService: OrderService,
@@ -26,7 +32,7 @@ export class OrderDispalyTraderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
-    console.log(this.orderService.getWeightOptions());
+    this.applyPagination();
   }
 
   selectState(state: string): void {
@@ -45,9 +51,9 @@ export class OrderDispalyTraderComponent implements OnInit {
           const filteredOrdersByState = filteredOrders.filter(
             (order: any) => order.state === this.selectedState
           );
-          this.orders = filteredOrdersByState;
+          this.orders = this.filteredDataOrder = filteredOrdersByState;
         } else {
-          this.orders = filteredOrders;
+          this.orders = this.filteredDataOrder = filteredOrders;
         }
 
         this.orders.paginator = this.paginator;
@@ -85,15 +91,48 @@ export class OrderDispalyTraderComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.orders.filter((item: any) => {
-      const itemName = item.name?.toLowerCase();
-
+      const itemName = item.customer?.goverment.toLowerCase();
+      console.log(itemName);
       return itemName?.startsWith(searchTerm);
     });
   }
   onInputChange(event: any) {
     const inputValue = event.target.value;
-    this.orders = this.filterData(inputValue);
+    console.log(inputValue);
+    this.filteredDataOrder = this.filterData(inputValue);
   }
 
+  applyPagination() {
+    const filteredOrders = this.selectedState
+      ? this.orders.filter((order: any) => order.state === this.selectedState)
+      : this.orders;
 
+    this.totalItems = filteredOrders.length;
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+
+    this.orders = filteredOrders.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.applyPagination();
+    }
+  }
+
+  onPageSizeChange() {
+    this.currentPage = 1;
+    this.applyPagination();
+  }
+
+  selectStatePagination(state: string) {
+    this.selectedState = state;
+    this.currentPage = 1;
+    this.applyPagination();
+  }
 }

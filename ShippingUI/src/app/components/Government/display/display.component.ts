@@ -62,11 +62,12 @@ export class DisplayGovernmentComponent implements OnInit {
       });
   }
   onEdit() {
+    const government = {
+      govermentName: this.governmentForm.value.governmentName,
+      state: Boolean(this.governmentForm.value.state),
+    };
     this.governmentService
-      .EditGovernment(this.governmentId, {
-        ...this.governmentForm.value,
-        GovermentId: this.governmentId,
-      })
+      .EditGovernment(this.governmentId, government)
       .subscribe(
         (data: any) => {
           Swal.fire({
@@ -74,7 +75,10 @@ export class DisplayGovernmentComponent implements OnInit {
             icon: 'success',
             confirmButtonColor: '#00b2ff',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('governmentModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error: any) => {
           alert('error !!!!!!!!');
@@ -84,25 +88,28 @@ export class DisplayGovernmentComponent implements OnInit {
 
   onsubmit() {
     if (!this.allowEdit) {
-      this.governmentService
-        .addGovernment({
-          ...this.governmentForm.value,
-          state: true,
-        })
-        .subscribe(
-          (data: any) => {
-            Swal.fire({
-              title: 'Form has been successfully submitted!',
-              icon: 'success',
-              confirmButtonColor: '#00b2ff',
-            });
-            this.formModel.hide();
-          },
-          (error) => {
-            alert('error !!!!!');
-            console.log(error);
-          }
-        );
+      const government = {
+        govermentName: this.governmentForm.value.governmentName,
+        state: true,
+      };
+      console.log(government);
+      this.governmentService.addGovernment(government).subscribe(
+        (data: any) => {
+          Swal.fire({
+            title: 'Form has been successfully submitted!',
+            icon: 'success',
+            confirmButtonColor: '#00b2ff',
+          });
+          this.formModel = document.getElementById('governmentModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
+        },
+        (error) => {
+          alert('error !!!!!');
+          console.log(error);
+        }
+      );
     } else this.onEdit();
   }
 
@@ -115,7 +122,10 @@ export class DisplayGovernmentComponent implements OnInit {
       this.allowEdit = true;
       this.governmentId = id;
     }
-    this.formModel.show();
+    this.formModel = document.getElementById('governmentModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
 
   close() {
@@ -131,7 +141,10 @@ export class DisplayGovernmentComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+        this.formModel = document.getElementById('governmentModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',

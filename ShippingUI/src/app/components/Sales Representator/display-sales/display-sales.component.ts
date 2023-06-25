@@ -41,9 +41,6 @@ export default class DisplaySalesComponent implements OnInit {
     this.salesservice.getAllSales().subscribe((data: any) => {
       this.sales = this.filteredData = data;
     });
-    this.formModel = new window.bootstrap.Modal(
-      document.getElementById('exampleModalCenter')
-    );
     this.branchservice.getAllBranches().subscribe((data: any) => {
       this.branches = data;
     });
@@ -98,6 +95,7 @@ export default class DisplaySalesComponent implements OnInit {
       }
     );
   }
+
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
     if (selectedValue.startsWith('edit/')) {
@@ -142,7 +140,10 @@ export default class DisplaySalesComponent implements OnInit {
               confirmButtonColor: '#00b2ff',
               width: '416px',
             });
-            this.formModel.hide();
+            this.formModel = document.getElementById('salesModel');
+            this.formModel.classList.remove('show');
+            this.formModel.style.display = 'none';
+            document.body.classList.remove('modal-open');
           },
           (error) => {
             alert('error !!!');
@@ -163,7 +164,10 @@ export default class DisplaySalesComponent implements OnInit {
       this.getData(id);
       this.salesId = id;
     }
-    this.formModel.show();
+    this.formModel = document.getElementById('salesModel');
+    this.formModel.classList.add('show');
+    this.formModel.style.display = 'block';
+    document.body.classList.add('modal-open');
   }
 
   close() {
@@ -179,7 +183,10 @@ export default class DisplaySalesComponent implements OnInit {
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
       if (result.value) {
-        this.formModel.hide();
+        this.formModel = document.getElementById('salesModel');
+        this.formModel.classList.remove('show');
+        this.formModel.style.display = 'none';
+        document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
           title: 'Your form has not been cancelled!.',
@@ -214,7 +221,10 @@ export default class DisplaySalesComponent implements OnInit {
             width: '416px',
             confirmButtonColor: '#00b2ff',
           });
-          this.formModel.hide();
+          this.formModel = document.getElementById('salesModel');
+          this.formModel.classList.remove('show');
+          this.formModel.style.display = 'none';
+          document.body.classList.remove('modal-open');
         },
         (error) => {
           alert('error !!!');
