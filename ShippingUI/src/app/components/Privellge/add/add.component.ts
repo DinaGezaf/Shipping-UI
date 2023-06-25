@@ -94,7 +94,7 @@ export class AddPrivellageComponent implements OnInit {
       this.privilegeservice.addPrivilege(role).subscribe(
         (data) => {
           alert('success add');
-          this.router.navigate(['privilege']);
+          this.router.navigate(['/home/privilege']);
         },
         (error) => {
           alert('error !!!!!');

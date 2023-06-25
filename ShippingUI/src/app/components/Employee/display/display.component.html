@@ -58,7 +58,6 @@
           <th>EMAIL</th>
           <th>STATUS</th>
           <th>BRANCH</th>
-          <!-- <th>PRIVELLGE</th> -->
           <th>PHONE NO.</th>
           <th class="ps-5">ACTIONS</th>
         </tr>
@@ -74,7 +73,6 @@
             <span *ngIf="!employee?.isActive" class="locked">Locked</span>
           </td>
           <td>{{ employee?.branch?.branchName }}</td>
-          <!-- <td>{{ employee.privellage?.privellgeName }}</td> -->
           <td>{{ employee?.phoneNumber }}</td>
           <td>
             <select
@@ -102,12 +100,6 @@
         </tr>
       </tbody>
     </table>
-    <!-- <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      showFirstLastButtons
-      aria-label="Select page of periodic elements"
-    >
-    </mat-paginator> -->
   </div>
 </div>
 

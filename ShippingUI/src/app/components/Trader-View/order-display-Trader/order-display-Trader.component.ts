@@ -26,18 +26,17 @@ export class OrderDispalyTraderComponent implements OnInit {
   role: any;
   constructor(
     private orderService: OrderService,
-    private dialog: MatDialog,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadOrders();
     this.applyPagination();
-    this.role=localStorage.getItem("role")
+    this.role = localStorage.getItem('role');
   }
 
-  selectState(state: string): void {
-    this.selectedState = state === 'All' ? '' : state;
+  selectState(e: any): void {
+    this.selectedState = e.target.value === 'All' ? '' : e.target.value;
     this.loadOrders();
   }
 
@@ -60,24 +59,6 @@ export class OrderDispalyTraderComponent implements OnInit {
         this.orders.paginator = this.paginator;
       }
     });
-  }
-
-  EditOrder(order: Order): void {
-    const dialogRef = this.dialog.open(EditOrderComponent, {
-      data: order.orderId,
-      width: '1200px',
-      maxHeight: '90vh',
-    });
-
-    dialogRef.afterClosed().subscribe();
-  }
-  AddOrder(): void {
-    const dialogRef = this.dialog.open(AddOrderComponent, {
-      width: '1200px',
-      maxHeight: '90vh',
-    });
-
-    dialogRef.afterClosed().subscribe();
   }
 
   deleteOrder(orderId: number) {

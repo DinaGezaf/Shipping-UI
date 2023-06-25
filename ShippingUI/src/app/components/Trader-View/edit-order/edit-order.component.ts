@@ -9,6 +9,7 @@ import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-order',
@@ -42,9 +43,9 @@ export class EditOrderComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) public data: any,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private router:Router
-    // private dialogRef: MatDialogRef<EditOrderComponent>
-  ) {
+    private router: Router
+  ) // private dialogRef: MatDialogRef<EditOrderComponent>
+  {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
     );
@@ -69,9 +70,9 @@ export class EditOrderComponent implements OnInit {
       phone1: new FormControl('', Validators.required),
       phone2: new FormControl('', Validators.required),
     });
-     this.route.params.subscribe((params) => {
-       this.id = params['id'];
-     });
+    this.route.params.subscribe((params) => {
+      this.id = params['id'];
+    });
 
     this.getGovernments();
     this.getBranches();
@@ -112,10 +113,7 @@ export class EditOrderComponent implements OnInit {
     });
   }
   UpdateOrder(): void {
-    // if (this.orderForm.invalid) {
-    //   return;
-    // }
-    const role = localStorage.getItem("role");
+    const role = localStorage.getItem('role');
     const formData = this.orderForm.value;
     const orderData = {
       state: 'New',
@@ -145,19 +143,27 @@ export class EditOrderComponent implements OnInit {
     };
     console.log(orderData);
     this.email = this.authService.getEmail();
-    this.orderService
-      .updateOrder(this.order.orderId, orderData)
-      .subscribe((response: any) => {
+    this.orderService.updateOrder(this.order.orderId, orderData).subscribe(
+      (response: any) => {
         this.Message();
         this.loadOrders();
-        // this.dialogRef.close();
-        if (role == 'trader') {
-          this.router.navigate(['/home/order/list/trader']);
-        } else if (role == 'admin') {
-          this.router.navigate(['/home/order/list/employee']);
-        }
-      });
-
+        this.router.navigate(['/home/order/list/trader']);
+      },
+      (error: any) => {
+        Swal.fire({
+          title: 'Invalid Inputs, Please Enter Valid Order.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    );
   }
   loadOrders(): void {
     this.email = this.authService.getEmail();

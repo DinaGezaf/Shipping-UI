@@ -9,8 +9,20 @@ export class AuthService {
   islogged = false;
   permissions: string[] = [];
   private token = '';
+  private readonly TOKEN_KEY = 'authToken';
+  private isAuthenticated = false;
+  LoggedIn: boolean = false;
+  generatedRoutes!: string;
 
   constructor(private http: HttpClient) {
+    this.isAuthenticated = !!localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    const generatedRoutesString = localStorage.getItem('generatedRoutes');
+    let generatedRoutes: Routes = [];
+    if (role && generatedRoutesString) {
+      generatedRoutes = JSON.parse(generatedRoutesString);
+    }
+    this.LoggedIn = true;
     let tokenstring = localStorage.getItem('authToken');
     let claims = JSON.parse(localStorage.getItem('claims')!);
     if (!tokenstring) {
@@ -21,11 +33,6 @@ export class AuthService {
     this.token = tokenstring;
   }
 
-  private readonly TOKEN_KEY = 'authToken';
-  private isAuthenticated = false;
-  LoggedIn: boolean = false;
-  generatedRoutes!: string;
-
   URL: string = 'http://localhost:5250/api/Account';
 
   login(email: string, password: string) {
@@ -33,8 +40,6 @@ export class AuthService {
       email: email,
       password: password,
     };
-    this.isAuthenticated = true;
-
     return this.http.post(`${this.URL}/login`, loginData);
   }
 

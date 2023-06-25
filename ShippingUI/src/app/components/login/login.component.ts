@@ -22,11 +22,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private routingModule: AppRoutingModule,
-    private traderservice: TraderService
-  ) {}
+    private authService: AuthService  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -36,15 +32,15 @@ export class LoginComponent {
   }
 
   login() {
-    if (this.loginForm.invalid) {
-      return;
-    }
+    // if (this.loginForm.invalid) {
+    //   return;
+    // }
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
     this.authService.login(email, password).subscribe(
       (response: any) => {
-        console.log(response);
+        
         const token = response.token;
         this.authService.setToken(token);
 
@@ -54,10 +50,10 @@ export class LoginComponent {
         const role = response.role;
         this.authService.setUserRole(role);
         this.authService.setEmail(email);
+
         const handleGeneratedRoutes = async () => {
           try {
             const generatedRoutes: Routes = await generateRoutesForRole();
-            console.log(generatedRoutes);
             const homeRoute = {
               path: 'home',
               component: SidebarComponent,
@@ -84,7 +80,7 @@ export class LoginComponent {
 
         Promise.resolve().then(handleGeneratedRoutes);
       },
-      (error: any) => {
+      (error) => {
         this.error = 'Invalid Email or Password';
       }
     );
