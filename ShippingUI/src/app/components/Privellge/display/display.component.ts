@@ -66,7 +66,7 @@ export class DisplayPrivellageComponent implements OnInit {
     const searchTerm = inputValue.toLowerCase().trim();
 
     return this.privileges.filter((item) => {
-      const itemName = item.privellgeName?.toLowerCase();
+      const itemName = item.name?.toLowerCase();
 
       return itemName?.startsWith(searchTerm);
     });

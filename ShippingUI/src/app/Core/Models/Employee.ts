@@ -14,9 +14,9 @@ export interface Employee {
     createdAt: Data;
     state: boolean;
   };
-  privellage?: {
-    privellge_Id: number;
-    privellgeName: string;
-    date: Data;
-  };
+  // privellage?: {
+  //   privellge_Id: number;
+  //   privellgeName: string;
+  //   date: Data;
+  // };
 }
