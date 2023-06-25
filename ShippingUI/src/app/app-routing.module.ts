@@ -20,18 +20,53 @@ import { OrderDispalyTraderComponent } from './components/Trader-View/order-disp
 import { OrdersStatesTraderComponent } from './components/Trader-View/orders-states-trader/orders-states-trader.component';
 import { DisplayCityComponent } from './components/City/display-city/display-city.component';
 import { DisplayTraderComponent } from './components/Trader/display/display.component';
+import {
+  Branch,
+  City,
+  Employee,
+  Government,
+  Sales,
+  Trader,
+} from './Core/Models/Permission';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/employee', pathMatch: 'full' },
-  { path: 'employee', component: DisplayEmployeeComponent },
-  { path: 'trader', component: DisplayTraderComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: 'employee',
+    component: DisplayEmployeeComponent,
+    data: { permission: Employee.Read },
+  },
+  {
+    path: 'trader',
+    component: DisplayTraderComponent,
+    data: { permission: Trader.Read },
+  },
   { path: 'privilege', component: DisplayPrivellageComponent },
   { path: 'privilege/add', component: AddPrivellageComponent },
   { path: 'privilege/edit/:id', component: EditPrevillageComponent },
-  { path: 'government', component: DisplayGovernmentComponent },
-  { path: 'branch', component: DisplayBranchComponent },
-  { path: 'salesRepresentator', component: DisplaySalesComponent },
-  { path: 'city', component: DisplayCityComponent },
+  {
+    path: 'government',
+    component: DisplayGovernmentComponent,
+    data: { permission: Government.Read },
+  },
+
+  {
+    path: 'branch',
+    component: DisplayBranchComponent,
+    data: { permission: Branch.Read },
+  },
+
+  {
+    path: 'salesRepresentator',
+    component: DisplaySalesComponent,
+    data: { permission: Sales.Read },
+  },
+
+  {
+    path: 'city',
+    component: DisplayCityComponent,
+    data: { permission: City.Read },
+  },
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
@@ -46,6 +81,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
-
+export class AppRoutingModule {}

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { City } from 'src/app/Core/Models/City';
+import { City as City_1 } from 'src/app/Core/Models/City';
+import { City } from 'src/app/Core/Models/Permission';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 import { CityService } from 'src/app/Core/Services/city.service';
 import { GovermentService } from 'src/app/Core/Services/goverment.service';
 import Swal from 'sweetalert2';
@@ -14,20 +16,28 @@ declare var window: any;
   styleUrls: ['./display-city.component.css'],
 })
 export class DisplayCityComponent {
-  cities: City[] = [];
-  filteredData: City[] = [];
+  cities: City_1[] = [];
+  filteredData: City_1[] = [];
   cityForm!: FormGroup;
   formModel: any;
   allowEdit = false;
   cityId!: number;
   governments: any[] = [];
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
 
   constructor(
     private cityService: CityService,
     private GovermentService: GovermentService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(City.Update);
+    this.createPermission = auth.checkPermission(City.Create);
+    this.deletePermission = auth.checkPermission(City.Delete);
+  }
 
   ngOnInit(): void {
     this.cityService.getAllCities().subscribe((data: any) => {
@@ -168,7 +178,7 @@ export class DisplayCityComponent {
   }
 
   getData(id: any) {
-    this.cityService.getCityById(id).subscribe((data: City) => {
+    this.cityService.getCityById(id).subscribe((data: City_1) => {
       this.cityForm.setValue({
         cityName: data.cityName,
         pickupShippingCost: data.pickupShippingCost,

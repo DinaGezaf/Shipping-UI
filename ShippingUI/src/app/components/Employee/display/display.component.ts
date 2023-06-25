@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Branch } from 'src/app/Core/Models/Branch';
-import { Employee } from 'src/app/Core/Models/Employee';
+import { Employee as Employee_1 } from 'src/app/Core/Models/Employee';
+import { Employee } from 'src/app/Core/Models/Permission';
 import { privilege } from 'src/app/Core/Models/Privellage';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import { EmployeeService } from 'src/app/Core/Services/employee.service';
 import { PrivellageService } from 'src/app/Core/Services/privellage.service';
@@ -16,8 +18,8 @@ declare var window: any;
   styleUrls: ['./display.component.css'],
 })
 export class DisplayEmployeeComponent implements OnInit {
-  employees: Employee[] = [];
-  filteredData: Employee[] = [];
+  employees: Employee_1[] = [];
+  filteredData: Employee_1[] = [];
   formModel: any;
   id!: number;
   allowEdit = false;
@@ -27,13 +29,22 @@ export class DisplayEmployeeComponent implements OnInit {
   empId!: number;
   selectedOption = 'action';
 
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private employeeser: EmployeeService,
     private privilegeser: PrivellageService,
-    private branchser: BranchService
-  ) {}
+    private branchser: BranchService,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Employee.Update);
+    this.createPermission = auth.checkPermission(Employee.Create);
+    this.deletePermission = auth.checkPermission(Employee.Delete);
+  }
 
   ngOnInit(): void {
     this.employeeser.GetAllEmployees().subscribe((data: any) => {
@@ -219,7 +230,7 @@ export class DisplayEmployeeComponent implements OnInit {
   // Edit Employee
 
   getData(id: any) {
-    this.employeeser.getEmployeeById(id).subscribe((data: Employee) => {
+    this.employeeser.getEmployeeById(id).subscribe((data: Employee_1) => {
       console.log(data);
 
       this.employeeForm.setValue({

@@ -8,10 +8,24 @@ import * as CryptoJS from 'crypto-js';
   providedIn: 'root',
 })
 export class AuthService {
+  islogged = false;
+  permissions: string[] = [];
+  private token = '';
+
+  constructor(private http: HttpClient) {
+    let tokenstring = JSON.parse(localStorage.getItem('authToken')!);
+    let claims = JSON.parse(localStorage.getItem('claims')!);
+    if (!tokenstring) {
+      return;
+    }
+
+    (this.islogged = true), (this.permissions = claims);
+    this.token = tokenstring;
+  }
+
   private readonly TOKEN_KEY = 'authToken';
 
   URL: string = 'http://localhost:5250/api/Account';
-  constructor(private http: HttpClient) {}
 
   login(email: string, password: string) {
     const loginData = {
@@ -37,11 +51,15 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
   }
 
   setEmail(email: string) {
     localStorage.setItem('email', email);
+  }
+
+  setClaims(claims: any) {
+    localStorage.setItem('claims', JSON.stringify(claims));
   }
 
   getEmail() {
@@ -52,5 +70,14 @@ export class AuthService {
   }
   getUserRole() {
     return localStorage.getItem('role');
+  }
+
+  checkPermission(permission: string) {
+    for (let p of this.permissions) {
+      if (p == permission) {
+        return true;
+      }
+    }
+    return false;
   }
 }

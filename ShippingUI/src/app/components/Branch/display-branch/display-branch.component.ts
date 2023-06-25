@@ -1,10 +1,13 @@
+import { AuthGuard } from 'src/app/Core/Services/auth.guard';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Branch } from 'src/app/Core/Models/Branch';
+import { Branch as Branch_1 } from 'src/app/Core/Models/Branch';
 import { BranchService } from 'src/app/Core/Services/branch.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/Core/Services/auth.service';
+import { Branch } from 'src/app/Core/Models/Permission';
 declare var window: any;
 
 @Component({
@@ -13,18 +16,26 @@ declare var window: any;
   styleUrls: ['./display-branch.component.css'],
 })
 export class DisplayBranchComponent implements OnInit {
-  branches: Branch[] = [];
-  filteredData: Branch[] = [];
+  branches: Branch_1[] = [];
+  filteredData: Branch_1[] = [];
   BranchForm!: FormGroup;
   formModel: any;
   allowEdit = false;
   branchId!: number;
+  editPermission = false;
+  deletePermission = false;
+  createPermission = false;
 
   constructor(
     private branchService: BranchService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Branch.Update);
+    this.deletePermission = auth.checkPermission(Branch.Delete);
+    this.createPermission = auth.checkPermission(Branch.Create);
+  }
 
   ngOnInit(): void {
     this.branchService.getAllBranches().subscribe((data: any) => {
@@ -67,7 +78,6 @@ export class DisplayBranchComponent implements OnInit {
     event.target.value = 'action';
   }
 
-  
   changeState(id: number) {
     alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
@@ -86,8 +96,8 @@ export class DisplayBranchComponent implements OnInit {
   onsubmit() {
     if (!this.allowEdit) {
       this.branchService
-      .addBranch({
-        ...this.BranchForm.value,
+        .addBranch({
+          ...this.BranchForm.value,
           state: true,
         })
         .subscribe(
@@ -104,12 +114,12 @@ export class DisplayBranchComponent implements OnInit {
             alert('error !!!!!');
             console.log(error);
           }
-          );
-          this.BranchForm.reset();
-        } else this.onEdit();
-        this.branchService.getAllBranches().subscribe((data: any) => {
-          this.branches = this.filteredData = data;
-        });
+        );
+      this.BranchForm.reset();
+    } else this.onEdit();
+    this.branchService.getAllBranches().subscribe((data: any) => {
+      this.branches = this.filteredData = data;
+    });
   }
 
   openModal(id: any) {
@@ -121,7 +131,7 @@ export class DisplayBranchComponent implements OnInit {
     }
     this.formModel.show();
   }
-  
+
   close() {
     Swal.fire({
       title: 'Are you sure you would like to cancel?',
@@ -174,12 +184,12 @@ export class DisplayBranchComponent implements OnInit {
         (error: any) => {
           alert('error !!!!!!!!');
         }
-        );
-        this.BranchForm.reset();
+      );
+    this.BranchForm.reset();
   }
 
   getData(id: any) {
-    this.branchService.getBranchById(id).subscribe((data: Branch) => {
+    this.branchService.getBranchById(id).subscribe((data: Branch_1) => {
       console.log(data);
       this.BranchForm.setValue({
         branchName: data.branchName,
