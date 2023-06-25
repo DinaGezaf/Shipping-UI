@@ -39,7 +39,7 @@
       </div>
       <div class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
-        *ngIf="createPermission"
+          *ngIf="createPermission"
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
           (click)="openModal(0)"
         >
@@ -165,14 +165,14 @@
                 <div class="fv-row mb-7 fv-plugins-icon-container form-group">
                   <label class="required fw-medium mb-2 mt-3">State</label>
 
-                  <input
-                    type="text"
+                  <select
                     id="governmentState"
                     class="form-control form-control-solid"
                     formControlName="state"
-                    placeholder=""
-                    fdprocessedid="8gp9el"
-                  />
+                  >
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
                   <span
                     *ngIf="
                       governmentForm.get('state')?.invalid &&

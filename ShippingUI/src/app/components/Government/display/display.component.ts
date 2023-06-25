@@ -47,7 +47,11 @@ export class DisplayGovernmentComponent implements OnInit {
       document.getElementById('exampleModalCenter')
     );
   }
-
+  loadData() {
+    this.governmentService.GetAllGovernment().subscribe((data: any) => {
+      this.governments = this.filteredData = data;
+    });
+  }
   // Add and Edit
 
   getData(id: any) {
@@ -64,10 +68,9 @@ export class DisplayGovernmentComponent implements OnInit {
   onEdit() {
     const government = {
       govermentName: this.governmentForm.value.governmentName,
-      state: Boolean(this.governmentForm.value.state),
+      state: this.governmentForm.value.state === 'true', // Retrieve the selected value from the dropdown
     };
-    console.log(government);
-    
+
     this.governmentService
       .EditGovernment(this.governmentId, government)
       .subscribe(
@@ -81,6 +84,7 @@ export class DisplayGovernmentComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error: any) => {
           alert('error !!!!!!!!');
@@ -92,7 +96,7 @@ export class DisplayGovernmentComponent implements OnInit {
     if (!this.allowEdit) {
       const government = {
         govermentName: this.governmentForm.value.governmentName,
-        state: true,
+        state: this.governmentForm.value.state === 'true', // Retrieve the selected value from the dropdown
       };
       console.log(government);
       this.governmentService.addGovernment(government).subscribe(
@@ -106,13 +110,16 @@ export class DisplayGovernmentComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error) => {
           alert('error !!!!!');
           console.log(error);
         }
       );
-    } else this.onEdit();
+    } else {
+      this.onEdit();
+    }
   }
 
   // Modal

@@ -14,7 +14,7 @@ export class SidebarComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) {
     this.role = this.authService.getUserRole();
     if (this.role == 'employee' || this.role == 'admin') {

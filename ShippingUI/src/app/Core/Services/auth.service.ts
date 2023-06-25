@@ -15,13 +15,6 @@ export class AuthService {
   generatedRoutes!: string;
 
   constructor(private http: HttpClient) {
-    this.isAuthenticated = !!localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const generatedRoutesString = localStorage.getItem('generatedRoutes');
-    let generatedRoutes: Routes = [];
-    if (role && generatedRoutesString) {
-      generatedRoutes = JSON.parse(generatedRoutesString);
-    }
     this.LoggedIn = true;
     let tokenstring = localStorage.getItem('authToken');
     let claims = JSON.parse(localStorage.getItem('claims')!);
@@ -31,6 +24,7 @@ export class AuthService {
 
     (this.islogged = true), (this.permissions = claims);
     this.token = tokenstring;
+    this.permissions = claims;
   }
 
   URL: string = 'http://localhost:5250/api/Account';
@@ -57,7 +51,9 @@ export class AuthService {
   setToken(token: string) {
     localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
   }
-
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
+  }
   setEmail(email: string) {
     localStorage.setItem('email', email);
   }
