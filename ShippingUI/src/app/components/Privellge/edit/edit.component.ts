@@ -39,22 +39,4 @@ export class EditPrevillageComponent implements OnInit {
         });
     });
   }
-
-  onsubmit() {
-    this.privilegeservice
-      .updatePrivilege(this.id, {
-        ...this.editPrivilegeForm.value,
-        privellge_Id: this.id,
-      })
-      .subscribe(
-        (data) => {
-          alert('update success');
-          console.log(data);
-          this.router.navigate(['privilege']);
-        },
-        (error) => {
-          alert('error !!!!!!!!');
-        }
-      );
-  }
 }
