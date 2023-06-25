@@ -27,17 +27,6 @@ export class AuthService {
   generatedRoutes!: string;
 
   URL: string = 'http://localhost:5250/api/Account';
-  constructor(private http: HttpClient) {
-    this.isAuthenticated = !!localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const generatedRoutesString = localStorage.getItem('generatedRoutes');
-    let generatedRoutes: Routes = [];
-
-    if (role && generatedRoutesString) {
-      generatedRoutes = JSON.parse(generatedRoutesString);
-      this.LoggedIn = true;
-    }
-  }
 
   login(email: string, password: string) {
     const loginData = {
@@ -89,5 +78,27 @@ export class AuthService {
       }
     }
     return false;
+  }
+  isLoggedIn(): boolean {
+    return this.isAuthenticated;
+  }
+
+  verifyToken(): boolean {
+    const token = this.getToken();
+
+    if (token) {
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
+
+    return this.isAuthenticated;
+  }
+  getGeneratedRoutes() {
+    const generatedRoutes = localStorage.getItem('generatedRoutes');
+    return generatedRoutes ? JSON.parse(generatedRoutes) : null;
+  }
+  setGeneratedRoutes(routes: string) {
+    this.generatedRoutes = routes;
   }
 }
