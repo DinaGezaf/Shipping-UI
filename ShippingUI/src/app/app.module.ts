@@ -33,6 +33,7 @@ import { FooterComponent } from './Shared/footer/footer.component';
 import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
 import { OrderReportComponent } from './components/order-report/order-report.component';
 import { AssignOrderToSalesComponent } from './components/Order/assign-order-to-sales/assign-order-to-sales.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { AssignOrderToSalesComponent } from './components/Order/assign-order-to-
     FooterComponent,
     DisplayOrdersStatesComponent,
     OrderReportComponent,
+    OrderDetailsComponent,
     AssignOrderToSalesComponent,
   ],
   imports: [

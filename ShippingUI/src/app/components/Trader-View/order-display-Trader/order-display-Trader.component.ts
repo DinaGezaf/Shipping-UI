@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Order } from 'src/app/Core/Models/Order';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { AuthService } from 'src/app/Core/Services/auth.service';
+
+import { OrderDetailsComponent } from '../../order-details/order-details.component';
 import { AddOrderComponent } from '../add-order/add-order.component';
 import { EditOrderComponent } from '../edit-order/edit-order.component';
 import Swal from 'sweetalert2';
@@ -27,12 +29,19 @@ export class OrderDispalyTraderComponent implements OnInit {
   role: any;
   constructor(
     private orderService: OrderService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.loadOrders();
     this.role = localStorage.getItem('role');
+  }
+  openModal(id: any): void {
+    const dialogRef = this.dialog.open(OrderDetailsComponent, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   selectState(e: any): void {

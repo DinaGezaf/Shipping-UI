@@ -9,9 +9,7 @@ import { DisplayBranchComponent } from './components/Branch/display-branch/displ
 import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
 import { DisplayOrdersComponent } from './components/Order/display-orders/display-orders.component';
 import { WeightCostPerOrderComponent } from './components/Order/weight-cost-per-order/weight-cost-per-order.component';
-import { AddPrivellageComponent } from './components/Privellge/add/add.component';
 import { DisplayPrivellageComponent } from './components/Privellge/display/display.component';
-import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { OrdersListComponent } from './components/SalesRepresentative/orders-list/orders-list.component';
 import { OrdersStatesComponent } from './components/SalesRepresentative/orders-states/orders-states.component';
