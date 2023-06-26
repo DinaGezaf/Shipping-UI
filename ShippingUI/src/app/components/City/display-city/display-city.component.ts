@@ -26,6 +26,9 @@ export class DisplayCityComponent {
   editPermission = false;
   deletePermission = false;
   createPermission = false;
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
 
   constructor(
     private cityService: CityService,
@@ -40,9 +43,13 @@ export class DisplayCityComponent {
   }
 
   ngOnInit(): void {
-    this.cityService.getAllCities().subscribe((data: any) => {
-      this.cities = this.filteredData = data;
-    });
+    this.cityService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.cities = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
     this.cityForm = new FormGroup({
       cityName: new FormControl(null, Validators.required),
       normalShippingCost: new FormControl(null, Validators.required),
@@ -192,5 +199,14 @@ export class DisplayCityComponent {
         governmentId: data.govermentName,
       });
     });
+  }
+  getPaginatedData(index: any) {
+    this.cityService
+      .getPaginatedData(index, this.$pageSize)
+      .subscribe((response: any) => {
+        this.cities = this.filteredData = response?.data || [];
+        this.$totalItems = response?.totalRecords || 0;
+        this.$page = response?.pageNo;
+      });
   }
 }

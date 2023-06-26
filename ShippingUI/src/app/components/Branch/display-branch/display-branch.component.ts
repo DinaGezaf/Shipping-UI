@@ -22,6 +22,9 @@ export class DisplayBranchComponent implements OnInit {
   formModel: any;
   allowEdit = false;
   branchId!: number;
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
 
   editPermission = false;
   deletePermission = false;
@@ -39,9 +42,14 @@ export class DisplayBranchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.branchService.getAllBranches().subscribe((data: any) => {
-      this.branches = this.filteredData = data;
-    });
+    this.branchService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.branches = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
+
     this.BranchForm = new FormGroup({
       branchName: new FormControl(null, Validators.required),
       createdAt: new FormControl(null, Validators.required),
@@ -57,20 +65,59 @@ export class DisplayBranchComponent implements OnInit {
     });
   }
   deleteBranch(id: number) {
-    this.branchService.deleteBranch(id).subscribe(
-      (data: any) => {
+    Swal.fire({
+      title: 'Are you sure you would like to delete?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delet it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.branchService.deleteBranch(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Deleted successfully!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.loadData();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Branch has not been deleted!.',
+              icon: 'error',
+              confirmButtonText: 'Ok, got it!',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+              iconColor: '#F1416C',
+              customClass: {
+                icon: 'custom-cancel-icon',
+                title: 'custom-content-class',
+              },
+            });
+
+            console.log(error.message);
+          }
+        );
+      } else {
         Swal.fire({
-          title: 'Form has been successfully submitted!',
-          icon: 'success',
+          title: 'Branch has not been deleted!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
           confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
         });
-        this.loadData();
-      },
-      (error) => {
-        alert('error !!!!!');
-        console.log(error.message);
       }
-    );
+    });
   }
   onOptionSelected(event: any) {
     const selectedValue = event.target.value;
@@ -86,7 +133,6 @@ export class DisplayBranchComponent implements OnInit {
   }
 
   changeState(id: number) {
-    alert('ghhhhh');
     this.branchService.deleteBranch(id).subscribe(
       (data: any) => {
         alert('success deleted');
@@ -166,7 +212,7 @@ export class DisplayBranchComponent implements OnInit {
         document.body.classList.remove('modal-open');
       } else {
         Swal.fire({
-          title: 'Your form has not been cancelled!.',
+          title: 'Your form has not been canceled!.',
           icon: 'error',
           confirmButtonText: 'Ok, got it!',
           confirmButtonColor: '#00b2ff',
@@ -229,5 +275,15 @@ export class DisplayBranchComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
+  }
+
+  getPaginatedData(index: any) {
+    this.branchService
+      .getPaginatedData(index, this.$pageSize)
+      .subscribe((response: any) => {
+        this.branches = this.filteredData = response?.data || [];
+        this.$totalItems = response?.totalRecords || 0;
+        this.$page = response?.pageNo;
+      });
   }
 }

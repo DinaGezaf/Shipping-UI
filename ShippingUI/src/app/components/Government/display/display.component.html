@@ -76,6 +76,39 @@
         </tr>
       </tbody>
     </table>
+    <div class="page-indexer d-flex justify-content-end me-10">
+      <nav aria-label="Page navigation example ">
+        <ul class="pagination">
+          <li class="page-item">
+            <button
+              [disabled]="$page === 1 || $totalItems === 0"
+              (click)="getPaginatedData($page - 1)"
+              class="page-link border-none"
+              href="#"
+              aria-label="Previous"
+              style="color: #7e8299"
+            >
+              <span aria-hidden="true" style="color: #7e8299">&laquo;</span>
+              <span class="sr-only" style="color: #7e8299"> Previous</span>
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              [disabled]="$page * $pageSize >= $totalItems || $totalItems === 0"
+              (click)="getPaginatedData($page + 1)"
+              class="page-link"
+              style="color: #7e8299"
+              href="#"
+              aria-label="Next"
+            >
+              <span class="sr-only" style="color: #7e8299">Next </span>
+              <span aria-hidden="true" style="color: #7e8299">&raquo;</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
 

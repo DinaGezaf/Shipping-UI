@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { City } from '../Models/City';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +28,11 @@ export class CityService {
     return this.http.get(
       `http://localhost:5250/api/Cities/government/${governmentName}`
     );
+  }
+  getPaginatedData(pageNum: number, pageSize: number): Observable<any[]> {
+    const apiUrl = `http://localhost:5250/api/Cities/paginated?PageNumber=${pageNum}&PageSize=${pageSize}`;
+    console.log('branch service', this.http.get<any[]>(apiUrl));
+
+    return this.http.get<any[]>(apiUrl);
   }
 }
