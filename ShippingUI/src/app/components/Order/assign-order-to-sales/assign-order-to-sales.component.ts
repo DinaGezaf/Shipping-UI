@@ -5,7 +5,7 @@ import { OrderState } from 'src/app/Core/Models/Order';
 import { OrderService } from 'src/app/Core/Services/order.service';
 import { OrderStateFormComponent } from '../../SalesRepresentative/order-state-form/order-state-form.component';
 import { SalesService } from 'src/app/Core/Services/sales.service';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-assign-order-to-sales',
@@ -22,8 +22,13 @@ export class AssignOrderToSalesComponent {
     private dialogRef: MatDialogRef<AssignOrderToSalesComponent>,
     private orderService: OrderService,
     private salesService: SalesService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
+  ) {
+    this.assignOrderForm = this.formBuilder.group({
+      salesId: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.loadSalesList();
@@ -46,13 +51,12 @@ export class AssignOrderToSalesComponent {
   Assign(): void {
     const salesId = this.assignOrderForm.value.salesId;
     console.log(salesId);
-    const IDS = {
-      salesId: salesId,
-      orderId: this.data.orderId,
-    };
-    this.salesService.assignOrderToSales(IDS).subscribe(
+    console.log(this.data.orderId);
+
+    this.salesService.assignOrderToSales(salesId, this.data.orderId).subscribe(
       (data: any) => {
-        console.log('Order assigned successfully!');
+        this.Message();
+        this.dialogRef.close();
       },
       (error: any) => {
         console.error('Error assigning order:', error);

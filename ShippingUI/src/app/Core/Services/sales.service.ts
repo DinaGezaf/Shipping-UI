@@ -47,10 +47,12 @@ export class SalesService {
 
     return this.http.get<any[]>(apiUrl);
   }
-  assignOrderToSales(assignIds: any) {
+  assignOrderToSales(salesId: number, orderId: number) {
+    const body = { salesId, orderId };
+
     return this.http.post(
-      'http://localhost:5250/api/Employees/assign',
-      assignIds
+      `http://localhost:5250/api/Employees/assign?salesId=${salesId}&orderId=${orderId}`,
+      body
     );
   }
 }

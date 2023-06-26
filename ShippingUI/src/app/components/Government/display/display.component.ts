@@ -75,7 +75,7 @@ export class DisplayGovernmentComponent implements OnInit {
   onEdit() {
     const government = {
       govermentName: this.governmentForm.value.governmentName,
-      state: this.governmentForm.value.state === 'true', // Retrieve the selected value from the dropdown
+      state: this.governmentForm.value.state === 'true', 
     };
 
     this.governmentService

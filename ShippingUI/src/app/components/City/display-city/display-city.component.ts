@@ -43,6 +43,9 @@ export class DisplayCityComponent {
   }
 
   ngOnInit(): void {
+    this.GovermentService.GetAllGovernment().subscribe((data: any) => {
+      this.governments = data;
+    });
     this.cityService
       .getPaginatedData(this.$page, this.$pageSize)
       .subscribe((data: any) => {
