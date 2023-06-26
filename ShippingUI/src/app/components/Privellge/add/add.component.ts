@@ -13,10 +13,12 @@ import {
   Employee,
   Government,
   Order,
+  Role,
   Sales,
   Trader,
 } from 'src/app/Core/Models/Permission';
 import { last } from 'rxjs';
+import { formatDate } from 'src/app/Core/Models/Date';
 
 @Component({
   selector: 'app-add',
@@ -70,6 +72,11 @@ export class AddPrivellageComponent implements OnInit {
       [Order.Create]: new FormControl(null, Validators.required),
       [Order.Update]: new FormControl(null, Validators.required),
       [Order.Delete]: new FormControl(null, Validators.required),
+
+      [Role.Read]: new FormControl(null, Validators.required),
+      [Role.Create]: new FormControl(null, Validators.required),
+      [Role.Update]: new FormControl(null, Validators.required),
+      [Role.Delete]: new FormControl(null, Validators.required),
     });
   }
 
@@ -85,7 +92,7 @@ export class AddPrivellageComponent implements OnInit {
 
     const role = {
       name: this.addPrivilegeForm.get('name')?.value,
-      data: new Date(),
+      date: formatDate(),
       claims: claims,
     };
 

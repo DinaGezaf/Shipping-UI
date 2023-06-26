@@ -9,9 +9,7 @@ import { DisplayBranchComponent } from './components/Branch/display-branch/displ
 import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
 import { DisplayOrdersComponent } from './components/Order/display-orders/display-orders.component';
 import { WeightCostPerOrderComponent } from './components/Order/weight-cost-per-order/weight-cost-per-order.component';
-import { AddPrivellageComponent } from './components/Privellge/add/add.component';
 import { DisplayPrivellageComponent } from './components/Privellge/display/display.component';
-import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 import DisplaySalesComponent from './components/Sales Representator/display-sales/display-sales.component';
 import { OrdersListComponent } from './components/SalesRepresentative/orders-list/orders-list.component';
 import { OrdersStatesComponent } from './components/SalesRepresentative/orders-states/orders-states.component';
@@ -25,12 +23,15 @@ import {
   Employee,
   Government,
   Order,
+  Role,
   Sales,
   Trader,
 } from './Core/Models/Permission';
 import { AddOrderComponent } from './components/Trader-View/add-order/add-order.component';
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 import { OrderReportComponent } from './components/order-report/order-report.component';
+import { AddPrivellageComponent } from './components/Privellge/add/add.component';
+import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -86,9 +87,21 @@ const routes: Routes = [
         data: { permission: Order.Update },
       },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
-      { path: 'privilege', component: DisplayPrivellageComponent },
-      { path: 'privilege/add', component: AddPrivellageComponent },
-      { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+      {
+        path: 'privilege',
+        component: DisplayPrivellageComponent,
+        data: { permission: Role.Read },
+      },
+      {
+        path: 'privilege/add',
+        component: AddPrivellageComponent,
+        data: { permission: Role.Create },
+      },
+      {
+        path: 'privilege/edit/:id',
+        component: EditPrevillageComponent,
+        data: { permission: Role.Update },
+      },
       {
         path: 'government',
         component: DisplayGovernmentComponent,

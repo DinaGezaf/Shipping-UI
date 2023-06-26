@@ -1,12 +1,6 @@
 <mat-sidenav-container fullscreen>
   <app-navbar> </app-navbar>
-  <mat-sidenav
-    #sidenav
-    mode="side"
-    class="example-sidenav"
-    opened="true"
-    *ngIf="Enable"
-  >
+  <mat-sidenav #sidenav mode="side" class="example-sidenav" opened="true">
     <div
       #sidenav
       id="kt_aside_menu"
@@ -27,11 +21,13 @@
       </div>
       <mat-nav-list>
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Branches"
           class="item"
           routerLink="branch"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.branches.read')"
         >
           <span
             ><span class="menu-icon me-0">
@@ -59,11 +55,13 @@
           <span class="tooltip">Branches</span>
         </mat-list-item>
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Governments"
           class="item"
           routerLink="government"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.goverments.read')"
         >
           <span>
             <span class="svg-icon svg-icon-2x"
@@ -91,11 +89,13 @@
           <span class="tooltip">Governments</span>
         </mat-list-item>
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Cities"
           class="item"
           routerLink="city"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.cities.read')"
         >
           <span class="menu-link menu-center"
             ><span class="menu-icon me-0"
@@ -125,11 +125,13 @@
         </mat-list-item>
 
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Traders"
           class="item"
           routerLink="trader"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.traders.read')"
         >
           <span>
             <span class="menu-icon me-0">
@@ -184,11 +186,13 @@
         </mat-list-item>
 
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="SalesRepresentatives"
           class="item"
           routerLink="sales"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.sales.read')"
         >
           <span
             ><span class="menu-icon me-0">
@@ -218,11 +222,13 @@
         </mat-list-item>
 
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Employees"
           class="item"
           routerLink="employee"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.employees.read')"
         >
           <span
             ><span class="menu-icon me-0">
@@ -250,14 +256,13 @@
           <span class="tooltip">Employees</span>
         </mat-list-item>
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Priviellges"
           class="item"
           routerLink="privilege"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="
-            authService.hasPermission('permission.goverments.read') &&
-            authService.getUserRole() == 'admin'
-          "
         >
           <span class="menu-link menu-center"
             ><span class="menu-icon me-0"
@@ -286,11 +291,13 @@
           <span class="tooltip">Priviellge</span>
         </mat-list-item>
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Orders"
           class="item"
           routerLink="order/list/employee"
           routerLinkActive="active"
           class="my-3"
-          *ngIf="authService.hasPermission('permission.orders.read')"
         >
           <span
             ><span class="menu-icon me-0">
@@ -320,11 +327,13 @@
         </mat-list-item>
 
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Orders States"
           class="item"
           routerLink="order/states/employee"
           routerLinkActive="active"
           class="my-2"
-          *ngIf="authService.hasPermission('permission.orders.read')"
           ><span
             ><span class="menu-icon me-0">
               <span class="svg-icon svg-icon-2x"
@@ -352,15 +361,16 @@
         </mat-list-item>
 
         <mat-list-item
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Orders Report"
           class="item"
           routerLink="order/report"
           routerLinkActive="active"
           class="my-2"
-          *ngIf="authService.getUserRole() == 'admin'"
         >
           <span class="menu-link menu-center"
-            ><span class="menu-icon me-0"
-              ><!--begin::Svg Icon | path: icons/duotune/communication/com012.svg-->
+            ><span class="menu-icon me-0">
               <span class="svg-icon svg-icon-2x"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"

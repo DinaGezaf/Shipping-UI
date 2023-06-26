@@ -45,6 +45,7 @@ export class AssignOrderToSalesComponent {
 
   Assign(): void {
     const salesId = this.assignOrderForm.value.salesId;
+    console.log(salesId);
     const IDS = {
       salesId: salesId,
       orderId: this.data.orderId,
