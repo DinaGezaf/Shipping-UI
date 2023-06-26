@@ -195,6 +195,7 @@ export class DisplayTraderComponent implements OnInit {
           alert('error !!!!!!');
         }
       );
+      this.traderForm.reset();
     } else {
       this.onEdit();
     }
