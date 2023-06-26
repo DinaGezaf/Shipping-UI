@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,12 @@ export class EmployeeService {
         responseType: 'text',
       }
     );
+  }
+  getPaginatedData(pageNum: number, pageSize: number): Observable<any[]> {
+    const apiUrl = `http://localhost:5250/api/Employees/paginated?PageNumber=${pageNum}&PageSize=${pageSize}`;
+    console.log('branch service', this.http.get<any[]>(apiUrl));
+
+    return this.http.get<any[]>(apiUrl);
   }
 
   changeIsActive(employeeId: number) {

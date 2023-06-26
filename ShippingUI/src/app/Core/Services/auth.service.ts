@@ -35,6 +35,7 @@ export class AuthService {
     this.permissions = claims;
     this.token = tokenstring;
     console.log(this.permissions);
+    this.permissions = claims;
   }
 
   URL: string = 'http://localhost:5250/api/Account';
@@ -62,7 +63,9 @@ export class AuthService {
   setToken(token: string) {
     localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
   }
-
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
+  }
   setEmail(email: string) {
     localStorage.setItem('email', email);
   }

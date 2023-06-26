@@ -78,6 +78,10 @@ input::placeholder {
   font-size: 13px;
   font-weight: 500;
 }
+
+.me-10 {
+  margin-right: 130px;
+}
 .w-95px {
   width: 95px;
 }

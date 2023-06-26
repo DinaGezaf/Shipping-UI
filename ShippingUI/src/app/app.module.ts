@@ -31,6 +31,8 @@ import { SidebarComponent } from './Shared/sidebar/sidebar.component';
 import { NavbarComponent } from './Shared/navbar/navbar.component';
 import { FooterComponent } from './Shared/footer/footer.component';
 import { DisplayOrdersStatesComponent } from './components/Order/display-orders-states/display-orders-states.component';
+import { OrderReportComponent } from './components/order-report/order-report.component';
+import { AssignOrderToSalesComponent } from './components/Order/assign-order-to-sales/assign-order-to-sales.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { DisplayOrdersStatesComponent } from './components/Order/display-orders-
     NavbarComponent,
     FooterComponent,
     DisplayOrdersStatesComponent,
+    OrderReportComponent,
+    AssignOrderToSalesComponent,
   ],
   imports: [
     BrowserModule,

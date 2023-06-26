@@ -43,9 +43,8 @@ export class EditOrderComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) public data: any,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private router: Router
-  ) // private dialogRef: MatDialogRef<EditOrderComponent>
-  {
+    private router: Router // private dialogRef: MatDialogRef<EditOrderComponent>
+  ) {
     this.shippingTypes = Object.keys(ShippingType).filter((key) =>
       isNaN(Number(key))
     );
@@ -56,6 +55,8 @@ export class EditOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderForm = new FormGroup({
+      villageDeliverd: new FormControl(false),
+      deliverToVillageCost: new FormControl(''),
       shippingType: new FormControl('', Validators.required),
       paymentType: new FormControl('', Validators.required),
       branch: new FormControl('', Validators.required),
@@ -125,6 +126,8 @@ export class EditOrderComponent implements OnInit {
       companyBranch: formData.branch,
       defaultCost: this.weightOption.costPerKG,
       shippingType: formData.shippingType,
+      deliverToVillageCost: formData.deliverToVillageCost,
+      deliveredToVillage: formData.villageDeliverd,
       customer: {
         email: formData.email,
         name: formData.name,
@@ -139,13 +142,18 @@ export class EditOrderComponent implements OnInit {
         productName: product.productName,
         weight: parseInt(product.weight),
         price: parseInt(product.price),
+        quantity: product.quantity,
       })),
     };
     console.log(orderData);
     this.email = this.authService.getEmail();
     this.orderService.updateOrder(this.order.orderId, orderData).subscribe(
       (response: any) => {
-        this.Message();
+        Swal.fire({
+          title: 'Order has been successfully Updated!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
+        });
         this.loadOrders();
         this.router.navigate(['/home/order/list/trader']);
       },

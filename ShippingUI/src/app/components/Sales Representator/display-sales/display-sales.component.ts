@@ -23,7 +23,9 @@ export default class DisplaySalesComponent implements OnInit {
   filteredData: SalesRepresentator[] = [];
   branches: Branch[] = [];
   governments: Goverment[] = [];
-
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
   id!: number;
   allowEdit = false;
   salesId!: number;
@@ -49,9 +51,13 @@ export default class DisplaySalesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.salesservice.getAllSales().subscribe((data: any) => {
-      this.sales = this.filteredData = data;
-    });
+    this.salesservice
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.sales = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
     this.branchservice.getAllBranches().subscribe((data: any) => {
       this.branches = data;
     });
@@ -98,30 +104,48 @@ export default class DisplaySalesComponent implements OnInit {
   }
 
   deleteSales(id: number) {
+    //
     Swal.fire({
-      title: 'Are you sure you would like to cancel?',
+      title: 'Are you sure you would like to delete?',
       icon: 'warning',
       iconColor: '#FFC700',
       showCancelButton: true,
-      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonText: 'Yes, delet it!',
       confirmButtonColor: '#00b2ff',
       cancelButtonText: 'No, return',
       width: '416px',
       cancelButtonColor: '#eff2f5',
-    }).then((result: any) => {
+    }).then((result) => {
       if (result.value) {
-        this.salesservice.deleteSales(id).subscribe((data: any) => {
-          Swal.fire({
-            title: 'Trader has been successfully Deleted!',
-            icon: 'success',
-            confirmButtonColor: '#00b2ff',
-          });
+        this.salesservice.deleteSales(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Deleted successfully!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.loadData();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Employee has not been deleted!.',
+              icon: 'error',
+              confirmButtonText: 'Ok, got it!',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+              iconColor: '#F1416C',
+              customClass: {
+                icon: 'custom-cancel-icon',
+                title: 'custom-content-class',
+              },
+            });
 
-          this.loadData();
-        });
+            console.log(error.message);
+          }
+        );
       } else {
         Swal.fire({
-          title: 'Your form has not been cancelled!.',
+          title: 'Employee has not been deleted!.',
           icon: 'error',
           confirmButtonText: 'Ok, got it!',
           confirmButtonColor: '#00b2ff',
@@ -207,6 +231,16 @@ export default class DisplaySalesComponent implements OnInit {
     this.formModel.classList.add('show');
     this.formModel.style.display = 'block';
     document.body.classList.add('modal-open');
+  }
+
+  getPaginatedData(index: any) {
+    this.salesservice
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.sales = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
   }
 
   close() {

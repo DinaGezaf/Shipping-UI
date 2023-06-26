@@ -43,24 +43,65 @@ export class DisplayPrivellageComponent implements OnInit {
   }
 
   deletePrivilege(id: number) {
-    this.privellageser.deletePrivilege(id).subscribe(
-      (data: any) => {
+    Swal.fire({
+      title: 'Are you sure you would like to delete?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delet it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.privellageser.deletePrivilege(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Deleted successfully!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.loadData();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Permission has not been deleted!.',
+              icon: 'error',
+              confirmButtonText: 'Ok, got it!',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+              iconColor: '#F1416C',
+              customClass: {
+                icon: 'custom-cancel-icon',
+                title: 'custom-content-class',
+              },
+            });
+
+            console.log(error.message);
+          }
+        );
+      } else {
         Swal.fire({
-          title: 'Deleted successfully!',
-          icon: 'success',
+          title: 'Permission has not been deleted!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
           confirmButtonColor: '#00b2ff',
           width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
         });
-
-        this.privellageser.getAllPrivellages().subscribe((data: any) => {
-          this.privileges = this.filteredData = data;
-        });
-      },
-      (error) => {
-        alert('error !!!!');
-        console.log(error.message);
       }
-    );
+    });
+  }
+
+  loadData() {
+    this.privellageser.getAllPrivellages().subscribe((data: any) => {
+      this.privileges = this.filteredData = data;
+    });
   }
 
   onOptionSelected(event: any) {

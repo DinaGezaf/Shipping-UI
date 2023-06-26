@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +39,18 @@ export class SalesService {
   }
   getSalesRepresentativeByEmail(email: string) {
     return this.http.get(`http://localhost:5250/api/Sales/${email}`);
+  }
+
+  getPaginatedData(pageNum: number, pageSize: number): Observable<any[]> {
+    const apiUrl = `http://localhost:5250/api/Sales/paginated?PageNumber=${pageNum}&PageSize=${pageSize}`;
+    console.log('branch service', this.http.get<any[]>(apiUrl));
+
+    return this.http.get<any[]>(apiUrl);
+  }
+  assignOrderToSales(assignIds: any) {
+    return this.http.post(
+      'http://localhost:5250/api/Employees/assign',
+      assignIds
+    );
   }
 }

@@ -22,6 +22,9 @@ export class DisplayGovernmentComponent implements OnInit {
   formModel: any;
   governmentId!: number;
   governmentForm!: FormGroup;
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
 
   editPermission = false;
   deletePermission = false;
@@ -36,9 +39,13 @@ export class DisplayGovernmentComponent implements OnInit {
     this.createPermission = auth.checkPermission(Government.Delete);
   }
   ngOnInit(): void {
-    this.governmentService.GetAllGovernment().subscribe((data: any) => {
-      this.governments = this.filteredData = data;
-    });
+    this.governmentService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.governments = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
     this.governmentForm = new FormGroup({
       governmentName: new FormControl(null, Validators.required),
       state: new FormControl(null, Validators.required),
@@ -47,7 +54,11 @@ export class DisplayGovernmentComponent implements OnInit {
       document.getElementById('exampleModalCenter')
     );
   }
-
+  loadData() {
+    this.governmentService.GetAllGovernment().subscribe((data: any) => {
+      this.governments = this.filteredData = data;
+    });
+  }
   // Add and Edit
 
   getData(id: any) {
@@ -64,10 +75,9 @@ export class DisplayGovernmentComponent implements OnInit {
   onEdit() {
     const government = {
       govermentName: this.governmentForm.value.governmentName,
-      state: Boolean(this.governmentForm.value.state),
+      state: this.governmentForm.value.state === 'true', // Retrieve the selected value from the dropdown
     };
-    console.log(government);
-    
+
     this.governmentService
       .EditGovernment(this.governmentId, government)
       .subscribe(
@@ -81,6 +91,7 @@ export class DisplayGovernmentComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error: any) => {
           alert('error !!!!!!!!');
@@ -92,7 +103,7 @@ export class DisplayGovernmentComponent implements OnInit {
     if (!this.allowEdit) {
       const government = {
         govermentName: this.governmentForm.value.governmentName,
-        state: true,
+        state: this.governmentForm.value.state === 'true', // Retrieve the selected value from the dropdown
       };
       console.log(government);
       this.governmentService.addGovernment(government).subscribe(
@@ -106,13 +117,16 @@ export class DisplayGovernmentComponent implements OnInit {
           this.formModel.classList.remove('show');
           this.formModel.style.display = 'none';
           document.body.classList.remove('modal-open');
+          this.loadData();
         },
         (error) => {
           alert('error !!!!!');
           console.log(error);
         }
       );
-    } else this.onEdit();
+    } else {
+      this.onEdit();
+    }
   }
 
   // Modal
@@ -177,5 +191,15 @@ export class DisplayGovernmentComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
+  }
+
+  getPaginatedData(index: any) {
+    this.governmentService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.governments = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
   }
 }

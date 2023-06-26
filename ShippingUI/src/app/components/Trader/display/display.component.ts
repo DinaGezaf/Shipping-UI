@@ -27,6 +27,10 @@ export class DisplayTraderComponent implements OnInit {
   allowEdit = false;
   traderId!: number;
 
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
+
   editPermission = false;
   deletePermission = false;
   createPermission = false;
@@ -44,9 +48,14 @@ export class DisplayTraderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.traderservice.GetAllTraders().subscribe((data: any) => {
-      this.traders = this.filteredData = data;
-    });
+    this.traderservice
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.traders = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
+
     this.branchservice.getAllBranches().subscribe((data: any) => {
       this.branchesArray = data;
     });
@@ -81,29 +90,46 @@ export class DisplayTraderComponent implements OnInit {
   }
   DeleteTrader(id: number) {
     Swal.fire({
-      title: 'Are you sure you would like to cancel?',
+      title: 'Are you sure you would like to delete?',
       icon: 'warning',
       iconColor: '#FFC700',
       showCancelButton: true,
-      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonText: 'Yes, delet it!',
       confirmButtonColor: '#00b2ff',
       cancelButtonText: 'No, return',
       width: '416px',
       cancelButtonColor: '#eff2f5',
-    }).then((result: any) => {
+    }).then((result) => {
       if (result.value) {
-        this.traderservice.DeleteTrader(id).subscribe((data: any) => {
-          Swal.fire({
-            title: 'Trader has been successfully Deleted!',
-            icon: 'success',
-            confirmButtonColor: '#00b2ff',
-          });
+        this.traderservice.DeleteTrader(id).subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Deleted successfully!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.loadData();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Trader has not been deleted!.',
+              icon: 'error',
+              confirmButtonText: 'Ok, got it!',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+              iconColor: '#F1416C',
+              customClass: {
+                icon: 'custom-cancel-icon',
+                title: 'custom-content-class',
+              },
+            });
 
-          this.loadData();
-        });
+            console.log(error.message);
+          }
+        );
       } else {
         Swal.fire({
-          title: 'Your form has not been cancelled!.',
+          title: 'Trader has not been deleted!.',
           icon: 'error',
           confirmButtonText: 'Ok, got it!',
           confirmButtonColor: '#00b2ff',
@@ -186,7 +212,15 @@ export class DisplayTraderComponent implements OnInit {
     this.formModel.style.display = 'block';
     document.body.classList.add('modal-open');
   }
-
+  getPaginatedData(index: any) {
+    this.traderservice
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.traders = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
+  }
   close() {
     Swal.fire({
       title: 'Are you sure you would like to cancel?',

@@ -33,7 +33,7 @@ export class SidebarComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) {
     this.readGovernment = authService.checkPermission(Government.Read);
     this.readCity = authService.checkPermission(City.Read);

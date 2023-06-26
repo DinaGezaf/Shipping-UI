@@ -31,6 +31,7 @@ import {
 } from './Core/Models/Permission';
 import { AddOrderComponent } from './components/Trader-View/add-order/add-order.component';
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
+import { OrderReportComponent } from './components/order-report/order-report.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -148,6 +149,11 @@ const routes: Routes = [
         path: 'order/list/trader/order/edit/:id',
         component: EditOrderComponent,
         data: { permission: Order.Update },
+      },
+      {
+        path: 'order/report',
+        component: OrderReportComponent,
+        data: { permission: Order.Read },
       },
     ],
   },

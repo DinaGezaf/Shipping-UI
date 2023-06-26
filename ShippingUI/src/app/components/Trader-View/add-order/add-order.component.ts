@@ -55,6 +55,7 @@ export class AddOrderComponent implements OnInit {
   ngOnInit(): void {
     this.orderForm = new FormGroup({
       villageDeliverd: new FormControl(false),
+      deliverToVillageCost: new FormControl(''),
       shippingType: new FormControl('', Validators.required),
       paymentType: new FormControl('', Validators.required),
       branch: new FormControl('', Validators.required),
@@ -95,7 +96,7 @@ export class AddOrderComponent implements OnInit {
       weightOption: this.weightOption,
       totalCost: this.totalcost,
       totalWeight: this.totalweight,
-      deliverToVillageCost: 0,
+      deliverToVillageCost: formData.deliverToVillageCost,
       deliveredToVillage: formData.villageDeliverd,
       customer: {
         email: formData.email,
@@ -117,7 +118,11 @@ export class AddOrderComponent implements OnInit {
     this.orderService.addOrder(orderData, this.email).subscribe(
       (response: any) => {
         this.router.navigate(['/home/order/list/trader']);
-        this.Message();
+        Swal.fire({
+          title: 'Order has been successfully Added!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
+        });
         this.loadOrders();
       },
       (error) => {

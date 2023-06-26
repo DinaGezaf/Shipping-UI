@@ -34,4 +34,5 @@ export interface Order {
   shipping_type: ShippingType;
   traderId: number;
   salesRepresentativeId: number;
+  deliverToVillageCost: number;
 }

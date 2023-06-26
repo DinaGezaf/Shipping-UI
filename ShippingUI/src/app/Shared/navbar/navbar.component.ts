@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   role: any = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor( public authService: AuthService, private router: Router) {}
   ngOnInit(): void {
     this.role = this.authService.getUserRole();
   }

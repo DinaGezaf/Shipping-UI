@@ -20,7 +20,7 @@
               class="text-danger"
               *ngIf="
                 (orderForm.get('name')?.invalid &&
-                  orderForm.get('name')?.touched) 
+                  orderForm.get('name')?.touched)
               "
             >
               Customer Name is required
@@ -169,6 +169,17 @@
               (change)="onVillageDeliveryToggle($event)"
             >
             </mat-slide-toggle>
+          </div>
+          <div class="formbold-form-div">
+            <label class="formbold-form-label">Village Cost</label>
+            <input
+              type="number"
+              name="stvillage"
+              id="stvillage"
+              formControlName="deliverToVillageCost"
+              placeholder="Village Cost"
+              class="formbold-form-input"
+            />
           </div>
         </div>
       </div>

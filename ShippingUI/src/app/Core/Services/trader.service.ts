@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Trader } from '../Models/Trader';
 
 @Injectable({
@@ -37,5 +37,11 @@ export class TraderService {
         responseType: 'text',
       }
     );
+  }
+  getPaginatedData(pageNum: number, pageSize: number): Observable<any[]> {
+    const apiUrl = `http://localhost:5250/api/traders/paginated?PageNumber=${pageNum}&PageSize=${pageSize}`;
+    console.log('branch service', this.http.get<any[]>(apiUrl));
+
+    return this.http.get<any[]>(apiUrl);
   }
 }

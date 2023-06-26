@@ -6,6 +6,7 @@ import { OrderService } from 'src/app/Core/Services/order.service';
 import { AuthService } from 'src/app/Core/Services/auth.service';
 import { AddOrderComponent } from '../add-order/add-order.component';
 import { EditOrderComponent } from '../edit-order/edit-order.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-order-display-Trader',
@@ -31,7 +32,6 @@ export class OrderDispalyTraderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
-    this.applyPagination();
     this.role = localStorage.getItem('role');
   }
 
@@ -62,11 +62,43 @@ export class OrderDispalyTraderComponent implements OnInit {
   }
 
   deleteOrder(orderId: number) {
-    this.orderService
-      .deleteOrderForTrader(orderId)
-      .subscribe((response: any) => {
-        this.loadOrders();
-      });
+    Swal.fire({
+      title: 'Are you sure you would like to delete this order?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.orderService
+          .deleteOrderForTrader(orderId)
+          .subscribe((response: any) => {
+            Swal.fire({
+              title: 'Order has been successfully Deleted!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+          });
+      } else {
+        Swal.fire({
+          title: 'Your form has not been cancelled!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
+        });
+      }
+    });
+    this.loadOrders();
   }
 
   filterData(inputValue: string) {
@@ -84,37 +116,18 @@ export class OrderDispalyTraderComponent implements OnInit {
     this.filteredDataOrder = this.filterData(inputValue);
   }
 
-  applyPagination() {
-    const filteredOrders = this.selectedState
-      ? this.orders.filter((order: any) => order.state === this.selectedState)
-      : this.orders;
-
-    this.totalItems = filteredOrders.length;
-    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-
-    this.orders = filteredOrders.slice(startIndex, endIndex);
-  }
-
   changePage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.applyPagination();
     }
   }
 
   onPageSizeChange() {
     this.currentPage = 1;
-    this.applyPagination();
   }
 
   selectStatePagination(state: string) {
     this.selectedState = state;
     this.currentPage = 1;
-    this.applyPagination();
   }
 }
