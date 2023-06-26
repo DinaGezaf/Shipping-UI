@@ -37,7 +37,8 @@
           />
         </span>
       </div>
-      <div class="col-md-4 ps-4 pe-5" style="text-align: end">
+      <div *ngIf="createPermission"
+       class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button (click)="onAdd()"  class="btn d-inline bg-blue text-white p-2 px-3 me-5">
           Add Privilage
         </button>
@@ -58,13 +59,15 @@
           <td class="emp-name">{{ privellge?.name }}</td>
           <td>{{ privellge?.date }}</td>
           <td>
-            <select
+            <select *ngIf="(editPermission || deletePermission) "
               class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option value="edit/{{ privellge?.id }}" >Edit</option>
+              <option *ngIf="editPermission"
+               value="edit/{{ privellge?.id }}" >Edit</option>
               <option
+              *ngIf="deletePermission"
                 value="{{ privellge?.id }} "
                 (click)="deletePrivilege(privellge?.id!)"
               >

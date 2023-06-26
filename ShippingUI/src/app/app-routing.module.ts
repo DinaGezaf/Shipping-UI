@@ -25,6 +25,7 @@ import {
   Employee,
   Government,
   Order,
+  Role,
   Sales,
   Trader,
 } from './Core/Models/Permission';
@@ -86,9 +87,21 @@ const routes: Routes = [
         data: { permission: Order.Update },
       },
       { path: 'order/weightoption', component: WeightCostPerOrderComponent },
-      { path: 'privilege', component: DisplayPrivellageComponent },
-      { path: 'privilege/add', component: AddPrivellageComponent },
-      { path: 'privilege/edit/:id', component: EditPrevillageComponent },
+      {
+        path: 'privilege',
+        component: DisplayPrivellageComponent,
+        data: { permission: Role.Read },
+      },
+      {
+        path: 'privilege/add',
+        component: AddPrivellageComponent,
+        data: { permission: Role.Create },
+      },
+      {
+        path: 'privilege/edit/:id',
+        component: EditPrevillageComponent,
+        data: { permission: Role.Update },
+      },
       {
         path: 'government',
         component: DisplayGovernmentComponent,

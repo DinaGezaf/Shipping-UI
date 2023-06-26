@@ -46,3 +46,10 @@ export enum Order {
   Update = 'permission.orders.update',
   Delete = 'permission.orders.delete',
 }
+
+export enum Role {
+  Read = 'permission.permissions.read',
+  Create = 'permission.permissions.add',
+  Update = 'permission.permissions.update',
+  Delete = 'permission.permissions.delete',
+}

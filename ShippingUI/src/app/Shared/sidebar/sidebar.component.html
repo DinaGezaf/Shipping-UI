@@ -5,7 +5,6 @@
     mode="side"
     class="example-sidenav"
     opened="true"
-    *ngIf="Enable"
   >
     <div
       #sidenav
@@ -68,6 +67,7 @@
           routerLink="government"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readGovernment"
         >
           <span>
             <span class="svg-icon svg-icon-2x"
@@ -102,6 +102,7 @@
           routerLink="city"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readCity"
         >
           <span class="menu-link menu-center"
             ><span class="menu-icon me-0"
@@ -138,6 +139,7 @@
           routerLink="trader"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readTrader"
         >
           <span>
             <span class="menu-icon me-0">
@@ -199,6 +201,7 @@
           routerLink="sales"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readSales"
         >
           <span
             ><span class="menu-icon me-0">
@@ -235,6 +238,7 @@
           routerLink="employee"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readEmployee"
         >
           <span
             ><span class="menu-icon me-0">
@@ -269,6 +273,7 @@
           routerLink="privilege"
           routerLinkActive="active"
           class="my-3"
+          *ngIf="readPrivilege"
         >
           <span class="menu-link menu-center"
             ><span class="menu-icon me-0"
