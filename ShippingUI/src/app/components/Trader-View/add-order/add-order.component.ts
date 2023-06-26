@@ -96,7 +96,7 @@ export class AddOrderComponent implements OnInit {
       weightOption: this.weightOption,
       totalCost: this.totalcost,
       totalWeight: this.totalweight,
-      deliverToVillageCost: formData.deliverToVillageCost,
+      deliverToVillageCost: parseInt(formData.deliverToVillageCost),
       deliveredToVillage: formData.villageDeliverd,
       customer: {
         email: formData.email,

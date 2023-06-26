@@ -1,6 +1,10 @@
 <h2 mat-dialog-title>Assign Order to Sales Representative</h2>
 <mat-dialog-content>
-  <mat-form-field [formGroup]="assignOrderForm" (ngSubmit)="Assign()">
+  <mat-form-field
+    [formGroup]="assignOrderForm"
+    (ngSubmit)="Assign()"
+    class="w-100"
+  >
     <mat-label>Sales Representative</mat-label>
     <mat-select formControlName="salesId">
       <option value="">-- Select Sales --</option>

@@ -126,7 +126,7 @@ export class EditOrderComponent implements OnInit {
       companyBranch: formData.branch,
       defaultCost: this.weightOption.costPerKG,
       shippingType: formData.shippingType,
-      deliverToVillageCost: formData.deliverToVillageCost,
+      deliverToVillageCost: parseInt(formData.deliverToVillageCost),
       deliveredToVillage: formData.villageDeliverd,
       customer: {
         email: formData.email,
