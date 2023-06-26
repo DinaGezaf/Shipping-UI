@@ -143,11 +143,11 @@ export class DisplayEmployeeComponent implements OnInit {
         this.employeeser.GetAllEmployees().subscribe((data: any) => {
           this.employees = this.filteredData = data;
         });
-        // Swal.fire({
-        // title: 'Employee has been successfully Deleted!',
-        // icon: 'success',
-        // confirmButtonColor: '#00b2ff',
-        // });
+        Swal.fire({
+        title: 'Employee has been successfully Deleted!',
+        icon: 'success',
+        confirmButtonColor: '#00b2ff',
+        });
       });
     }
   }

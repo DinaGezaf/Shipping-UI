@@ -39,4 +39,10 @@ export class SalesService {
   getSalesRepresentativeByEmail(email: string) {
     return this.http.get(`http://localhost:5250/api/Sales/${email}`);
   }
+  assignOrderToSales(assignIds: any) {
+    return this.http.post(
+      'http://localhost:5250/api/Employees/assign',
+      assignIds
+    );
+  }
 }

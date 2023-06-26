@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/Core/Services/auth.service';
 import { Order as Order_1 } from 'src/app/Core/Models/Order';
 import { WeightCostPerOrderComponent } from '../weight-cost-per-order/weight-cost-per-order.component';
 import { Order } from 'src/app/Core/Models/Permission';
+import { AssignOrderToSalesComponent } from '../assign-order-to-sales/assign-order-to-sales.component';
 
 @Component({
   selector: 'app-display-orders',
@@ -64,6 +65,13 @@ export class DisplayOrdersComponent implements OnInit {
 
   openOrderStateForm(order: Order_1): void {
     const dialogRef = this.dialog.open(OrderStateFormComponent, {
+      data: order,
+    });
+
+    dialogRef.afterClosed().subscribe();
+  }
+  openAssignOrderForm(order: Order_1): void {
+    const dialogRef = this.dialog.open(AssignOrderToSalesComponent, {
       data: order,
     });
 

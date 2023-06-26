@@ -78,6 +78,12 @@
           <td>
             <a
               class="btn px-3 py-2 text-info fs-4"
+              [routerLink]="'order/details/' + order.orderId"
+            >
+              <i class="bi bi-binoculars-fill"></i>
+            </a>
+            <a
+              class="btn px-3 py-2 text-warning fs-4"
               [routerLink]="'order/edit/' + order.orderId"
             >
               <i class="bi bi-pencil-square"></i>

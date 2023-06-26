@@ -43,13 +43,11 @@ export class OrderStateFormComponent implements OnInit {
   ChangeState(): void {
     this.data.state = this.selectedState;
 
-    console.log(this.selectedState);
     this.orderService
       .updateOrder(this.data.orderId, this.data)
       .subscribe(() => {
         this.Message();
         this.dialogRef.close();
-        console.log(this.data);
       });
   }
 
