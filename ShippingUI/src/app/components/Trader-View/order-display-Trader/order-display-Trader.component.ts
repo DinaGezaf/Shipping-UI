@@ -37,9 +37,10 @@ export class OrderDispalyTraderComponent implements OnInit {
     this.loadOrders();
     this.role = localStorage.getItem('role');
   }
-  openModal(id: any): void {
+  openDetails(order: any): void {
     const dialogRef = this.dialog.open(OrderDetailsComponent, {
-      width: '400px',
+      data: order,
+      width: '600px',
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

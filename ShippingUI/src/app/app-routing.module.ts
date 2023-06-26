@@ -30,6 +30,8 @@ import {
 import { AddOrderComponent } from './components/Trader-View/add-order/add-order.component';
 import { EditOrderComponent } from './components/Trader-View/edit-order/edit-order.component';
 import { OrderReportComponent } from './components/order-report/order-report.component';
+import { AddPrivellageComponent } from './components/Privellge/add/add.component';
+import { EditPrevillageComponent } from './components/Privellge/edit/edit.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },

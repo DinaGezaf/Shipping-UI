@@ -76,12 +76,12 @@
           </td>
 
           <td>
-            <a class="btn px-3 py-2 text-info fs-4">
+            <a class="btn px-3 py-2 text-info fs-4" (click)="openDetails(order)">
               <i class="bi bi-binoculars-fill"></i>
             </a>
             <a
               class="btn px-3 py-2 text-info fs-4"
-              (click)="openModal(order.id)"
+              [routerLink]="'order/edit/' + order.orderId"
             >
               <i class="bi bi-pencil-square"></i>
             </a>
