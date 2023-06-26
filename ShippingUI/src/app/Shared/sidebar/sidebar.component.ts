@@ -43,5 +43,11 @@ export class SidebarComponent {
     this.readBranch = authService.checkPermission(Branch.Read);
     this.readOrder = authService.checkPermission(Order.Create);
     this.readPrivilege = authService.checkPermission(Role.Read);
+
+    this.role = this.authService.getUserRole();
+
+    if (this.role == 'employee' || this.role == 'admin') {
+      this.Enable = true;
+    }
   }
 }

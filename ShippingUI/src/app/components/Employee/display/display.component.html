@@ -37,11 +37,7 @@
           />
         </span>
       </div>
-      <div
-        *ngIf="createPermission"
-        class="col-md-4 ps-4 pe-5"
-        style="text-align: end"
-      >
+      <div class="col-md-4 ps-4 pe-5" style="text-align: end">
         <button
           class="btn d-inline bg-blue text-white p-2 px-3 me-5"
           (click)="openModal(0)"
@@ -79,17 +75,14 @@
               *ngIf="employee?.isActive"
               class="form-control form-select form-control-solid actions-select w-95px d-inline mx-3"
               (change)="onOptionSelected($event)"
-              [(ngModel)]="selectedOption"
             >
               <option value="action">Action</option>
               <option
-                *ngIf="editPermission"
                 value="edit/{{ employee.employeeId }}"
               >
                 Edit
               </option>
               <option
-                *ngIf="deletePermission"
                 value="{{ employee.employeeId }}"
                 (click)="changeIsActive(employee.employeeId!)"
               >
@@ -154,8 +147,7 @@
         <h2 class="modal-title ps-2 pt-1 fw-medium" id="exampleModalLongTitle">
           <span>{{ allowEdit ? "Edit Employee" : "Add Employee" }}</span>
         </h2>
-        <span (click)="close()" class="svg-icon svg-icon-1"
-          >
+        <span (click)="close()" class="svg-icon svg-icon-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -181,11 +173,9 @@
               rx="1"
               transform="rotate(45 7.41422 6)"
               fill="currentColor"
-            >
-          </rect>
-            </svg
-        >
-      </span>
+            ></rect>
+          </svg>
+        </span>
       </div>
       <div class="modal-body p-0">
         <div class="modal-body py-10">
@@ -218,7 +208,7 @@
                     *ngIf="
                       employeeForm.get('name')?.invalid &&
                       employeeForm.get('name')?.touched
-                        "
+                    "
                   >
                     <span
                       *ngIf="employeeForm.get('name')?.hasError('required')"

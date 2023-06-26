@@ -72,11 +72,10 @@
               (change)="onOptionSelected($event)"
             >
               <option>Action</option>
-              <option *ngIf="editPermission" value="edit/{{ trader.traderId }}">
+              <option  value="edit/{{ trader.traderId }}">
                 Edit
               </option>
               <option
-                *ngIf="deletePermission"
                 value="{{ trader.traderId! }} "
                 (click)="DeleteTrader(trader.traderId!)"
               >

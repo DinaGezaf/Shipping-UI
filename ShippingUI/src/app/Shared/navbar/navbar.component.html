@@ -17,11 +17,12 @@
       class="fs-3 text-light"
       *ngIf="role == 'trader' || role == 'salesrepresentative'"
     >
-      <a routerLink="/dashboard" class="nav-link text-info mx-5">
-        CargoSwift
-      </a>
+      <a class="nav-link text-info mx-5"> CargoSwift </a>
     </div>
-    <div class="fs-3 text-light ms-5 ps-5" *ngIf="role == 'employee'">
+    <div
+      class="fs-3 text-light ms-5 ps-5"
+      *ngIf="role == 'employee' || role == 'admin'"
+    >
       <a routerLink="/dashboard" class="nav-link text-info mx-5">
         CargoSwift
       </a>
@@ -32,24 +33,24 @@
       id="navbarsExample10"
     >
       <ul class="navbar-nav main-menu" *ngIf="role == 'trader'">
-        <li class="nav-item px-2" *ngIf="authService.hasPermission('permission.orders.read')">
+        <li class="nav-item px-2">
           <a class="nav-link" routerLink="order/list/trader">Orders</a>
         </li>
 
-        <li class="nav-item px-2" *ngIf="authService.hasPermission('permission.orders.read')">
+        <li class="nav-item px-2">
           <a class="nav-link" routerLink="order/states/trader">Orders States</a>
         </li>
       </ul>
       <ul class="navbar-nav main-menu" *ngIf="role == 'salesrepresentative'">
-        <li class="nav-item px-2" *ngIf="authService.hasPermission('permission.orders.read')">
+        <li class="nav-item px-2">
           <a class="nav-link" routerLink="order/list/sales">Orders</a>
         </li>
 
-        <li class="nav-item px-2" *ngIf="authService.hasPermission('permission.orders.read')">
+        <li class="nav-item px-2">
           <a class="nav-link" routerLink="order/states/sales">Orders States</a>
         </li>
       </ul>
-      <ul class="navbar-nav main-menu" *ngIf="role == 'employee'" >
+      <ul class="navbar-nav main-menu" *ngIf="role == 'employee'">
         <li class="nav-item px-2"></li>
       </ul>
       <ul class="navbar-nav main-menu" *ngIf="role == 'admin'">

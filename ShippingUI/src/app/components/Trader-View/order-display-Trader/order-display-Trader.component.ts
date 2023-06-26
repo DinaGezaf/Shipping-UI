@@ -83,10 +83,11 @@ export class OrderDispalyTraderComponent implements OnInit {
       width: '416px',
       cancelButtonColor: '#eff2f5',
     }).then((result) => {
-      if (result.value) {
+      if (result) {
         this.orderService
           .deleteOrderForTrader(orderId)
           .subscribe((response: any) => {
+            this.loadOrders();
             Swal.fire({
               title: 'Order has been successfully Deleted!',
               icon: 'success',
