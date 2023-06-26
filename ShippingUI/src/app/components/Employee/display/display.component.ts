@@ -196,12 +196,12 @@ export class DisplayEmployeeComponent implements OnInit {
           },
         });
         Swal.fire({
-        title: 'Employee has been successfully Deleted!',
-        icon: 'success',
-        confirmButtonColor: '#00b2ff',
+          title: 'Employee has been successfully Deleted!',
+          icon: 'success',
+          confirmButtonColor: '#00b2ff',
         });
-      });
-    }
+      };
+    });
   }
 
   onOptionSelected(event: any) {

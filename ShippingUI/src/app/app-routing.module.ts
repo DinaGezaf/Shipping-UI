@@ -33,7 +33,7 @@ import { EditOrderComponent } from './components/Trader-View/edit-order/edit-ord
 import { OrderReportComponent } from './components/order-report/order-report.component';
 
 const routes: Routes = [
-  { path: '', component: DisplayPrivellageComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
