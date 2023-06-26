@@ -81,6 +81,10 @@ td {
   overflow: hidden;
 }
 
+.me-10 {
+  margin-right: 130px;
+}
+
 .custom-modal-content {
   height: 470px;
 }

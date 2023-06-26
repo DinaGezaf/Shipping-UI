@@ -22,6 +22,9 @@ export class DisplayGovernmentComponent implements OnInit {
   formModel: any;
   governmentId!: number;
   governmentForm!: FormGroup;
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
 
   editPermission = false;
   deletePermission = false;
@@ -36,9 +39,13 @@ export class DisplayGovernmentComponent implements OnInit {
     this.createPermission = auth.checkPermission(Government.Delete);
   }
   ngOnInit(): void {
-    this.governmentService.GetAllGovernment().subscribe((data: any) => {
-      this.governments = this.filteredData = data;
-    });
+    this.governmentService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.governments = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
     this.governmentForm = new FormGroup({
       governmentName: new FormControl(null, Validators.required),
       state: new FormControl(null, Validators.required),
@@ -184,5 +191,15 @@ export class DisplayGovernmentComponent implements OnInit {
   onInputChange(event: any) {
     const inputValue = event.target.value;
     this.filteredData = this.filterData(inputValue);
+  }
+
+  getPaginatedData(index: any) {
+    this.governmentService
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.governments = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
   }
 }

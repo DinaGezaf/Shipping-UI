@@ -32,7 +32,6 @@ export class OrderDispalyTraderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
-    this.applyPagination();
     this.role = localStorage.getItem('role');
   }
 
@@ -117,37 +116,18 @@ export class OrderDispalyTraderComponent implements OnInit {
     this.filteredDataOrder = this.filterData(inputValue);
   }
 
-  applyPagination() {
-    const filteredOrders = this.selectedState
-      ? this.orders.filter((order: any) => order.state === this.selectedState)
-      : this.orders;
-
-    this.totalItems = filteredOrders.length;
-    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-
-    this.orders = filteredOrders.slice(startIndex, endIndex);
-  }
-
   changePage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.applyPagination();
     }
   }
 
   onPageSizeChange() {
     this.currentPage = 1;
-    this.applyPagination();
   }
 
   selectStatePagination(state: string) {
     this.selectedState = state;
     this.currentPage = 1;
-    this.applyPagination();
   }
 }

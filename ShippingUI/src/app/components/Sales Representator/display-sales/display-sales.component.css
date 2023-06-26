@@ -1,4 +1,3 @@
-
 .w-250px {
   width: 250px;
 }
@@ -16,6 +15,10 @@ th {
 .emp-name {
   color: #3f4254;
   font-size: 14px;
+}
+
+.me-10 {
+  margin-right: 130px;
 }
 
 td {

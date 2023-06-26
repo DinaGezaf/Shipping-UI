@@ -29,6 +29,9 @@ export class DisplayEmployeeComponent implements OnInit {
   empId!: number;
   selectedOption = 'action';
   backdropElement: any;
+  $pageSize = 5;
+  $totalItems = 0;
+  $page = 1;
 
   editPermission = false;
   deletePermission = false;
@@ -48,9 +51,13 @@ export class DisplayEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeser.GetAllEmployees().subscribe((data: any) => {
-      this.employees = this.filteredData = data;
-    });
+    this.employeeser
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.employees = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
 
     this.formModel = new window.bootstrap.Modal(
       document.getElementById('employeeModel')
@@ -137,11 +144,56 @@ export class DisplayEmployeeComponent implements OnInit {
   }
 
   changeIsActive(employeeId: number) {
-    if (confirm('do you want to delete ?')) {
-      this.employeeser.changeIsActive(employeeId).subscribe((data: any) => {
-        console.log(data);
-        this.employeeser.GetAllEmployees().subscribe((data: any) => {
-          this.employees = this.filteredData = data;
+    Swal.fire({
+      title: 'Are you sure you would like to delete?',
+      icon: 'warning',
+      iconColor: '#FFC700',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delet it!',
+      confirmButtonColor: '#00b2ff',
+      cancelButtonText: 'No, return',
+      width: '416px',
+      cancelButtonColor: '#eff2f5',
+    }).then((result) => {
+      if (result.value) {
+        this.employeeser.changeIsActive(employeeId).subscribe(
+          (data: any) => {
+            Swal.fire({
+              title: 'Deleted successfully!',
+              icon: 'success',
+              confirmButtonColor: '#00b2ff',
+            });
+            this.loadData();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Employee has not been deleted!.',
+              icon: 'error',
+              confirmButtonText: 'Ok, got it!',
+              confirmButtonColor: '#00b2ff',
+              width: '416px',
+              iconColor: '#F1416C',
+              customClass: {
+                icon: 'custom-cancel-icon',
+                title: 'custom-content-class',
+              },
+            });
+
+            console.log(error.message);
+          }
+        );
+      } else {
+        Swal.fire({
+          title: 'Employee has not been deleted!.',
+          icon: 'error',
+          confirmButtonText: 'Ok, got it!',
+          confirmButtonColor: '#00b2ff',
+          width: '416px',
+          iconColor: '#F1416C',
+          customClass: {
+            icon: 'custom-cancel-icon',
+            title: 'custom-content-class',
+          },
         });
         Swal.fire({
         title: 'Employee has been successfully Deleted!',
@@ -257,5 +309,14 @@ export class DisplayEmployeeComponent implements OnInit {
         branchid: data.branch?.id,
       });
     });
+  }
+  getPaginatedData(index: any) {
+    this.employeeser
+      .getPaginatedData(this.$page, this.$pageSize)
+      .subscribe((data: any) => {
+        this.employees = this.filteredData = data.data;
+        this.$totalItems = data?.totalRecords || 0;
+        this.$page = data?.pageNo;
+      });
   }
 }
