@@ -9,6 +9,7 @@ import {
   Employee,
   Government,
   Order,
+  Role,
   Sales,
   Trader,
 } from 'src/app/Core/Models/Permission';
@@ -66,17 +67,24 @@ export class EditPrevillageComponent implements OnInit {
       [Order.Create]: new FormControl(null, Validators.required),
       [Order.Update]: new FormControl(null, Validators.required),
       [Order.Delete]: new FormControl(null, Validators.required),
+
+      [Role.Read]: new FormControl(null, Validators.required),
+      [Role.Create]: new FormControl(null, Validators.required),
+      [Role.Update]: new FormControl(null, Validators.required),
+      [Role.Delete]: new FormControl(null, Validators.required),
     });
 
     const id = this.route.snapshot.params['id'];
     this.id = id;
 
     this.privilegeservice.getPrivilegeById(id).subscribe((data: any) => {
-      let newdata = data as { name: string; claims: string[] };
+      console.log(data);
+      let newdata = data as { name: string; claims: [{ type: string }] };
       this.editPrivilegeForm.patchValue({ name: newdata.name });
+
       newdata.claims.forEach((item) => {
         this.editPrivilegeForm.patchValue({
-          [item]: true,
+          [item.type]: true,
         });
       });
     });
@@ -94,14 +102,13 @@ export class EditPrevillageComponent implements OnInit {
 
     const role = {
       name: this.editPrivilegeForm.get('name')?.value,
-      data: new Date(),
       claims: claims,
     };
 
     if (claims.length > 0) {
       console.log(role);
       this.privilegeservice.updatePrivilege(this.id, role).subscribe(
-        (data) => {
+        (data: any) => {
           alert('success update');
           this.router.navigate(['/home/privilege']);
         },

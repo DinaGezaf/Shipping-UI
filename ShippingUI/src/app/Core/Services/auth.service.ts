@@ -17,11 +17,13 @@ export class AuthService {
   constructor(private http: HttpClient) {
     this.isAuthenticated = !!localStorage.getItem('token');
     const role = localStorage.getItem('role');
-    const generatedRoutesString = localStorage.getItem('generatedRoutes');
-    let generatedRoutes: Routes = [];
-    if (role && generatedRoutesString) {
-      generatedRoutes = JSON.parse(generatedRoutesString);
-    }
+
+    // const generatedRoutesString = localStorage.getItem('generatedRoutes');
+    // let generatedRoutes: Routes = [];
+    // if (role && generatedRoutesString) {
+    //   generatedRoutes = JSON.parse(generatedRoutesString);
+    // }
+
     this.LoggedIn = true;
     let tokenstring = localStorage.getItem('authToken');
     let claims = JSON.parse(localStorage.getItem('claims')!);
@@ -29,8 +31,10 @@ export class AuthService {
       return;
     }
 
-    (this.islogged = true), (this.permissions = claims);
+    this.islogged = true;
+    this.permissions = claims;
     this.token = tokenstring;
+    console.log(this.permissions);
   }
 
   URL: string = 'http://localhost:5250/api/Account';
@@ -47,6 +51,7 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem('role');
     localStorage.removeItem('email');
+    localStorage.removeItem('claims');
     this.isAuthenticated = false;
   }
 
@@ -99,11 +104,11 @@ export class AuthService {
 
     return this.isAuthenticated;
   }
-  getGeneratedRoutes() {
-    const generatedRoutes = localStorage.getItem('generatedRoutes');
-    return generatedRoutes ? JSON.parse(generatedRoutes) : null;
-  }
-  setGeneratedRoutes(routes: string) {
-    this.generatedRoutes = routes;
-  }
+  // getGeneratedRoutes() {
+  //   const generatedRoutes = localStorage.getItem('generatedRoutes');
+  //   return generatedRoutes ? JSON.parse(generatedRoutes) : null;
+  // }
+  // setGeneratedRoutes(routes: string) {
+  //   this.generatedRoutes = routes;
+  // }
 }

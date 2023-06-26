@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Role } from 'src/app/Core/Models/Permission';
 import { privilege } from 'src/app/Core/Models/Privellage';
+import { AuthService } from 'src/app/Core/Services/auth.service';
 import { PrivellageService } from 'src/app/Core/Services/privellage.service';
 import Swal from 'sweetalert2';
 
@@ -18,24 +20,26 @@ export class DisplayPrivellageComponent implements OnInit {
   formModel: any;
   id!: number;
 
+  editPermission = false;
+  createPermission = false;
+  deletePermission = false;
+
   constructor(
     private privellageser: PrivellageService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {
+    this.editPermission = auth.checkPermission(Role.Update);
+    this.createPermission = auth.checkPermission(Role.Create);
+    this.deletePermission = auth.checkPermission(Role.Delete);
+  }
 
   ngOnInit(): void {
     this.privellageser.getAllPrivellages().subscribe((data: any) => {
       this.privileges = this.filteredData = data;
       console.log(data);
     });
-    // this.formModel = new window.bootstrap.Modal(
-    // document.getElementById('exampleModalCenter')
-    // );
-    // this.privilegeForm = new FormGroup({
-    // name: new FormControl(null, Validators.required),
-    // date: new FormControl(null, Validators.required),
-    // });
   }
 
   deletePrivilege(id: number) {

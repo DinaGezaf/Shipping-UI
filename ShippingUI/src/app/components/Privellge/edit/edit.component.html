@@ -266,12 +266,46 @@
               />
             </td>
           </tr>
+          <tr>
+            <td>
+              <label>Privilege</label>
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="form-check-input p-2 mx-9"
+                formControlName="permission.permissions.read"
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="form-check-input p-2 mx-9"
+                formControlName="permission.permissions.add"
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="form-check-input p-2 mx-9"
+                formControlName="permission.permissions.update"
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="form-check-input p-2 mx-9"
+                formControlName="permission.permissions.delete"
+              />
+            </td>
+          </tr>
 
           <div class="form-group d-inline">
             <button class="btn bg-blue text-white" type="submit">Submit</button>
           </div>
+
           <div class="form-group d-inline">
-            <a routerLink="home/privilege">
+            <a routerLink="/home/privilege">
               <button
                 class="btn btn-back bg-gray"
                 type="submit"
